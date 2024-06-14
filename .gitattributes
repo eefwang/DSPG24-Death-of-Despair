@@ -1,1 +1,2 @@
 Data/merged_data/map_virginia_2018_2022.csv filter=lfs diff=lfs merge=lfs -text
+Data/merged_data/map_appalachia_2018_2022.csv filter=lfs diff=lfs merge=lfs -text
