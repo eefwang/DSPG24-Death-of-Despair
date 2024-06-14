@@ -17,6 +17,9 @@ rmarkdown::render(here("Programs", "02cl_Merge_VA_APP_Data.Rmd"))
 #Merge Data with Map
 #rmarkdown::render(here("Programs", "03cl_Merged_Map_Data.Rmd"))
 
+#Merge Data with Map
+rmarkdown::render(here("Programs", "04cl_Bartik_1822.Rmd"))
+
 ###################
 #Data Visualization
 ###################
