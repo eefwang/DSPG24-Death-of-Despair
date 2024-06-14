@@ -5,10 +5,10 @@ library(here)
 #Data Cleaning 
 ##############
 
-#00Data Import
+#Import Data
 rmarkdown::render(here("Programs", "00cl_Data_import.Rmd"))
-
-
+#Retrieve ACS data for 2018-2022
+rmarkdown::render(here("Programs", "00cl_Data_import.Rmd"))
 
 
 
