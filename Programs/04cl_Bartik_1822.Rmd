@@ -1,0 +1,288 @@
+---
+title: "Bartik Final Data"
+author: "Elisabeth Wasserman"
+date: "2024-06-10"
+output: html_document
+---
+
+```{r 2018 ACS}
+library(dplyr)
+library(tidycensus)
+
+#get ACS job variables by state for US and VA only for year 2018 and 2022
+year <- c(2018,2022)
+
+list_data <- lapply(year, function(year) {
+  data <- get_acs(
+    geography = "state",
+    variables = c(
+      #Occupation
+      public_admin="DP03_0045E", other_services="DP03_0044E",
+      arts_ent_rec="DP03_0043E", edu_health_social="DP03_0042E",
+      prof_scientific="DP03_0041E", finance_insurance="DP03_0040E",
+      information="DP03_0039E", transportation="DP03_0038E",
+      retail_trade="DP03_0037E", wholesale_trade="DP03_0036E",
+      manufacturing="DP03_0035E", construction= "DP03_0034E",
+      agriculture_mining="DP03_0033E"),
+      
+      year = year,
+      survey = "acs5",
+      output = "wide"  # Fetch data in wide format but with MOE columns included
+  )
+  
+  # Add a year column to the data
+  data$Year <- year
+  
+    return(data)
+})
+
+
+#BY STATE
+#US level - for app rates
+#states acs only occupation data, 2018 and 2022
+us_jobs <- bind_rows(list_data)
+
+#Va level - for app rates
+#only two observations for va, 2018 and 2022
+virginia_jobs <- us_jobs %>%
+  filter(GEOID == "51")
+
+```
+
+
+```{r}
+#BY COUNTY
+#appalachia acs only occupation data, 2018 and 2022
+#group by county
+#sort by year, 2022 first and 2018 second
+app_jobs_2018_2022 <- appalachia_2018_2022 %>% 
+  filter(Year == 2018 | Year == 2022) %>%
+  group_by(FIPS) %>%
+  arrange(desc(Year), .by_group = TRUE) %>%
+  select(Year, FIPS, COUNTY, public_admin, other_services,
+      arts_ent_rec, edu_health_social,
+      prof_scientific, finance_insurance,
+      information, transportation,
+      retail_trade, wholesale_trade,
+      manufacturing, construction,
+      agriculture_mining)
+
+#virginia counties acs only occupation data, 2018 and 2022
+va_jobs_2018_2022 <- virginia_2018_2022 %>%
+  filter(Year == 2018 | Year == 2022) %>%
+  group_by(FIPS) %>%
+  arrange(desc(Year), .by_group = TRUE) %>%
+  rename(COUNTY = County.x) %>%
+  select(Year, FIPS, COUNTY, public_admin, other_services,
+      arts_ent_rec, edu_health_social,
+      prof_scientific, finance_insurance,
+      information, transportation,
+      retail_trade, wholesale_trade,
+      manufacturing, construction,
+      agriculture_mining)
+```
+
+
+```{r}
+#Appalachia
+egr <- c()
+
+#create Jobs variable
+ app_jobs_2018_2022 <- app_jobs_2018_2022 %>%
+  mutate(Jobs = public_admin + other_services + arts_ent_rec + edu_health_social +
+           prof_scientific + finance_insurance + information + transportation +
+           retail_trade + wholesale_trade + manufacturing + construction +
+           agriculture_mining)
+
+for (i in 1:nrow(app_jobs_2018_2022)) {
+  
+  tmp <- app_jobs_2018_2022 %>% filter(COUNTY == app_jobs_2018_2022$COUNTY[i])
+  
+  #change names of each industry
+  tmp_rates <- c((tmp$public_admin[1] / tmp$public_admin[2])^(1/4) - 1, 
+                 (tmp$other_services[1] / tmp$other_services[2])^(1/4) - 1, 
+                 (tmp$arts_ent_rec[1] / tmp$arts_ent_rec[2])^(1/4) - 1, 
+                 (tmp$edu_health_social[1] / tmp$edu_health_social[2])^(1/4) - 1, 
+                 (tmp$prof_scientific[1] / tmp$prof_scientific[2])^(1/4) - 1, 
+                 (tmp$finance_insurance[1] / tmp$finance_insurance[2])^(1/4) - 1, 
+                 (tmp$information[1] / tmp$information[2])^(1/4) - 1, 
+                 (tmp$transportation[1] / tmp$transportation[2])^(1/4) - 1, 
+                 (tmp$retail_trade[1] / tmp$retail_trade[2])^(1/4) - 1, 
+                 (tmp$wholesale_trade[1] / tmp$wholesale_trade[2])^(1/4) - 1, 
+                 (tmp$manufacturing[1] / tmp$manufacturing[2])^(1/4) - 1, 
+                 (tmp$construction[1] / tmp$construction[2])^(1/4) - 1, 
+                 (tmp$agriculture_mining[1] / tmp$agriculture_mining[2])^(1/4) - 1)
+  
+  tmp_rates[is.na(tmp_rates)] <- 0
+  tmp_rates[is.infinite(tmp_rates)] <- 0
+  
+  val <- tmp$public_admin[2]/tmp$Jobs[2]*tmp_rates[1] + tmp$other_services[2]/tmp$Jobs[2]*tmp_rates[2] + tmp$arts_ent_rec[2]/tmp$Jobs[2]*tmp_rates[3] + tmp$edu_health_social[2]/tmp$Jobs[2]*tmp_rates[4] + tmp$prof_scientific[2]/tmp$Jobs[2]*tmp_rates[5] + tmp$finance_insurance[2]/tmp$Jobs[2]*tmp_rates[6] + tmp$information[2]/tmp$Jobs[2]*tmp_rates[7] + tmp$transportation[2]/tmp$Jobs[2]*tmp_rates[8] + tmp$retail_trade[2]/tmp$Jobs[2]*tmp_rates[9] + tmp$wholesale_trade[2]/tmp$Jobs[2]*tmp_rates[10] + tmp$manufacturing[2]/tmp$Jobs[2]*tmp_rates[11] + tmp$construction[2]/tmp$Jobs[2]*tmp_rates[12] + tmp$agriculture_mining[2]/tmp$Jobs[2]*tmp_rates[13]
+  egr <- c(egr, val)
+  
+}
+
+app_jobs_2018_2022 <- cbind(app_jobs_2018_2022, egr)
+colnames(app_jobs_2018_2022)[ncol(app_jobs_2018_2022)] <- 'Employment_Growth_Rate'
+```
+
+```{r}
+# Calculating Appalachian Rates
+baseline <- app_jobs_2018_2022 %>% filter(Year == 2018)
+update <- app_jobs_2018_2022 %>% filter(Year == 2022)
+
+adm.rate <- (sum(update$public_admin, na.rm = TRUE) / sum(baseline$public_admin, na.rm = TRUE))^(1/4) - 1
+oth.rate <- (sum(update$other_services, na.rm = TRUE) / sum(baseline$other_services, na.rm = TRUE))^(1/4) - 1
+art.rate <- (sum(update$arts_ent_rec, na.rm = TRUE) / sum(baseline$arts_ent_rec, na.rm = TRUE))^(1/4) - 1
+edu.rate <- (sum(update$edu_health_social, na.rm = TRUE) / sum(baseline$edu_health_social, na.rm = TRUE))^(1/4) - 1
+sci.rate <- (sum(update$prof_scientific, na.rm = TRUE) / sum(baseline$prof_scientific, na.rm = TRUE))^(1/4) - 1
+fin.rate <- (sum(update$finance_insurance, na.rm = TRUE) / sum(baseline$finance_insurance, na.rm = TRUE))^(1/4) - 1
+inf.rate <- (sum(update$information, na.rm = TRUE) / sum(baseline$information, na.rm = TRUE))^(1/4) - 1
+tra.rate <- (sum(update$transportation, na.rm = TRUE) / sum(baseline$transportation, na.rm = TRUE))^(1/4) - 1
+ret.rate <- (sum(update$retail_trade, na.rm = TRUE) / sum(baseline$retail_trade, na.rm = TRUE))^(1/4) - 1
+who.rate <- (sum(update$wholesale_trade, na.rm = TRUE) / sum(baseline$wholesale_trade, na.rm = TRUE))^(1/4) - 1
+man.rate <- (sum(update$manufacturing, na.rm = TRUE) / sum(baseline$manufacturing, na.rm = TRUE))^(1/4) - 1
+con.rate <- (sum(update$construction, na.rm = TRUE) / sum(baseline$construction, na.rm = TRUE))^(1/4) - 1
+agr.rate <- (sum(update$agriculture_mining, na.rm = TRUE) / sum(baseline$agriculture_mining, na.rm = TRUE))^(1/4) - 1
+
+app_rates <- c(adm.rate, oth.rate, art.rate, edu.rate, sci.rate, fin.rate, inf.rate, tra.rate, ret.rate, who.rate, man.rate, con.rate, agr.rate)
+
+# Calculating National Rates
+baseline <- us_jobs %>% filter(Year == 2018)
+update <- us_jobs %>% filter(Year == 2022)
+
+adm.rate <- (sum(update$public_admin, na.rm = TRUE) / sum(baseline$public_admin, na.rm = TRUE))^(1/4) - 1
+oth.rate <- (sum(update$other_services, na.rm = TRUE) / sum(baseline$other_services, na.rm = TRUE))^(1/4) - 1
+art.rate <- (sum(update$arts_ent_rec, na.rm = TRUE) / sum(baseline$arts_ent_rec, na.rm = TRUE))^(1/4) - 1
+edu.rate <- (sum(update$edu_health_social, na.rm = TRUE) / sum(baseline$edu_health_social, na.rm = TRUE))^(1/4) - 1
+sci.rate <- (sum(update$prof_scientific, na.rm = TRUE) / sum(baseline$prof_scientific, na.rm = TRUE))^(1/4) - 1
+fin.rate <- (sum(update$finance_insurance, na.rm = TRUE) / sum(baseline$finance_insurance, na.rm = TRUE))^(1/4) - 1
+inf.rate <- (sum(update$information, na.rm = TRUE) / sum(baseline$information, na.rm = TRUE))^(1/4) - 1
+tra.rate <- (sum(update$transportation, na.rm = TRUE) / sum(baseline$transportation, na.rm = TRUE))^(1/4) - 1
+ret.rate <- (sum(update$retail_trade, na.rm = TRUE) / sum(baseline$retail_trade, na.rm = TRUE))^(1/4) - 1
+who.rate <- (sum(update$wholesale_trade, na.rm = TRUE) / sum(baseline$wholesale_trade, na.rm = TRUE))^(1/4) - 1
+man.rate <- (sum(update$manufacturing, na.rm = TRUE) / sum(baseline$manufacturing, na.rm = TRUE))^(1/4) - 1
+con.rate <- (sum(update$construction, na.rm = TRUE) / sum(baseline$construction, na.rm = TRUE))^(1/4) - 1
+agr.rate <- (sum(update$agriculture_mining, na.rm = TRUE) / sum(baseline$agriculture_mining, na.rm = TRUE))^(1/4) - 1
+
+us_rates <- c(adm.rate, oth.rate, art.rate, edu.rate, sci.rate, fin.rate, inf.rate, tra.rate, ret.rate, who.rate, man.rate, con.rate, agr.rate)
+
+```
+
+```{r second-loop}
+# Creating Bartik Instruments
+bartik_us <- c()
+bartik_app <-c()
+
+for (i in 1:nrow(app_jobs_2018_2022)) {
+    
+  tmp <- app_jobs_2018_2022 %>% filter(COUNTY == app_jobs_2018_2022$COUNTY[i])
+
+  val_app <- tmp$public_admin[2]/tmp$Jobs[2]*app_rates[1] + tmp$other_services[2]/tmp$Jobs[2]*app_rates[2] + tmp$arts_ent_rec[2]/tmp$Jobs[2]*app_rates[3] + tmp$edu_health_social[2]/tmp$Jobs[2]*app_rates[4] + tmp$prof_scientific[2]/tmp$Jobs[2]*app_rates[5] + tmp$finance_insurance[2]/tmp$Jobs[2]*app_rates[6] + tmp$information[2]/tmp$Jobs[2]*app_rates[7] + tmp$transportation[2]/tmp$Jobs[2]*app_rates[8] + tmp$retail_trade[2]/tmp$Jobs[2]*app_rates[9] + tmp$wholesale_trade[2]/tmp$Jobs[2]*app_rates[10] + tmp$manufacturing[2]/tmp$Jobs[2]*app_rates[11] + tmp$construction[2]/tmp$Jobs[2]*app_rates[12] + tmp$agriculture_mining[2]/tmp$Jobs[2]*app_rates[13]
+  
+    val_us <- tmp$public_admin[2]/tmp$Jobs[2]*us_rates[1] + tmp$other_services[2]/tmp$Jobs[2]*us_rates[2] + tmp$arts_ent_rec[2]/tmp$Jobs[2]*us_rates[3] + tmp$edu_health_social[2]/tmp$Jobs[2]*us_rates[4] + tmp$prof_scientific[2]/tmp$Jobs[2]*us_rates[5] + tmp$finance_insurance[2]/tmp$Jobs[2]*us_rates[6] + tmp$information[2]/tmp$Jobs[2]*us_rates[7] + tmp$transportation[2]/tmp$Jobs[2]*us_rates[8] + tmp$retail_trade[2]/tmp$Jobs[2]*us_rates[9] + tmp$wholesale_trade[2]/tmp$Jobs[2]*us_rates[10] + tmp$manufacturing[2]/tmp$Jobs[2]*us_rates[11] + tmp$construction[2]/tmp$Jobs[2]*us_rates[12] + tmp$agriculture_mining[2]/tmp$Jobs[2]*us_rates[13]
+  
+  bartik_us <- c(bartik_us, val_us)
+  bartik_app <- c(bartik_app, val_app)
+  
+}
+
+app_jobs_2018_2022 <- cbind(app_jobs_2018_2022, bartik_us, bartik_app)
+colnames(app_jobs_2018_2022)[ncol(app_jobs_2018_2022)-1] <- 'US_Bartik'
+colnames(app_jobs_2018_2022)[ncol(app_jobs_2018_2022)] <- 'App_Bartik'
+```
+
+
+```{r}
+#Virginia
+egr <- c()
+
+#create Jobs variable
+ va_jobs_2018_2022 <- va_jobs_2018_2022 %>%
+  mutate(Jobs = public_admin + other_services + arts_ent_rec + edu_health_social +
+           prof_scientific + finance_insurance + information + transportation +
+           retail_trade + wholesale_trade + manufacturing + construction +
+           agriculture_mining)
+
+for (i in 1:nrow(va_jobs_2018_2022)) {
+  
+  tmp <- va_jobs_2018_2022 %>% filter(COUNTY == va_jobs_2018_2022$COUNTY[i])
+  
+  #change names of each industry
+  tmp_rates <- c((tmp$public_admin[1] / tmp$public_admin[2])^(1/4) - 1, 
+                 (tmp$other_services[1] / tmp$other_services[2])^(1/4) - 1, 
+                 (tmp$arts_ent_rec[1] / tmp$arts_ent_rec[2])^(1/4) - 1, 
+                 (tmp$edu_health_social[1] / tmp$edu_health_social[2])^(1/4) - 1, 
+                 (tmp$prof_scientific[1] / tmp$prof_scientific[2])^(1/4) - 1, 
+                 (tmp$finance_insurance[1] / tmp$finance_insurance[2])^(1/4) - 1, 
+                 (tmp$information[1] / tmp$information[2])^(1/4) - 1, 
+                 (tmp$transportation[1] / tmp$transportation[2])^(1/4) - 1, 
+                 (tmp$retail_trade[1] / tmp$retail_trade[2])^(1/4) - 1, 
+                 (tmp$wholesale_trade[1] / tmp$wholesale_trade[2])^(1/4) - 1, 
+                 (tmp$manufacturing[1] / tmp$manufacturing[2])^(1/4) - 1, 
+                 (tmp$construction[1] / tmp$construction[2])^(1/4) - 1, 
+                 (tmp$agriculture_mining[1] / tmp$agriculture_mining[2])^(1/4) - 1)
+  
+  tmp_rates[is.na(tmp_rates)] <- 0
+  tmp_rates[is.infinite(tmp_rates)] <- 0
+  
+  val <- tmp$public_admin[2]/tmp$Jobs[2]*tmp_rates[1] + tmp$other_services[2]/tmp$Jobs[2]*tmp_rates[2] + tmp$arts_ent_rec[2]/tmp$Jobs[2]*tmp_rates[3] + tmp$edu_health_social[2]/tmp$Jobs[2]*tmp_rates[4] + tmp$prof_scientific[2]/tmp$Jobs[2]*tmp_rates[5] + tmp$finance_insurance[2]/tmp$Jobs[2]*tmp_rates[6] + tmp$information[2]/tmp$Jobs[2]*tmp_rates[7] + tmp$transportation[2]/tmp$Jobs[2]*tmp_rates[8] + tmp$retail_trade[2]/tmp$Jobs[2]*tmp_rates[9] + tmp$wholesale_trade[2]/tmp$Jobs[2]*tmp_rates[10] + tmp$manufacturing[2]/tmp$Jobs[2]*tmp_rates[11] + tmp$construction[2]/tmp$Jobs[2]*tmp_rates[12] + tmp$agriculture_mining[2]/tmp$Jobs[2]*tmp_rates[13]
+  
+  egr <- c(egr, val)
+  
+}
+
+va_jobs_2018_2022 <- cbind(va_jobs_2018_2022, egr)
+colnames(va_jobs_2018_2022)[ncol(va_jobs_2018_2022)] <- 'Employment_Growth_Rate'
+```
+
+```{r}
+# Calculating VA Rates
+baseline <- va_jobs_2018_2022 %>% filter(Year == 2018)
+update <- va_jobs_2018_2022 %>% filter(Year == 2022)
+
+adm.rate <- (sum(update$public_admin, na.rm = TRUE) / sum(baseline$public_admin, na.rm = TRUE))^(1/4) - 1
+oth.rate <- (sum(update$other_services, na.rm = TRUE) / sum(baseline$other_services, na.rm = TRUE))^(1/4) - 1
+art.rate <- (sum(update$arts_ent_rec, na.rm = TRUE) / sum(baseline$arts_ent_rec, na.rm = TRUE))^(1/4) - 1
+edu.rate <- (sum(update$edu_health_social, na.rm = TRUE) / sum(baseline$edu_health_social, na.rm = TRUE))^(1/4) - 1
+sci.rate <- (sum(update$prof_scientific, na.rm = TRUE) / sum(baseline$prof_scientific, na.rm = TRUE))^(1/4) - 1
+fin.rate <- (sum(update$finance_insurance, na.rm = TRUE) / sum(baseline$finance_insurance, na.rm = TRUE))^(1/4) - 1
+inf.rate <- (sum(update$information, na.rm = TRUE) / sum(baseline$information, na.rm = TRUE))^(1/4) - 1
+tra.rate <- (sum(update$transportation, na.rm = TRUE) / sum(baseline$transportation, na.rm = TRUE))^(1/4) - 1
+ret.rate <- (sum(update$retail_trade, na.rm = TRUE) / sum(baseline$retail_trade, na.rm = TRUE))^(1/4) - 1
+who.rate <- (sum(update$wholesale_trade, na.rm = TRUE) / sum(baseline$wholesale_trade, na.rm = TRUE))^(1/4) - 1
+man.rate <- (sum(update$manufacturing, na.rm = TRUE) / sum(baseline$manufacturing, na.rm = TRUE))^(1/4) - 1
+con.rate <- (sum(update$construction, na.rm = TRUE) / sum(baseline$construction, na.rm = TRUE))^(1/4) - 1
+agr.rate <- (sum(update$agriculture_mining, na.rm = TRUE) / sum(baseline$agriculture_mining, na.rm = TRUE))^(1/4) - 1
+
+va_rates <- c(adm.rate, oth.rate, art.rate, edu.rate, sci.rate, fin.rate, inf.rate, tra.rate, ret.rate, who.rate, man.rate, con.rate, agr.rate)
+```
+
+```{r second-loop}
+# Creating Bartik Instruments
+bartik_us <- c()
+bartik_va <- c()
+
+for (i in 1:nrow(va_jobs_2018_2022)) {
+    
+  tmp <- va_jobs_2018_2022 %>% filter(COUNTY == va_jobs_2018_2022$COUNTY[i])
+
+  val_va <- tmp$public_admin[2]/tmp$Jobs[2]*va_rates[1] + tmp$other_services[2]/tmp$Jobs[2]*va_rates[2] + tmp$arts_ent_rec[2]/tmp$Jobs[2]*va_rates[3] + tmp$edu_health_social[2]/tmp$Jobs[2]*va_rates[4] + tmp$prof_scientific[2]/tmp$Jobs[2]*va_rates[5] + tmp$finance_insurance[2]/tmp$Jobs[2]*va_rates[6] + tmp$information[2]/tmp$Jobs[2]*va_rates[7] + tmp$transportation[2]/tmp$Jobs[2]*va_rates[8] + tmp$retail_trade[2]/tmp$Jobs[2]*va_rates[9] + tmp$wholesale_trade[2]/tmp$Jobs[2]*va_rates[10] + tmp$manufacturing[2]/tmp$Jobs[2]*va_rates[11] + tmp$construction[2]/tmp$Jobs[2]*va_rates[12] + tmp$agriculture_mining[2]/tmp$Jobs[2]*va_rates[13]
+  
+    val_us <- tmp$public_admin[2]/tmp$Jobs[2]*us_rates[1] + tmp$other_services[2]/tmp$Jobs[2]*us_rates[2] + tmp$arts_ent_rec[2]/tmp$Jobs[2]*us_rates[3] + tmp$edu_health_social[2]/tmp$Jobs[2]*us_rates[4] + tmp$prof_scientific[2]/tmp$Jobs[2]*us_rates[5] + tmp$finance_insurance[2]/tmp$Jobs[2]*us_rates[6] + tmp$information[2]/tmp$Jobs[2]*us_rates[7] + tmp$transportation[2]/tmp$Jobs[2]*us_rates[8] + tmp$retail_trade[2]/tmp$Jobs[2]*us_rates[9] + tmp$wholesale_trade[2]/tmp$Jobs[2]*us_rates[10] + tmp$manufacturing[2]/tmp$Jobs[2]*us_rates[11] + tmp$construction[2]/tmp$Jobs[2]*us_rates[12] + tmp$agriculture_mining[2]/tmp$Jobs[2]*us_rates[13]
+  
+  bartik_us <- c(bartik_us, val_us)
+  bartik_va <- c(bartik_va, val_va)
+  
+}
+
+va_jobs_2018_2022 <- cbind(va_jobs_2018_2022, bartik_us, bartik_va)
+colnames(va_jobs_2018_2022)[ncol(va_jobs_2018_2022)-1] <- 'US_Bartik'
+colnames(va_jobs_2018_2022)[ncol(va_jobs_2018_2022)] <- 'VA_Bartik'
+```
+
+
+```{r}
+write.csv(va_jobs_2018_2022, "va_jobs_2018_2022.csv")
+```
+
+
