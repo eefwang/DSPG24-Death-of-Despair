@@ -32,7 +32,7 @@ map_appalachia_2018_2022 = right_join(counties_shapefile, appalachia_2018_2022, 
 map_virginia_2018_2022 = right_join(counties_shapefile, virginia_2018_2022, by = c("FIPS"), multiple = "all")
 ```
 
-#Map Data Export (too large to upload on github)
+#Map Data Export 
 ```{r, eval=FALSE}
 #write.csv(map_appalachia_2018_2022, 
          # file = here("Data/merged_data", "map_virginia_2018_2022.csv"),
