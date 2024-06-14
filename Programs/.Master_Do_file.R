@@ -7,9 +7,9 @@ library(here)
 
 #Import Data
 rmarkdown::render(here("Programs", "00cl_Data_import.Rmd"))
-#Retrieve ACS data for 2018-2022
 
-rmarkdown::render(here("Programs", "00cl_Data_import.Rmd"))
+#Retrieve ACS data for 2018-2022
+rmarkdown::render(here("Programs", "01cl_ACS_Retrieval.Rmd"))
 
 #Merge ACS, health rank, Death data, ruc codes for VA and Appalachian
 rmarkdown::render(here("Programs", "02cl_Merge_VA_APP_Data.Rmd"))
