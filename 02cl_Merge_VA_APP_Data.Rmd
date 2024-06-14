@@ -6,6 +6,7 @@ output: html_document
 ---
 ```{r}
 library(dplyr)
+library(here)
 ```
 
 ######Virginia data sets
@@ -26,6 +27,7 @@ mcod_total_deaths <- mcod_total_deaths %>%
          total_death_rate = Death.Rate) 
 
 ```
+
 ```{r Death Sample Restrictions}
 #select relevent variables and restrict sample from 2018-2022
 mcod_total_DOD_1822 <- mcod_total_DOD %>%
@@ -100,8 +102,7 @@ appalachia_2018_2022 <- appalachia_acs_2018_2022 %>% #Appalachian States ACS dat
 #2115 observations, all counties in Appalachian is preserved
 ```
 
-
-
+#Export data sets
 ```{r data export,eval=FALSE}
 write.csv(appalachia_2018_2022, 
           file = here("Data/merged_data", "appalachia_2018_2022.csv"),
