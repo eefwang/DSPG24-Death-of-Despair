@@ -8,6 +8,7 @@ output: html_document
 library(dplyr)
 library(tidycensus)
 library(tidyverse)
+library(here)
 ```
 
 Due to some changes in variable names, we retrieve the ACS data separately for each year from 2018-2022
@@ -981,14 +982,16 @@ below_poverty_ratio_asian_pacific = (income_below_poverty_asianE + income_below_
 ```
 
 
-```{r}
+```{r merge}
 #merge all acs years into one data frame
 appalachia_acs_2018_2022 = rbind(edu_data_2018, edu_data_2019, edu_data_2020, edu_data_2021, edu_data_2022)
 View(appalachia_acs_2018_2022)
 ```
 
-```{r}
-write.csv(appalachia_acs_2018_2022, "appalachia_acs_2018_2022.csv")
+```{r data export}
+#write.csv(appalachia_acs_2018_2022, 
+         # file = here("Data/merged_data", "appalachia_acs_2018_2022.csv"),
+          #row.names = FALSE) 
 ```
 
 
