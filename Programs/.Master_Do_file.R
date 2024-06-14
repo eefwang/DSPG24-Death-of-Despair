@@ -14,6 +14,8 @@ rmarkdown::render(here("Programs", "01cl_ACS_Retrieval.Rmd"))
 #Merge ACS, health rank, Death data, ruc codes for VA and Appalachian
 rmarkdown::render(here("Programs", "02cl_Merge_VA_APP_Data.Rmd"))
 
+#Merge Data with Map
+#rmarkdown::render(here("Programs", "03cl_Merged_Map_Data.Rmd"))
 
 ###################
 #Data Visualization
