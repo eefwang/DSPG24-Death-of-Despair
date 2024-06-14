@@ -8,7 +8,15 @@ output: html_document
 ```{r extract ACS}
 library(dplyr)
 library(tidycensus)
+library(here)
+```
 
+```{r import}
+appalachia_2018_2022 = read.csv(here("Data/merged_data","appalachia_2018_2022.csv"))
+virginia_2018_2022 = read.csv(here("Data/merged_data","virginia_2018_2022.csv"))
+```
+
+```{r ACS}
 #get ACS job variables by state for US and VA only for years 2018 and 2022
 year <- c(2018,2022)
 
@@ -55,7 +63,7 @@ app_jobs_2018_2022 <- appalachia_2018_2022 %>%
   filter(Year == 2018 | Year == 2022) %>%
   group_by(FIPS) %>%
   arrange(desc(Year), .by_group = TRUE) %>%
-  select(Year, FIPS, COUNTY, public_admin, other_services,
+  select(Year, FIPS, County, public_admin, other_services,
       arts_ent_rec, edu_health_social,
       prof_scientific, finance_insurance,
       information, transportation,
@@ -67,8 +75,7 @@ va_jobs_2018_2022 <- virginia_2018_2022 %>%
   filter(Year == 2018 | Year == 2022) %>%
   group_by(FIPS) %>%
   arrange(desc(Year), .by_group = TRUE) %>%
-  rename(COUNTY = County.x) %>%
-  select(Year, FIPS, COUNTY, public_admin, other_services,
+  select(Year, FIPS, County, public_admin, other_services,
       arts_ent_rec, edu_health_social,
       prof_scientific, finance_insurance,
       information, transportation,
@@ -92,7 +99,7 @@ egr <- c()
 #loop through every county and find rates of change
 for (i in 1:nrow(app_jobs_2018_2022)) {
   
-  tmp <- app_jobs_2018_2022 %>% filter(COUNTY == app_jobs_2018_2022$COUNTY[i])
+  tmp <- app_jobs_2018_2022 %>% filter(County == app_jobs_2018_2022$County[i])
   
   tmp_rates <- c((tmp$public_admin[1] / tmp$public_admin[2])^(1/4) - 1, 
                  (tmp$other_services[1] / tmp$other_services[2])^(1/4) - 1, 
@@ -173,7 +180,7 @@ bartik_app <-c()
 #loop through each county to calculate the instrument
 for (i in 1:nrow(app_jobs_2018_2022)) {
     
-  tmp <- app_jobs_2018_2022 %>% filter(COUNTY == app_jobs_2018_2022$COUNTY[i])
+  tmp <- app_jobs_2018_2022 %>% filter(County == app_jobs_2018_2022$County[i])
 
   val_app <- tmp$public_admin[2]/tmp$Jobs[2]*app_rates[1] + tmp$other_services[2]/tmp$Jobs[2]*app_rates[2] + tmp$arts_ent_rec[2]/tmp$Jobs[2]*app_rates[3] + tmp$edu_health_social[2]/tmp$Jobs[2]*app_rates[4] + tmp$prof_scientific[2]/tmp$Jobs[2]*app_rates[5] + tmp$finance_insurance[2]/tmp$Jobs[2]*app_rates[6] + tmp$information[2]/tmp$Jobs[2]*app_rates[7] + tmp$transportation[2]/tmp$Jobs[2]*app_rates[8] + tmp$retail_trade[2]/tmp$Jobs[2]*app_rates[9] + tmp$wholesale_trade[2]/tmp$Jobs[2]*app_rates[10] + tmp$manufacturing[2]/tmp$Jobs[2]*app_rates[11] + tmp$construction[2]/tmp$Jobs[2]*app_rates[12] + tmp$agriculture_mining[2]/tmp$Jobs[2]*app_rates[13]
   
@@ -205,7 +212,7 @@ egr <- c()
 #loop through every county and find rates of change
 for (i in 1:nrow(va_jobs_2018_2022)) {
   
-  tmp <- va_jobs_2018_2022 %>% filter(COUNTY == va_jobs_2018_2022$COUNTY[i])
+  tmp <- va_jobs_2018_2022 %>% filter(County == va_jobs_2018_2022$County[i])
   
   tmp_rates <- c((tmp$public_admin[1] / tmp$public_admin[2])^(1/4) - 1, 
                  (tmp$other_services[1] / tmp$other_services[2])^(1/4) - 1, 
@@ -265,7 +272,7 @@ bartik_va <- c()
 #loop through each county to calculate the instrument
 for (i in 1:nrow(va_jobs_2018_2022)) {
     
-  tmp <- va_jobs_2018_2022 %>% filter(COUNTY == va_jobs_2018_2022$COUNTY[i])
+  tmp <- va_jobs_2018_2022 %>% filter(County == va_jobs_2018_2022$County[i])
 
   val_va <- tmp$public_admin[2]/tmp$Jobs[2]*va_rates[1] + tmp$other_services[2]/tmp$Jobs[2]*va_rates[2] + tmp$arts_ent_rec[2]/tmp$Jobs[2]*va_rates[3] + tmp$edu_health_social[2]/tmp$Jobs[2]*va_rates[4] + tmp$prof_scientific[2]/tmp$Jobs[2]*va_rates[5] + tmp$finance_insurance[2]/tmp$Jobs[2]*va_rates[6] + tmp$information[2]/tmp$Jobs[2]*va_rates[7] + tmp$transportation[2]/tmp$Jobs[2]*va_rates[8] + tmp$retail_trade[2]/tmp$Jobs[2]*va_rates[9] + tmp$wholesale_trade[2]/tmp$Jobs[2]*va_rates[10] + tmp$manufacturing[2]/tmp$Jobs[2]*va_rates[11] + tmp$construction[2]/tmp$Jobs[2]*va_rates[12] + tmp$agriculture_mining[2]/tmp$Jobs[2]*va_rates[13]
   
@@ -281,9 +288,15 @@ colnames(va_jobs_2018_2022)[ncol(va_jobs_2018_2022)-1] <- 'US_Bartik'
 colnames(va_jobs_2018_2022)[ncol(va_jobs_2018_2022)] <- 'VA_Bartik'
 ```
 
+#Export data
+```{r export, eval=FALSE}
+write.csv(va_jobs_2018_2022, 
+          file = here("Data/merged_data", "va_jobs_2018_2022.csv"),
+          row.names = FALSE) 
 
-```{r}
-write.csv(va_jobs_2018_2022, "va_jobs_2018_2022.csv")
+write.csv(app_jobs_2018_2022, 
+          file = here("Data/merged_data", "app_jobs_2018_2022.csv"),
+          row.names = FALSE) 
 ```
 
 
