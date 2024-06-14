@@ -1,0 +1,386 @@
+"Notes"	"Year"	"Year Code"	"State"	"State Code"	Deaths	Population	Crude Rate
+	"2018"	"2018"	"Alabama"	"01"	2333	3345373	69.7
+	"2018"	"2018"	"Alaska"	"02"	458	483245	94.8
+	"2018"	"2018"	"Arizona"	"04"	4202	4841593	86.8
+	"2018"	"2018"	"Arkansas"	"05"	1396	2030067	68.8
+	"2018"	"2018"	"California"	"06"	15427	26821695	57.5
+	"2018"	"2018"	"Colorado"	"08"	3136	3903501	80.3
+	"2018"	"2018"	"Connecticut"	"09"	1837	2490603	73.8
+	"2018"	"2018"	"Delaware"	"10"	628	679747	92.4
+	"2018"	"2018"	"District of Columbia"	"11"	394	500819	78.7
+	"2018"	"2018"	"Florida"	"12"	11744	15316063	76.7
+	"2018"	"2018"	"Georgia"	"13"	4159	7003377	59.4
+	"2018"	"2018"	"Hawaii"	"15"	524	995834	52.6
+	"2018"	"2018"	"Idaho"	"16"	861	1144468	75.2
+	"2018"	"2018"	"Illinois"	"17"	5569	8707504	64.0
+	"2018"	"2018"	"Indiana"	"18"	3611	4467771	80.8
+	"2018"	"2018"	"Iowa"	"19"	1113	2106348	52.8
+	"2018"	"2018"	"Kansas"	"20"	1192	1910809	62.4
+	"2018"	"2018"	"Kentucky"	"21"	2848	3041841	93.6
+	"2018"	"2018"	"Louisiana"	"22"	2303	3138713	73.4
+	"2018"	"2018"	"Maine"	"23"	844	980876	86.0
+	"2018"	"2018"	"Maryland"	"24"	3392	4171210	81.3
+	"2018"	"2018"	"Massachusetts"	"25"	3957	4833363	81.9
+	"2018"	"2018"	"Michigan"	"26"	5508	6869308	80.2
+	"2018"	"2018"	"Minnesota"	"27"	2082	3806928	54.7
+	"2018"	"2018"	"Mississippi"	"28"	1164	1988465	58.5
+	"2018"	"2018"	"Missouri"	"29"	3420	4183237	81.8
+	"2018"	"2018"	"Montana"	"30"	541	734426	73.7
+	"2018"	"2018"	"Nebraska"	"31"	653	1261719	51.8
+	"2018"	"2018"	"Nevada"	"32"	1859	2096606	88.7
+	"2018"	"2018"	"New Hampshire"	"33"	922	972151	94.8
+	"2018"	"2018"	"New Jersey"	"34"	4497	6188871	72.7
+	"2018"	"2018"	"New Mexico"	"35"	1816	1415820	128.3
+	"2018"	"2018"	"New York"	"36"	7219	13673941	52.8
+	"2018"	"2018"	"North Carolina"	"37"	5002	7099141	70.5
+	"2018"	"2018"	"North Dakota"	"38"	338	496667	68.1
+	"2018"	"2018"	"Ohio"	"39"	7208	8027919	89.8
+	"2018"	"2018"	"Oklahoma"	"40"	2189	2606913	84.0
+	"2018"	"2018"	"Oregon"	"41"	2226	2952102	75.4
+	"2018"	"2018"	"Pennsylvania"	"42"	7401	8997867	82.3
+	"2018"	"2018"	"Rhode Island"	"44"	602	741199	81.2
+	"2018"	"2018"	"South Carolina"	"45"	2674	3509959	76.2
+	"2018"	"2018"	"South Dakota"	"46"	394	581200	67.8
+	"2018"	"2018"	"Tennessee"	"47"	4121	4650000	88.6
+	"2018"	"2018"	"Texas"	"48"	10656	18507667	57.6
+	"2018"	"2018"	"Utah"	"49"	1478	1872333	78.9
+	"2018"	"2018"	"Vermont"	"50"	363	443107	81.9
+	"2018"	"2018"	"Virginia"	"51"	3505	5842846	60.0
+	"2018"	"2018"	"Washington"	"53"	3403	5214860	65.3
+	"2018"	"2018"	"West Virginia"	"54"	1601	1284823	124.6
+	"2018"	"2018"	"Wisconsin"	"55"	2734	3985700	68.6
+	"2018"	"2018"	"Wyoming"	"56"	353	390595	90.4
+	"2019"	"2019"	"Alabama"	"01"	2399	3364655	71.3
+	"2019"	"2019"	"Alaska"	"02"	472	483410	97.6
+	"2019"	"2019"	"Arizona"	"04"	4512	4944637	91.3
+	"2019"	"2019"	"Arkansas"	"05"	1351	2038589	66.3
+	"2019"	"2019"	"California"	"06"	16336	26939547	60.6
+	"2019"	"2019"	"Colorado"	"08"	3361	3973000	84.6
+	"2019"	"2019"	"Connecticut"	"09"	2094	2495774	83.9
+	"2019"	"2019"	"Delaware"	"10"	681	687698	99.0
+	"2019"	"2019"	"District of Columbia"	"11"	437	505015	86.5
+	"2019"	"2019"	"Florida"	"12"	12031	15505040	77.6
+	"2019"	"2019"	"Georgia"	"13"	4231	7098354	59.6
+	"2019"	"2019"	"Hawaii"	"15"	594	997130	59.6
+	"2019"	"2019"	"Idaho"	"16"	868	1174458	73.9
+	"2019"	"2019"	"Illinois"	"17"	5672	8696535	65.2
+	"2019"	"2019"	"Indiana"	"18"	3606	4504500	80.1
+	"2019"	"2019"	"Iowa"	"19"	1233	2114524	58.3
+	"2019"	"2019"	"Kansas"	"20"	1241	1918904	64.7
+	"2019"	"2019"	"Kentucky"	"21"	2950	3050848	96.7
+	"2019"	"2019"	"Louisiana"	"22"	2432	3142121	77.4
+	"2019"	"2019"	"Maine"	"23"	852	988438	86.2
+	"2019"	"2019"	"Maryland"	"24"	3509	4184844	83.9
+	"2019"	"2019"	"Massachusetts"	"25"	3781	4848982	78.0
+	"2019"	"2019"	"Michigan"	"26"	5401	6897401	78.3
+	"2019"	"2019"	"Minnesota"	"27"	2289	3838357	59.6
+	"2019"	"2019"	"Mississippi"	"28"	1290	1994145	64.7
+	"2019"	"2019"	"Missouri"	"29"	3353	4205339	79.7
+	"2019"	"2019"	"Montana"	"30"	639	742426	86.1
+	"2019"	"2019"	"Nebraska"	"31"	702	1269036	55.3
+	"2019"	"2019"	"Nevada"	"32"	1829	2137297	85.6
+	"2019"	"2019"	"New Hampshire"	"33"	858	980767	87.5
+	"2019"	"2019"	"New Jersey"	"34"	4458	6189978	72.0
+	"2019"	"2019"	"New Mexico"	"35"	1901	1425116	133.4
+	"2019"	"2019"	"New York"	"36"	7063	13662718	51.7
+	"2019"	"2019"	"North Carolina"	"37"	5114	7196782	71.1
+	"2019"	"2019"	"North Dakota"	"38"	366	499069	73.3
+	"2019"	"2019"	"Ohio"	"39"	7589	8050770	94.3
+	"2019"	"2019"	"Oklahoma"	"40"	2178	2623828	83.0
+	"2019"	"2019"	"Oregon"	"41"	2345	2988153	78.5
+	"2019"	"2019"	"Pennsylvania"	"42"	7556	9025217	83.7
+	"2019"	"2019"	"Rhode Island"	"44"	594	745315	79.7
+	"2019"	"2019"	"South Carolina"	"45"	2788	3570132	78.1
+	"2019"	"2019"	"South Dakota"	"46"	408	585162	69.7
+	"2019"	"2019"	"Tennessee"	"47"	4428	4706683	94.1
+	"2019"	"2019"	"Texas"	"48"	11076	18782771	59.0
+	"2019"	"2019"	"Utah"	"49"	1385	1912695	72.4
+	"2019"	"2019"	"Vermont"	"50"	353	444144	79.5
+	"2019"	"2019"	"Virginia"	"51"	3718	5876474	63.3
+	"2019"	"2019"	"Washington"	"53"	3635	5293324	68.7
+	"2019"	"2019"	"West Virginia"	"54"	1604	1278794	125.4
+	"2019"	"2019"	"Wisconsin"	"55"	2874	4009767	71.7
+	"2019"	"2019"	"Wyoming"	"56"	409	392504	104.2
+	"2020"	"2020"	"Alabama"	"01"	2823	3386607	83.4
+	"2020"	"2020"	"Alaska"	"02"	548	485337	112.9
+	"2020"	"2020"	"Arizona"	"04"	5338	5073314	105.2
+	"2020"	"2020"	"Arkansas"	"05"	1652	2052176	80.5
+	"2020"	"2020"	"California"	"06"	19383	26972341	71.9
+	"2020"	"2020"	"Colorado"	"08"	4078	4030205	101.2
+	"2020"	"2020"	"Connecticut"	"09"	2390	2500234	95.6
+	"2020"	"2020"	"Delaware"	"10"	735	699410	105.1
+	"2020"	"2020"	"District of Columbia"	"11"	557	511405	108.9
+	"2020"	"2020"	"Florida"	"12"	14390	15740947	91.4
+	"2020"	"2020"	"Georgia"	"13"	4928	7190182	68.5
+	"2020"	"2020"	"Hawaii"	"15"	645	994906	64.8
+	"2020"	"2020"	"Idaho"	"16"	1013	1208125	83.8
+	"2020"	"2020"	"Illinois"	"17"	6660	8671134	76.8
+	"2020"	"2020"	"Indiana"	"18"	4458	4532466	98.4
+	"2020"	"2020"	"Iowa"	"19"	1457	2124146	68.6
+	"2020"	"2020"	"Kansas"	"20"	1462	1925317	75.9
+	"2020"	"2020"	"Kentucky"	"21"	3853	3063277	125.8
+	"2020"	"2020"	"Louisiana"	"22"	3099	3147630	98.5
+	"2020"	"2020"	"Maine"	"23"	1003	996077	100.7
+	"2020"	"2020"	"Maryland"	"24"	4010	4201500	95.4
+	"2020"	"2020"	"Massachusetts"	"25"	4202	4868179	86.3
+	"2020"	"2020"	"Michigan"	"26"	6151	6911877	89.0
+	"2020"	"2020"	"Minnesota"	"27"	2803	3862286	72.6
+	"2020"	"2020"	"Mississippi"	"28"	1552	1994136	77.8
+	"2020"	"2020"	"Missouri"	"29"	3900	4222113	92.4
+	"2020"	"2020"	"Montana"	"30"	735	752905	97.6
+	"2020"	"2020"	"Nebraska"	"31"	841	1273906	66.0
+	"2020"	"2020"	"Nevada"	"32"	2073	2187799	94.8
+	"2020"	"2020"	"New Hampshire"	"33"	848	990858	85.6
+	"2020"	"2020"	"New Jersey"	"34"	4656	6203002	75.1
+	"2020"	"2020"	"New Mexico"	"35"	2328	1437678	161.9
+	"2020"	"2020"	"New York"	"36"	8676	13626537	63.7
+	"2020"	"2020"	"North Carolina"	"37"	6252	7298944	85.7
+	"2020"	"2020"	"North Dakota"	"38"	409	500551	81.7
+	"2020"	"2020"	"Ohio"	"39"	8624	8077042	106.8
+	"2020"	"2020"	"Oklahoma"	"40"	2456	2645289	92.8
+	"2020"	"2020"	"Oregon"	"41"	2774	3020536	91.8
+	"2020"	"2020"	"Pennsylvania"	"42"	8311	9040207	91.9
+	"2020"	"2020"	"Rhode Island"	"44"	721	747828	96.4
+	"2020"	"2020"	"South Carolina"	"45"	3650	3631363	100.5
+	"2020"	"2020"	"South Dakota"	"46"	508	591195	85.9
+	"2020"	"2020"	"Tennessee"	"47"	5637	4761823	118.4
+	"2020"	"2020"	"Texas"	"48"	12766	19087071	66.9
+	"2020"	"2020"	"Utah"	"49"	1547	1953255	79.2
+	"2020"	"2020"	"Vermont"	"50"	404	445637	90.7
+	"2020"	"2020"	"Virginia"	"51"	4643	5924757	78.4
+	"2020"	"2020"	"Washington"	"53"	4228	5369911	78.7
+	"2020"	"2020"	"West Virginia"	"54"	2124	1275287	166.6
+	"2020"	"2020"	"Wisconsin"	"55"	3425	4029646	85.0
+	"2020"	"2020"	"Wyoming"	"56"	494	396659	124.5
+	"2021"	"2021"	"Alabama"	"01"	3319	3461132	95.9
+	"2021"	"2021"	"Alaska"	"02"	726	486413	149.3
+	"2021"	"2021"	"Arizona"	"04"	6155	4976896	123.7
+	"2021"	"2021"	"Arkansas"	"05"	1895	2044571	92.7
+	"2021"	"2021"	"California"	"06"	22570	26908453	83.9
+	"2021"	"2021"	"Colorado"	"08"	4703	4040577	116.4
+	"2021"	"2021"	"Connecticut"	"09"	2576	2535135	101.6
+	"2021"	"2021"	"Delaware"	"10"	843	711231	118.5
+	"2021"	"2021"	"District of Columbia"	"11"	599	478710	125.1
+	"2021"	"2021"	"Florida"	"12"	15502	15764041	98.3
+	"2021"	"2021"	"Georgia"	"13"	5858	7248550	80.8
+	"2021"	"2021"	"Hawaii"	"15"	664	1018888	65.2
+	"2021"	"2021"	"Idaho"	"16"	1116	1258308	88.7
+	"2021"	"2021"	"Illinois"	"17"	7083	8727067	81.2
+	"2021"	"2021"	"Indiana"	"18"	5045	4560080	110.6
+	"2021"	"2021"	"Iowa"	"19"	1617	2140501	75.5
+	"2021"	"2021"	"Kansas"	"20"	1736	1937697	89.6
+	"2021"	"2021"	"Kentucky"	"21"	4195	3078828	136.3
+	"2021"	"2021"	"Louisiana"	"22"	3757	3127556	120.1
+	"2021"	"2021"	"Maine"	"23"	1261	1013222	124.5
+	"2021"	"2021"	"Maryland"	"24"	4023	4273591	94.1
+	"2021"	"2021"	"Massachusetts"	"25"	4393	4936566	89.0
+	"2021"	"2021"	"Michigan"	"26"	6586	6967687	94.5
+	"2021"	"2021"	"Minnesota"	"27"	3169	3892294	81.4
+	"2021"	"2021"	"Mississippi"	"28"	1886	1979677	95.3
+	"2021"	"2021"	"Missouri"	"29"	4304	4225868	101.8
+	"2021"	"2021"	"Montana"	"30"	895	769344	116.3
+	"2021"	"2021"	"Nebraska"	"31"	833	1289092	64.6
+	"2021"	"2021"	"Nevada"	"32"	2386	2193751	108.8
+	"2021"	"2021"	"New Hampshire"	"33"	957	1009660	94.8
+	"2021"	"2021"	"New Jersey"	"34"	4887	6470760	75.5
+	"2021"	"2021"	"New Mexico"	"35"	2774	1445703	191.9
+	"2021"	"2021"	"New York"	"36"	9674	13979542	69.2
+	"2021"	"2021"	"North Carolina"	"37"	7364	7260238	101.4
+	"2021"	"2021"	"North Dakota"	"38"	465	505804	91.9
+	"2021"	"2021"	"Ohio"	"39"	9235	8122862	113.7
+	"2021"	"2021"	"Oklahoma"	"40"	2780	2641438	105.2
+	"2021"	"2021"	"Oregon"	"41"	3283	3026847	108.5
+	"2021"	"2021"	"Pennsylvania"	"42"	9023	9156034	98.5
+	"2021"	"2021"	"Rhode Island"	"44"	807	776229	104.0
+	"2021"	"2021"	"South Carolina"	"45"	4099	3609065	113.6
+	"2021"	"2021"	"South Dakota"	"46"	637	591725	107.7
+	"2021"	"2021"	"Tennessee"	"47"	6552	4817462	136.0
+	"2021"	"2021"	"Texas"	"48"	14166	19201801	73.8
+	"2021"	"2021"	"Utah"	"49"	1626	2011570	80.8
+	"2021"	"2021"	"Vermont"	"50"	507	462400	109.6
+	"2021"	"2021"	"Virginia"	"51"	4931	5957609	82.8
+	"2021"	"2021"	"Washington"	"53"	5058	5409796	93.5
+	"2021"	"2021"	"West Virginia"	"54"	2318	1270528	182.4
+	"2021"	"2021"	"Wisconsin"	"55"	3775	4071415	92.7
+	"2021"	"2021"	"Wyoming"	"56"	510	394198	129.4
+	"2022 "	"2022"	"Alabama"	"01"	3347	3470713	96.4
+	"2022 "	"2022"	"Alaska"	"02"	703	488643	143.9
+	"2022 "	"2022"	"Arizona"	"04"	5996	5050627	118.7
+	"2022 "	"2022"	"Arkansas"	"05"	1786	2058287	86.8
+	"2022 "	"2022"	"California"	"06"	22363	26851336	83.3
+	"2022 "	"2022"	"Colorado"	"08"	4508	4070294	110.8
+	"2022 "	"2022"	"Connecticut"	"09"	2489	2544138	97.8
+	"2022 "	"2022"	"Delaware"	"10"	901	722684	124.7
+	"2022 "	"2022"	"District of Columbia"	"11"	595	479328	124.1
+	"2022 "	"2022"	"Florida"	"12"	15076	16100288	93.6
+	"2022 "	"2022"	"Georgia"	"13"	5955	7336378	81.2
+	"2022 "	"2022"	"Hawaii"	"15"	682	1022168	66.7
+	"2022 "	"2022"	"Idaho"	"16"	1151	1279698	89.9
+	"2022 "	"2022"	"Illinois"	"17"	7335	8692160	84.4
+	"2022 "	"2022"	"Indiana"	"18"	5057	4585693	110.3
+	"2022 "	"2022"	"Iowa"	"19"	1655	2147535	77.1
+	"2022 "	"2022"	"Kansas"	"20"	1760	1938797	90.8
+	"2022 "	"2022"	"Kentucky"	"21"	4011	3089879	129.8
+	"2022 "	"2022"	"Louisiana"	"22"	3682	3097867	118.9
+	"2022 "	"2022"	"Maine"	"23"	1343	1026980	130.8
+	"2022 "	"2022"	"Maryland"	"24"	3852	4283668	89.9
+	"2022 "	"2022"	"Massachusetts"	"25"	4506	4947256	91.1
+	"2022 "	"2022"	"Michigan"	"26"	6328	6970198	90.8
+	"2022 "	"2022"	"Minnesota"	"27"	3323	3908282	85.0
+	"2022 "	"2022"	"Mississippi"	"28"	1732	1970241	87.9
+	"2022 "	"2022"	"Missouri"	"29"	4459	4233930	105.3
+	"2022 "	"2022"	"Montana"	"30"	865	784066	110.3
+	"2022 "	"2022"	"Nebraska"	"31"	887	1293922	68.6
+	"2022 "	"2022"	"Nevada"	"32"	2422	2223279	108.9
+	"2022 "	"2022"	"New Hampshire"	"33"	1053	1021573	103.1
+	"2022 "	"2022"	"New Jersey"	"34"	4856	6472724	75.0
+	"2022 "	"2022"	"New Mexico"	"35"	2595	1447076	179.3
+	"2022 "	"2022"	"New York"	"36"	10425	13884827	75.1
+	"2022 "	"2022"	"North Carolina"	"37"	7614	7365475	103.4
+	"2022 "	"2022"	"North Dakota"	"38"	491	507054	96.8
+	"2022 "	"2022"	"Ohio"	"39"	8988	8124781	110.6
+	"2022 "	"2022"	"Oklahoma"	"40"	3036	2660054	114.1
+	"2022 "	"2022"	"Oregon"	"41"	3436	3032338	113.3
+	"2022 "	"2022"	"Pennsylvania"	"42"	8914	9147165	97.5
+	"2022 "	"2022"	"Rhode Island"	"44"	780	777895	100.3
+	"2022 "	"2022"	"South Carolina"	"45"	4277	3670482	116.5
+	"2022 "	"2022"	"South Dakota"	"46"	578	603630	95.8
+	"2022 "	"2022"	"Tennessee"	"47"	6495	4869062	133.4
+	"2022 "	"2022"	"Texas"	"48"	14538	19546901	74.4
+	"2022 "	"2022"	"Utah"	"49"	1585	2045301	77.5
+	"2022 "	"2022"	"Vermont"	"50"	528	466626	113.2
+	"2022 "	"2022"	"Virginia"	"51"	4934	5993414	82.3
+	"2022 "	"2022"	"Washington"	"53"	5430	5462015	99.4
+	"2022 "	"2022"	"West Virginia"	"54"	2171	1263599	171.8
+	"2022 "	"2022"	"Wisconsin"	"55"	3838	4081312	94.0
+	"2022 "	"2022"	"Wyoming"	"56"	470	396960	118.4
+"---"
+"Dataset: Multiple Cause of Death, 2018-2022, Single Race"
+"Query Parameters:"
+"Title: year-state-DOD"
+"Five-Year Age Groups: 25-29 years; 30-34 years; 35-39 years; 40-44 years; 45-49 years; 50-54 years; 55-59 years; 60-64 years ;"
+"65-69 years; 70-74 years; 75-79 years; 80-84 years; 85-89 years; 90-94 years; 95-99 years; 100+ years"
+"UCD - ICD-10 Codes: F10.0 (Mental and behavioural disorders due to use of alcohol, acute intoxication); F10.1 (Mental and"
+"behavioural disorders due to use of alcohol, harmful use); F10.2 (Mental and behavioural disorders due to use of alcohol,"
+"dependence syndrome); F10.3 (Mental and behavioural disorders due to use of alcohol, withdrawal state); F10.4 (Mental and"
+"behavioural disorders due to use of alcohol, withdrawal state with delirium); F10.5 (Mental and behavioural disorders due to use"
+"of alcohol, psychotic disorder); F10.6 (Mental and behavioural disorders due to use of alcohol, amnesic syndrome); F10.7 (Mental"
+"and behavioural disorders due to use of alcohol, residual and late-onset psychotic disorder); F10.8 (Mental and behavioural"
+"disorders due to use of alcohol, other mental and behavioural disorders); F10.9 (Mental and behavioural disorders due to use of"
+"alcohol, unspecified mental and behavioural disorder); F11.0 (Mental and behavioural disorders due to use of opioids, acute"
+"intoxication); F11.1 (Mental and behavioural disorders due to use of opioids, harmful use); F11.2 (Mental and behavioural"
+"disorders due to use of opioids, dependence syndrome); F11.3 (Mental and behavioural disorders due to use of opioids, withdrawal"
+"state); F11.4 (Mental and behavioural disorders due to use of opioids, withdrawal state with delirium); F11.5 (Mental and"
+"behavioural disorders due to use of opioids, psychotic disorder); F11.6 (Mental and behavioural disorders due to use of opioids,"
+"amnesic syndrome); F11.7 (Mental and behavioural disorders due to use of opioids, residual and late-onset psychotic disorder);"
+"F11.8 (Mental and behavioural disorders due to use of opioids, other mental and behavioural disorders); F11.9 (Mental and"
+"behavioural disorders due to use of opioids, unspecified mental and behavioural disorder); F12.0 (Mental and behavioural"
+"disorders due to use of cannabinoids, acute intoxication); F12.1 (Mental and behavioural disorders due to use of cannabinoids,"
+"harmful use); F12.2 (Mental and behavioural disorders due to use of cannabinoids, dependence syndrome); F12.3 (Mental and"
+"behavioural disorders due to use of cannabinoids, withdrawal state); F12.4 (Mental and behavioural disorders due to use of"
+"cannabinoids, withdrawal state with delirium); F12.5 (Mental and behavioural disorders due to use of cannabinoids, psychotic"
+"disorder); F12.6 (Mental and behavioural disorders due to use of cannabinoids, amnesic syndrome); F12.7 (Mental and behavioural"
+"disorders due to use of cannabinoids, residual and late-onset psychotic disorder); F12.8 (Mental and behavioural disorders due"
+"to use of cannabinoids, other mental and behavioural disorders); F12.9 (Mental and behavioural disorders due to use of"
+"cannabinoids, unspecified mental and behavioural disorder); F13.0 (Mental and behavioural disorders due to use of sedatives or"
+"hypnotics, acute intoxication); F13.1 (Mental and behavioural disorders due to use of sedatives or hypnotics, harmful use);"
+"F13.2 (Mental and behavioural disorders due to use of sedatives or hypnotics, dependence syndrome); F13.3 (Mental and"
+"behavioural disorders due to use of sedatives or hypnotics, withdrawal state); F13.4 (Mental and behavioural disorders due to"
+"use of sedatives or hypnotics, withdrawal state with delirium); F13.5 (Mental and behavioural disorders due to use of sedatives"
+"or hypnotics, psychotic disorder); F13.6 (Mental and behavioural disorders due to use of sedatives or hypnotics, amnesic"
+"syndrome); F13.7 (Mental and behavioural disorders due to use of sedatives or hypnotics, residual and late-onset psychotic"
+"disorder); F13.8 (Mental and behavioural disorders due to use of sedatives or hypnotics, other mental and behavioural"
+"disorders); F13.9 (Mental and behavioural disorders due to use of sedatives or hypnotics, unspecified mental and behavioural"
+"disorder); F14.0 (Mental and behavioural disorders due to use of cocaine, acute intoxication); F14.1 (Mental and behavioural"
+"disorders due to use of cocaine, harmful use); F14.2 (Mental and behavioural disorders due to use of cocaine, dependence"
+"syndrome); F14.3 (Mental and behavioural disorders due to use of cocaine, withdrawal state); F14.4 (Mental and behavioural"
+"disorders due to use of cocaine, withdrawal state with delirium); F14.5 (Mental and behavioural disorders due to use of cocaine,"
+"psychotic disorder); F14.6 (Mental and behavioural disorders due to use of cocaine, amnesic syndrome); F14.7 (Mental and"
+"behavioural disorders due to use of cocaine, residual and late-onset psychotic disorder); F14.8 (Mental and behavioural"
+"disorders due to use of cocaine, other mental and behavioural disorders); F14.9 (Mental and behavioural disorders due to use of"
+"cocaine, unspecified mental and behavioural disorder); F15.0 (Mental and behavioural disorders due to use of other stimulants,"
+"including caffeine, acute intoxication); F15.1 (Mental and behavioural disorders due to use of other stimulants, including"
+"caffeine, harmful use); F15.2 (Mental and behavioural disorders due to use of other stimulants, including caffeine, dependence"
+"syndrome); F15.3 (Mental and behavioural disorders due to use of other stimulants, including caffeine, withdrawal state); F15.4"
+"(Mental and behavioural disorders due to use of other stimulants, including caffeine, withdrawal state with delirium); F15.5"
+"(Mental and behavioural disorders due to use of other stimulants, including caffeine, psychotic disorder); F15.6 (Mental and"
+"behavioural disorders due to use of other stimulants, including caffeine, amnesic syndrome); F15.7 (Mental and behavioural"
+"disorders due to use of other stimulants, including caffeine, residual and late-onset psychotic disorder); F15.8 (Mental and"
+"behavioural disorders due to use of other stimulants, including caffeine, other mental and behavioural disorders); F15.9 (Mental"
+"and behavioural disorders due to use of other stimulants, including caffeine, unspecified mental and behavioural disorder);"
+"F16.0 (Mental and behavioural disorders due to use of hallucinogens, acute intoxication); F16.1 (Mental and behavioural"
+"disorders due to use of hallucinogens, harmful use); F16.2 (Mental and behavioural disorders due to use of hallucinogens,"
+"dependence syndrome); F16.3 (Mental and behavioural disorders due to use of hallucinogens, withdrawal state); F16.4 (Mental and"
+"behavioural disorders due to use of hallucinogens, withdrawal state with delirium); F16.5 (Mental and behavioural disorders due"
+"to use of hallucinogens, psychotic disorder); F16.6 (Mental and behavioural disorders due to use of hallucinogens, amnesic"
+"syndrome); F16.7 (Mental and behavioural disorders due to use of hallucinogens, residual and late-onset psychotic disorder);"
+"F16.8 (Mental and behavioural disorders due to use of hallucinogens, other mental and behavioural disorders); F16.9 (Mental and"
+"behavioural disorders due to use of hallucinogens, unspecified mental and behavioural disorder); F18.0 (Mental and behavioural"
+"disorders due to use of volatile solvents, acute intoxication); F18.1 (Mental and behavioural disorders due to use of volatile"
+"solvents, harmful use); F18.2 (Mental and behavioural disorders due to use of volatile solvents, dependence syndrome); F18.3"
+"(Mental and behavioural disorders due to use of volatile solvents, withdrawal state); F18.4 (Mental and behavioural disorders"
+"due to use of volatile solvents, withdrawal state with delirium); F18.5 (Mental and behavioural disorders due to use of volatile"
+"solvents, psychotic disorder); F18.6 (Mental and behavioural disorders due to use of volatile solvents, amnesic syndrome); F18.7"
+"(Mental and behavioural disorders due to use of volatile solvents, residual and late-onset psychotic disorder); F18.8 (Mental"
+"and behavioural disorders due to use of volatile solvents, other mental and behavioural disorders); F18.9 (Mental and"
+"behavioural disorders due to use of volatile solvents, unspecified mental and behavioural disorder); F19.0 (Mental and"
+"behavioural disorders due to multiple drug use and use of other psychoactive substances, acute intoxication); F19.1 (Mental and"
+"behavioural disorders due to multiple drug use and use of other psychoactive substances, harmful use); F19.2 (Mental and"
+"behavioural disorders due to multiple drug use and use of other psychoactive substances, dependence syndrome); F19.3 (Mental and"
+"behavioural disorders due to multiple drug use and use of other psychoactive substances, withdrawal state); F19.4 (Mental and"
+"behavioural disorders due to multiple drug use and use of other psychoactive substances, withdrawal state with delirium); F19.5"
+"(Mental and behavioural disorders due to multiple drug use and use of other psychoactive substances, psychotic disorder); F19.6"
+"(Mental and behavioural disorders due to multiple drug use and use of other psychoactive substances, amnesic syndrome); F19.7"
+"(Mental and behavioural disorders due to multiple drug use and use of other psychoactive substances, residual and late-onset"
+"psychotic disorder); F19.8 (Mental and behavioural disorders due to multiple drug use and use of other psychoactive substances,"
+"other mental and behavioural disorders); F19.9 (Mental and behavioural disorders due to multiple drug use and use of other"
+"psychoactive substances, unspecified mental and behavioural disorder); G31.2 (Degeneration of nervous system due to alcohol);"
+"K70.0 (Alcoholic fatty liver); K70.1 (Alcoholic hepatitis); K70.2 (Alcoholic fibrosis and sclerosis of liver); K70.3 (Alcoholic"
+"cirrhosis of liver); K70.4 (Alcoholic hepatic failure); K70.9 (Alcoholic liver disease, unspecified); K74.6 (Other and"
+"unspecified cirrhosis of liver); X40 (Accidental poisoning by and exposure to nonopioid analgesics, antipyretics and"
+"antirheumatics); X41 (Accidental poisoning by and exposure to antiepileptic, sedative-hypnotic, antiparkinsonism and"
+"psychotropic drugs, not elsewhere classified); X42 (Accidental poisoning by and exposure to narcotics and psychodysleptics"
+"[hallucinogens], not elsewhere classified); X43 (Accidental poisoning by and exposure to other drugs acting on the autonomic"
+"nervous system); X44 (Accidental poisoning by and exposure to other and unspecified drugs, medicaments and biological"
+"substances); X45 (Accidental poisoning by and exposure to alcohol); X60-X84 (Intentional self-harm); Y10 (Poisoning by and"
+"exposure to nonopioid analgesics, antipyretics and antirheumatics, undetermined intent); Y11 (Poisoning by and exposure to"
+"antiepileptic, sedative-hypnotic, antiparkinsonism and psychotropic drugs, not elsewhere classified, undetermined intent); Y12"
+"(Poisoning by and exposure to narcotics and psychodysleptics [hallucinogens], not elsewhere classified, undetermined intent);"
+"Y13 (Poisoning by and exposure to other drugs acting on the autonomic nervous system, undetermined intent); Y14 (Poisoning by"
+"and exposure to other and unspecified drugs, medicaments and biological substances, undetermined intent); Y15 (Poisoning by and"
+"exposure to alcohol, undetermined intent); Y87.0 (Sequelae of intentional self-harm)"
+"Group By: Year; State"
+"Show Totals: False"
+"Show Zero Values: True"
+"Show Suppressed: True"
+"Calculate Rates Per: 100,000"
+"Rate Options: Default intercensal populations for years 2001-2009 (except Infant Age Groups)"
+"---"
+"Help: See http://wonder.cdc.gov/wonder/help/mcd-expanded.html for more information."
+"---"
+"Query Date: Jun 6, 2024 2:42:32 PM"
+"---"
+"Suggested Citation: Centers for Disease Control and Prevention, National Center for Health Statistics. National Vital Statistics"
+"System, Mortality 2018-2022 on CDC WONDER Online Database, released in 2024. Data are from the Multiple Cause of Death Files,"
+"2018-2022, as compiled from data provided by the 57 vital statistics jurisdictions through the Vital Statistics Cooperative"
+"Program. Accessed at http://wonder.cdc.gov/mcd-icd10-expanded.html on Jun 6, 2024 2:42:32 PM"
+"---"
+Caveats:
+"1. Deaths of persons with Age ""Not Stated"" are included in ""All"" counts and rates, but are not distributed among age groups,"
+"so are not included in age-specific counts, age-specific rates or in any age-adjusted rates. More information:"
+"http://wonder.cdc.gov/wonder/help/mcd-expanded.html#Not Stated."
+"2. The population figures for years 2022 and later are single-race estimates of the July 1 resident population, from the Vintage"
+"2022 postcensal series released by the Census Bureau on June 22, 2023. The 2022 series is based on the Modified Blended Base"
+"produced by the US Census Bureau in lieu of the April 1, 2020 decennial population count. The Modified Blended Base consists of"
+"the blend of Vintage 2020 postcensal population estimates for April 1, 2020, 2020 Demographic Analysis Estimates, and 2020"
+"Census data from the internal Census Edited File (CEF). The population figures for year 2021 are single-race estimates of the"
+"July 1 resident population, based on the Blended Base produced by the US Census Bureau in lieu of the April 1, 2020 decennial"
+"population count, from the Vintage 2021 postcensal series released by the Census Bureau on June 30, 2022. The population figures"
+"for year 2020 are single-race estimates of the July 1 resident population, from the Vintage 2020 postcensal series based on"
+"April 2010 Census, released by the Census Bureau on July 27, 2021. The population figures for year 2019 are single-race"
+"estimates of the July 1 resident population, from the Vintage 2019 postcensal series based on April 2010 Census, released by the"
+"Census Bureau on June 25, 2020. The population figures for year 2018 are single-race estimates of the July 1 resident"
+"population, from the Vintage 2018 postcensal series based on April 2010 Census, released by the Census Bureau on June 20, 2019."
+"More information: http://wonder.cdc.gov/wonder/help/mcd-expanded.html#Population Data."
+"3. Changes to cause of death classification affect reporting trends. More information:"
+"http://wonder.cdc.gov/wonder/help/mcd-expanded.html#ICD-10 Changes."
