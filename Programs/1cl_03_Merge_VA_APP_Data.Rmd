@@ -11,7 +11,13 @@ library(here)
 
 #Import ACS Data
 ```{r import ACS Data}
-appalachia_acs_2018_2022 = read.csv(here("Data/merged_data", "appalachia_acs_2018_2022.csv"), sep = ",", header = TRUE)
+appalachia_acs_2015_2022 = read.csv(here("Data/merged_data", "appalachia_acs_2015_2022.csv"), sep = ",", header = TRUE)
+```
+
+```{r}
+#Filter out 2018-2022
+appalachia_acs_2018_2022 <-appalachia_acs_2015_2022 %>%
+  filter(Year >= 2018 & Year <= 2022)
 ```
 
 ######Virginia data sets
