@@ -4,7 +4,7 @@ author: "Elisabeth Wasserman"
 date: "2024-06-07"
 output: html_document
 ---
-  ```{r}
+```{r}
 library(dplyr)
 library(tidycensus)
 library(tidyverse)
