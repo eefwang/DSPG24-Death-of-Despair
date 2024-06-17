@@ -4,7 +4,7 @@ author: "Elisabeth Wasserman"
 date: "2024-06-07"
 output: html_document
 ---
-```{r}
+  ```{r}
 library(dplyr)
 library(tidycensus)
 library(tidyverse)
@@ -16,12 +16,14 @@ Due to some changes in variable names, we retrieve the ACS data separately for e
 ```{r 2018 ACS}
 variables_2018 <- load_variables(year = 2018, dataset = "acs5", cache = TRUE)
 
-year <- 2018
+year <- 2015:2018
 
 # state codes for Appalachia states
 state_code <- c(1, 13, 21, 24, 28, 36, 37, 39, 42, 45, 47, 51, 54)
 
+# Loop through each period, fetch data, and reshape
 # get codes for each variable and rename
+list_data <- lapply(year, function(year) {
   data <- get_acs(
     geography = "county",
     variables = c(#education
@@ -120,6 +122,7 @@ state_code <- c(1, 13, 21, 24, 28, 36, 37, 39, 42, 45, 47, 51, 54)
       natural_resources_pe="DP03_0030PE", sales_pe="DP03_0029PE", service_pe="DP03_0028PE",
       management_pe="DP03_0027PE", armed_forces_pe="DP03_0006PE",
       unemployed_pop_pe="DP03_0005PE", employed_pop_pe="DP03_0004PE",
+      not_in_labor_force_pe= "DP03_0007PE", not_in_labor_force_pe= "DP03_0007PE",
       veterans_pe="DP02_0069PE",
       
       #Industry estimates
@@ -130,18 +133,20 @@ state_code <- c(1, 13, 21, 24, 28, 36, 37, 39, 42, 45, 47, 51, 54)
       retail_trade="DP03_0037E", wholesale_trade="DP03_0036E",
       manufacturing="DP03_0035E", construction= "DP03_0034E",
       agriculture_mining="DP03_0033E"),
-      
-      year = year,
-      state = state_code,
-      survey = "acs5",
-      output = "wide"  # Fetch data in wide format but with MOE columns included
-  )
-  
+    
+    year = year,
+    state = state_code,
+    survey = "acs5",
+    output = "wide" # Fetch data in wide format but with MOE columns included
+  )  
   # Add a year column to the data
-  data$Year <- 2018
-  
-edu_data_2018 <- data
-edu_data_2018 <- edu_data_2018 %>%
+  data$Year <- year
+  return(data)
+})
+
+# Combine the data from different years
+edu_data_1518 <- bind_rows(list_data) 
+edu_data_1518 <- edu_data_1518 %>%
   mutate(State_fip = substr(GEOID, 1, 2),
          total_asian_pacific_pop=total_asian_pop+total_pacific_pop,
          BA_higher_ratio_male=(BA_maleE + masters_maleE + professional_maleE + doctorate_maleE) / total_maleE,
@@ -152,7 +157,7 @@ edu_data_2018 <- edu_data_2018 %>%
          total_never_married= (male_never_married + female_never_married),
          total_married=(male_married + female_married),
          total_DSW= (male_widowed + male_seperated + male_divorced + female_widowed + female_seperated + female_divorced),
-
+         
          #Calculate the ratio of BA by race
          BA_higher_ratio_white = (BA_higher_male_whiteE + BA_higher_female_whiteE) / total_whiteE,
          BA_higher_ratio_black = (BA_higher_male_blackE + BA_higher_female_blackE)/ total_blackE,
@@ -164,48 +169,48 @@ edu_data_2018 <- edu_data_2018 %>%
          BA_higher_ratio_3544 = (BA_3544_maleE + grad_3544_maleE + BA_3544_femaleE + grad_3544_femaleE) / (total_3544_maleE + total_3544_femaleE),
          BA_higher_ratio_4564 = (BA_4564_maleE + grad_4564_maleE + BA_4564_femaleE + grad_4564_femaleE) / (total_4564_maleE + total_4564_femaleE),
          BA_higher_ratio_65 = (BA_65_maleE + grad_65_maleE + BA_65_femaleE + grad_65_femaleE) / (total_65_maleE + total_65_femaleE),
-
+         
          #Poverty Ratios
          below_poverty_ratio = income_below_povertyE/total_povertyE,
          below_poverty_ratio_male = income_below_poverty_maleE/(income_below_poverty_maleE + income_above_poverty_maleE),
-        below_poverty_ratio_female = income_below_poverty_femaleE/(income_below_poverty_femaleE + income_above_poverty_femaleE),
-        below_poverty_ratio_2534 = (income_below_poverty_male_2534E + income_below_poverty_female_2534E) / (income_above_poverty_male_2534E + income_above_poverty_female_2534E + income_below_poverty_male_2534E + income_below_poverty_female_2534E),
-        below_poverty_ratio_3544 = (income_below_poverty_male_3544E + income_below_poverty_female_3544E) / (income_above_poverty_male_3544E + income_above_poverty_female_3544E + income_below_poverty_male_3544E + income_below_poverty_female_3544E),
-        below_poverty_ratio_4564 = (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E) / (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E + income_above_poverty_male_4554E + income_above_poverty_male_5564E + income_above_poverty_female_4554E + income_above_poverty_female_5564E),
-        below_poverty_ratio_65=(income_below_poverty_male_6574E+income_below_poverty_female_6574E)/(income_below_poverty_male_6574E + income_below_poverty_female_6574E + income_above_poverty_male_6574E + income_above_poverty_female_6574E),
-
-below_poverty_ratio_white = income_below_poverty_whiteE/total_poverty_whiteE,   
-below_poverty_ratio_black = income_below_poverty_blackE/total_poverty_blackE,
-below_poverty_ratio_asian_pacific = (income_below_poverty_asianE + income_below_poverty_pacificE)/(total_poverty_asianE + total_poverty_pacificE),
+         below_poverty_ratio_female = income_below_poverty_femaleE/(income_below_poverty_femaleE + income_above_poverty_femaleE),
+         below_poverty_ratio_2534 = (income_below_poverty_male_2534E + income_below_poverty_female_2534E) / (income_above_poverty_male_2534E + income_above_poverty_female_2534E + income_below_poverty_male_2534E + income_below_poverty_female_2534E),
+         below_poverty_ratio_3544 = (income_below_poverty_male_3544E + income_below_poverty_female_3544E) / (income_above_poverty_male_3544E + income_above_poverty_female_3544E + income_below_poverty_male_3544E + income_below_poverty_female_3544E),
+         below_poverty_ratio_4564 = (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E) / (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E + income_above_poverty_male_4554E + income_above_poverty_male_5564E + income_above_poverty_female_4554E + income_above_poverty_female_5564E),
+         below_poverty_ratio_65=(income_below_poverty_male_6574E+income_below_poverty_female_6574E)/(income_below_poverty_male_6574E + income_below_poverty_female_6574E + income_above_poverty_male_6574E + income_above_poverty_female_6574E),
+         
+         below_poverty_ratio_white = income_below_poverty_whiteE/total_poverty_whiteE,   
+         below_poverty_ratio_black = income_below_poverty_blackE/total_poverty_blackE,
+         below_poverty_ratio_asian_pacific = (income_below_poverty_asianE + income_below_poverty_pacificE)/(total_poverty_asianE + total_poverty_pacificE),
          below_poverty_ratio_native = income_below_poverty_nativeE/total_poverty_nativeE) %>%
-         rename(
-           County.Code = GEOID,
-           County = NAME
-         )%>%
-           select(Year, State_fip, County.Code, County, total_asian_pacific_pop, DSW_male, DSW_female,
-                  total_DSW, BA_higher_ratio_male, BA_higher_ratio_female, BA_higher_ratio_2534,
-                  BA_higher_ratio_3544, BA_higher_ratio_4564, BA_higher_ratio_65, BA_higher_ratio_white,
-                  BA_higher_ratio_black, BA_higher_ratio_native, BA_higher_ratio_asian_pacific,
-                  below_poverty_ratio, below_poverty_ratio_male, below_poverty_ratio_female,
-                  below_poverty_ratio_2534, below_poverty_ratio_3544, below_poverty_ratio_4564,
-                  below_poverty_ratio_65, below_poverty_ratio_white, below_poverty_ratio_black,
-                  below_poverty_ratio_native, below_poverty_ratio_asian_pacific,
-                  
-                  #raw variables
-                  BA_higher_ratio,
-                  male_seperated, female_divorced, female_widowed, female_seperated,
-                  female_married,female_never_married, male_divorced, male_widowed, male_married,
-                  male_never_married, female_nospouse_withchildren, male_nospouse_withchildren,
-                  total_female_pop, total_male_pop, total_pacific_pop, total_asian_pop, total_native,
-                  total_black, total_white, foreign_born, US_born, total_housing_unitsE, per_capita_income,
-                  mean_household_income, public_admin, other_services, arts_ent_rec, edu_health_social,
-                  prof_scientific, finance_insurance, information, transportation, retail_trade,
-                  wholesale_trade, manufacturing, construction, agriculture_mining, production_pe,
-                  natural_resources_pe, sales_pe, service_pe, management_pe, armed_forces_pe, unemployed_pop_pe, 
-                  employed_pop_pe, veterans_pe, public_admin_pe, other_services_pe, arts_ent_rec_pe, edu_health_social_pe,
-                  prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
-                  wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
-                  )
+  rename(
+    County.Code = GEOID,
+    County = NAME
+  )%>%
+  select(Year, State_fip, County.Code, County, total_asian_pacific_pop, DSW_male, DSW_female,
+         total_DSW, BA_higher_ratio_male, BA_higher_ratio_female, BA_higher_ratio_2534,
+         BA_higher_ratio_3544, BA_higher_ratio_4564, BA_higher_ratio_65, BA_higher_ratio_white,
+         BA_higher_ratio_black, BA_higher_ratio_native, BA_higher_ratio_asian_pacific,
+         below_poverty_ratio, below_poverty_ratio_male, below_poverty_ratio_female,
+         below_poverty_ratio_2534, below_poverty_ratio_3544, below_poverty_ratio_4564,
+         below_poverty_ratio_65, below_poverty_ratio_white, below_poverty_ratio_black,
+         below_poverty_ratio_native, below_poverty_ratio_asian_pacific,
+         
+         #raw variables
+         BA_higher_ratio,
+         male_seperated, female_divorced, female_widowed, female_seperated,
+         female_married,female_never_married, male_divorced, male_widowed, male_married,
+         male_never_married, female_nospouse_withchildren, male_nospouse_withchildren,
+         total_female_pop, total_male_pop, total_pacific_pop, total_asian_pop, total_native,
+         total_black, total_white, foreign_born, US_born, total_housing_unitsE, per_capita_income,
+         mean_household_income, public_admin, other_services, arts_ent_rec, edu_health_social,
+         prof_scientific, finance_insurance, information, transportation, retail_trade,
+         wholesale_trade, manufacturing, construction, agriculture_mining, production_pe,
+         natural_resources_pe, sales_pe, service_pe, management_pe, armed_forces_pe, unemployed_pop_pe, not_in_labor_force_pe,
+         employed_pop_pe, veterans_pe, public_admin_pe, other_services_pe, arts_ent_rec_pe, edu_health_social_pe,
+         prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
+         wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
+  )
 ```
 
 
@@ -218,120 +223,120 @@ year <- 2019
 state_code <- c(1, 13, 21, 24, 28, 36, 37, 39, 42, 45, 47, 51, 54)
 
 # get codes for each variable and rename
-  data <- get_acs(
-    geography = "county",
-    variables = c(#education
-      BA_ratio="DP02_0065PE", BA_higher_ratio="DP02_0068PE", BA_male="B15002_015",
-      total_male="B01001_002", BA_female="B15002_032", total_female="B15002_019", 
-      total_white="C15002A_001", BA_higher_male_white="C15002A_006",
-      BA_higher_female_white="C15002A_011", total_black="C15002B_001",
-      BA_higher_male_black="C15002B_006", BA_higher_female_black="C15002B_011",
-      total_native="C15002C_001", BA_higher_male_native="C15002C_006",
-      BA_higher_female_native="C15002C_011", total_asian="C15002D_001",
-      BA_higher_male_asian="C15002D_006", BA_higher_female_asian="C15002D_011",
-      total_pacific="C15002E_001", BA_higher_male_pacific="C15002E_006",
-      BA_higher_female_pacific="C15002E_011", total_2534_male="B15001_011",
-      total_2534_female="B15001_052", BA_2534_male="B15001_017",
-      BA_2534_female="B15001_058", total_3544_male="B15001_019",
-      total_3544_female="B15001_060", BA_3544_male="B15001_025",
-      BA_3544_female="B15001_066", total_4564_male="B15001_027",
-      total_4564_female="B15001_068", BA_4564_male="B15001_033",
-      BA_4564_female="B15001_074", total_65_male="B15001_035",
-      total_65_female="B15001_076", BA_65_male="B15001_041",
-      BA_65_female="B15001_082", BA_or_higher= "DP02_0068P",
-      grad_2534_male= "B15001_018", grad_2534_female="B15001_059",
-      grad_3544_male="B15001_026", grad_3544_female="B15001_067", 
-      grad_4564_male="B15001_034", grad_4564_female="B15001_075",
-      grad_65_male="B15001_042", grad_65_female="B15001_083",
-      grad_male="B20004_012", grad_female="B20004_018", doctorate_male="B15002_018",
-      doctorate_female="B15002_035",professional_female="B15002_034",
-      professional_male="B15002_017", masters_male="B15002_016",
-      masters_female="B15002_033",
-      #marital status
-      male_seperated="DP02_0028PE", female_divorced="DP02_0036PE",
-      female_widowed="DP02_0035PE", female_seperated="DP02_0034PE",
-      female_married="DP02_0033PE",female_never_married="DP02_0032PE",
-      male_divorced="DP02_0030PE", male_widowed="DP02_0029PE", 
-      male_married="DP02_0027PE", male_never_married="DP02_0026PE",
-      female_nospouse_withchildren="DP02_0011PE",
-      male_nospouse_withchildren="DP02_0007PE",
-      #demographics
-      total_female_pop="DP05_0027PE", total_male_pop="DP05_0026PE",
-      total_pacific_pop="DP05_0052PE", total_asian_pop="DP05_0044PE",
-      total_native= "DP05_0039PE", total_black="DP05_0038PE",
-      total_white="DP05_0037PE", foreign_born="DP02_0093PE", US_born="DP02_0089PE",
-      #Income and Housing
-      total_housing_units="B25001_001", per_capita_income="DP03_0088E",
-      mean_household_income="DP03_0063E",                  
-      #POVERTY 	
-      total_poverty="B17001_001", income_below_poverty="B17001_002",
-      income_below_poverty_male="B17001_003",
-      income_below_poverty_female="B17001_017",
-      income_below_poverty_male_2534="B17001_011",
-      income_below_poverty_female_2534="B17001_025",
-      income_below_poverty_male_3544="B17001_012",
-      income_below_poverty_female_3544="B17001_026",
-      income_below_poverty_male_4554="B17001_013",
-      income_below_poverty_male_5564="B17001_014",
-      income_below_poverty_female_4554="B17001_027",
-      income_below_poverty_female_5564="B17001_028",
-      income_below_poverty_male_6574="B17001_015",
-      
-      #income_below_poverty_male_75="B17001_016",
-      
-      income_below_poverty_female_6574="B17001_029",
-      income_below_poverty_male_75="B17001_030",
-      income_below_poverty_white="B17001A_002",
-      income_below_poverty_black="B17001B_002",
-      income_below_poverty_native="B17001C_002",
-      income_below_poverty_asian="B17001D_002",
-      income_below_poverty_pacific="B17001E_002",
-      income_above_poverty_male="B17001A_032",
-      income_above_poverty_female="B17001A_046",
-      income_above_poverty_male_2534="B17001A_040",
-      income_above_poverty_female_2534="B17001A_054",
-      income_above_poverty_male_3544="B17001A_041",
-      income_above_poverty_female_3544="B17001A_055",
-      income_above_poverty_male_4554="B17001A_042",
-      income_above_poverty_male_5564="B17001A_043",
-      income_above_poverty_female_4554="B17001A_056",
-      income_above_poverty_female_5564="B17001A_057",
-      income_above_poverty_male_6574="B17001A_044",
-      income_above_poverty_male_75="B17001A_045",
-      income_above_poverty_female_6574="B17001A_058",
-      income_above_poverty_female_75="B17001A_059",
-      total_poverty_white="B17001A_001", total_poverty_black="B17001B_001",
-      total_poverty_native="B17001C_001", total_poverty_asian="B17001D_001",
-      total_poverty_pacific="B17001E_001",
-      #Occupation
-      public_admin_pe="DP03_0045PE", other_services_pe="DP03_0044PE",
-      arts_ent_rec_pe="DP03_0043PE", edu_health_social_pe="DP03_0042PE",
-      prof_scientific_pe="DP03_0041PE", finance_insurance_pe="DP03_0040PE",
-      information_pe="DP03_0039PE", transportation_pe="DP03_0038PE",
-      retail_trade_pe="DP03_0037PE", wholesale_trade_pe="DP03_0036PE",
-      manufacturing_pe="DP03_0035PE", construction_pe= "DP03_0034PE",
-      agriculture_mining_pe="DP03_0033PE", production_pe="DP03_0031PE",
-      natural_resources_pe="DP03_0030PE", sales_pe="DP03_0029PE", service_pe="DP03_0028PE",
-      management_pe="DP03_0027PE", armed_forces_pe="DP03_0006PE",
-      unemployed_pop_pe="DP03_0005PE", employed_pop_pe="DP03_0004PE",
-      veterans_pe="DP02_0069PE",
-      #industry estimates
-      public_admin="DP03_0045E", other_services="DP03_0044E",
-      arts_ent_rec="DP03_0043E", edu_health_social="DP03_0042E",
-      prof_scientific="DP03_0041E", finance_insurance="DP03_0040E",
-      information="DP03_0039E", transportation="DP03_0038E",
-      retail_trade="DP03_0037E", wholesale_trade="DP03_0036E",
-      manufacturing="DP03_0035E", construction= "DP03_0034E",
-      agriculture_mining="DP03_0033E"),
-      
-      year = year,
-      state = state_code,
-      survey = "acs5",
-      output = "wide"  # Fetch data in wide format but with MOE columns included
-  )
+data <- get_acs(
+  geography = "county",
+  variables = c(#education
+    BA_ratio="DP02_0065PE", BA_higher_ratio="DP02_0068PE", BA_male="B15002_015",
+    total_male="B01001_002", BA_female="B15002_032", total_female="B15002_019", 
+    total_white="C15002A_001", BA_higher_male_white="C15002A_006",
+    BA_higher_female_white="C15002A_011", total_black="C15002B_001",
+    BA_higher_male_black="C15002B_006", BA_higher_female_black="C15002B_011",
+    total_native="C15002C_001", BA_higher_male_native="C15002C_006",
+    BA_higher_female_native="C15002C_011", total_asian="C15002D_001",
+    BA_higher_male_asian="C15002D_006", BA_higher_female_asian="C15002D_011",
+    total_pacific="C15002E_001", BA_higher_male_pacific="C15002E_006",
+    BA_higher_female_pacific="C15002E_011", total_2534_male="B15001_011",
+    total_2534_female="B15001_052", BA_2534_male="B15001_017",
+    BA_2534_female="B15001_058", total_3544_male="B15001_019",
+    total_3544_female="B15001_060", BA_3544_male="B15001_025",
+    BA_3544_female="B15001_066", total_4564_male="B15001_027",
+    total_4564_female="B15001_068", BA_4564_male="B15001_033",
+    BA_4564_female="B15001_074", total_65_male="B15001_035",
+    total_65_female="B15001_076", BA_65_male="B15001_041",
+    BA_65_female="B15001_082", BA_or_higher= "DP02_0068P",
+    grad_2534_male= "B15001_018", grad_2534_female="B15001_059",
+    grad_3544_male="B15001_026", grad_3544_female="B15001_067", 
+    grad_4564_male="B15001_034", grad_4564_female="B15001_075",
+    grad_65_male="B15001_042", grad_65_female="B15001_083",
+    grad_male="B20004_012", grad_female="B20004_018", doctorate_male="B15002_018",
+    doctorate_female="B15002_035",professional_female="B15002_034",
+    professional_male="B15002_017", masters_male="B15002_016",
+    masters_female="B15002_033",
+    #marital status
+    male_seperated="DP02_0028PE", female_divorced="DP02_0036PE",
+    female_widowed="DP02_0035PE", female_seperated="DP02_0034PE",
+    female_married="DP02_0033PE",female_never_married="DP02_0032PE",
+    male_divorced="DP02_0030PE", male_widowed="DP02_0029PE", 
+    male_married="DP02_0027PE", male_never_married="DP02_0026PE",
+    female_nospouse_withchildren="DP02_0011PE",
+    male_nospouse_withchildren="DP02_0007PE",
+    #demographics
+    total_female_pop="DP05_0027PE", total_male_pop="DP05_0026PE",
+    total_pacific_pop="DP05_0052PE", total_asian_pop="DP05_0044PE",
+    total_native= "DP05_0039PE", total_black="DP05_0038PE",
+    total_white="DP05_0037PE", foreign_born="DP02_0093PE", US_born="DP02_0089PE",
+    #Income and Housing
+    total_housing_units="B25001_001", per_capita_income="DP03_0088E",
+    mean_household_income="DP03_0063E",                  
+    #POVERTY 	
+    total_poverty="B17001_001", income_below_poverty="B17001_002",
+    income_below_poverty_male="B17001_003",
+    income_below_poverty_female="B17001_017",
+    income_below_poverty_male_2534="B17001_011",
+    income_below_poverty_female_2534="B17001_025",
+    income_below_poverty_male_3544="B17001_012",
+    income_below_poverty_female_3544="B17001_026",
+    income_below_poverty_male_4554="B17001_013",
+    income_below_poverty_male_5564="B17001_014",
+    income_below_poverty_female_4554="B17001_027",
+    income_below_poverty_female_5564="B17001_028",
+    income_below_poverty_male_6574="B17001_015",
+    
+    #income_below_poverty_male_75="B17001_016",
+    
+    income_below_poverty_female_6574="B17001_029",
+    income_below_poverty_male_75="B17001_030",
+    income_below_poverty_white="B17001A_002",
+    income_below_poverty_black="B17001B_002",
+    income_below_poverty_native="B17001C_002",
+    income_below_poverty_asian="B17001D_002",
+    income_below_poverty_pacific="B17001E_002",
+    income_above_poverty_male="B17001A_032",
+    income_above_poverty_female="B17001A_046",
+    income_above_poverty_male_2534="B17001A_040",
+    income_above_poverty_female_2534="B17001A_054",
+    income_above_poverty_male_3544="B17001A_041",
+    income_above_poverty_female_3544="B17001A_055",
+    income_above_poverty_male_4554="B17001A_042",
+    income_above_poverty_male_5564="B17001A_043",
+    income_above_poverty_female_4554="B17001A_056",
+    income_above_poverty_female_5564="B17001A_057",
+    income_above_poverty_male_6574="B17001A_044",
+    income_above_poverty_male_75="B17001A_045",
+    income_above_poverty_female_6574="B17001A_058",
+    income_above_poverty_female_75="B17001A_059",
+    total_poverty_white="B17001A_001", total_poverty_black="B17001B_001",
+    total_poverty_native="B17001C_001", total_poverty_asian="B17001D_001",
+    total_poverty_pacific="B17001E_001",
+    #Occupation
+    public_admin_pe="DP03_0045PE", other_services_pe="DP03_0044PE",
+    arts_ent_rec_pe="DP03_0043PE", edu_health_social_pe="DP03_0042PE",
+    prof_scientific_pe="DP03_0041PE", finance_insurance_pe="DP03_0040PE",
+    information_pe="DP03_0039PE", transportation_pe="DP03_0038PE",
+    retail_trade_pe="DP03_0037PE", wholesale_trade_pe="DP03_0036PE",
+    manufacturing_pe="DP03_0035PE", construction_pe= "DP03_0034PE",
+    agriculture_mining_pe="DP03_0033PE", production_pe="DP03_0031PE",
+    natural_resources_pe="DP03_0030PE", sales_pe="DP03_0029PE", service_pe="DP03_0028PE",
+    management_pe="DP03_0027PE", armed_forces_pe="DP03_0006PE",
+    unemployed_pop_pe="DP03_0005PE", employed_pop_pe="DP03_0004PE",
+    veterans_pe="DP02_0069PE", not_in_labor_force_pe= "DP03_0007PE",
+    #industry estimates
+    public_admin="DP03_0045E", other_services="DP03_0044E",
+    arts_ent_rec="DP03_0043E", edu_health_social="DP03_0042E",
+    prof_scientific="DP03_0041E", finance_insurance="DP03_0040E",
+    information="DP03_0039E", transportation="DP03_0038E",
+    retail_trade="DP03_0037E", wholesale_trade="DP03_0036E",
+    manufacturing="DP03_0035E", construction= "DP03_0034E",
+    agriculture_mining="DP03_0033E"),
   
-  # Add a year column to the data
-  data$Year <- 2019
+  year = year,
+  state = state_code,
+  survey = "acs5",
+  output = "wide"  # Fetch data in wide format but with MOE columns included
+)
+
+# Add a year column to the data
+data$Year <- 2019
 
 # Combine the data from different years
 edu_data_2019 <- data
@@ -346,7 +351,7 @@ edu_data_2019 <- edu_data_2019 %>%
          total_never_married= (male_never_married + female_never_married),
          total_married=(male_married + female_married),
          total_DSW= (male_widowed + male_seperated + male_divorced + female_widowed + female_seperated + female_divorced),
-
+         
          #Calculate the ratio of BA by race
          BA_higher_ratio_white = (BA_higher_male_whiteE + BA_higher_female_whiteE) / total_whiteE,
          BA_higher_ratio_black = (BA_higher_male_blackE + BA_higher_female_blackE)/ total_blackE,
@@ -358,48 +363,48 @@ edu_data_2019 <- edu_data_2019 %>%
          BA_higher_ratio_3544 = (BA_3544_maleE + grad_3544_maleE + BA_3544_femaleE + grad_3544_femaleE) / (total_3544_maleE + total_3544_femaleE),
          BA_higher_ratio_4564 = (BA_4564_maleE + grad_4564_maleE + BA_4564_femaleE + grad_4564_femaleE) / (total_4564_maleE + total_4564_femaleE),
          BA_higher_ratio_65 = (BA_65_maleE + grad_65_maleE + BA_65_femaleE + grad_65_femaleE) / (total_65_maleE + total_65_femaleE),
-
+         
          #Poverty Ratios
          below_poverty_ratio = income_below_povertyE/total_povertyE,
          below_poverty_ratio_male = income_below_poverty_maleE/(income_below_poverty_maleE + income_above_poverty_maleE),
-        below_poverty_ratio_female = income_below_poverty_femaleE/(income_below_poverty_femaleE + income_above_poverty_femaleE),
-        below_poverty_ratio_2534 = (income_below_poverty_male_2534E + income_below_poverty_female_2534E) / (income_above_poverty_male_2534E + income_above_poverty_female_2534E + income_below_poverty_male_2534E + income_below_poverty_female_2534E),
-        below_poverty_ratio_3544 = (income_below_poverty_male_3544E + income_below_poverty_female_3544E) / (income_above_poverty_male_3544E + income_above_poverty_female_3544E + income_below_poverty_male_3544E + income_below_poverty_female_3544E),
-        below_poverty_ratio_4564 = (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E) / (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E + income_above_poverty_male_4554E + income_above_poverty_male_5564E + income_above_poverty_female_4554E + income_above_poverty_female_5564E),
-        below_poverty_ratio_65=(income_below_poverty_male_6574E+income_below_poverty_female_6574E)/(income_below_poverty_male_6574E + income_below_poverty_female_6574E + income_above_poverty_male_6574E + income_above_poverty_female_6574E),
-
-below_poverty_ratio_white = income_below_poverty_whiteE/total_poverty_whiteE,   
-below_poverty_ratio_black = income_below_poverty_blackE/total_poverty_blackE,
-below_poverty_ratio_asian_pacific = (income_below_poverty_asianE + income_below_poverty_pacificE)/(total_poverty_asianE + total_poverty_pacificE),
+         below_poverty_ratio_female = income_below_poverty_femaleE/(income_below_poverty_femaleE + income_above_poverty_femaleE),
+         below_poverty_ratio_2534 = (income_below_poverty_male_2534E + income_below_poverty_female_2534E) / (income_above_poverty_male_2534E + income_above_poverty_female_2534E + income_below_poverty_male_2534E + income_below_poverty_female_2534E),
+         below_poverty_ratio_3544 = (income_below_poverty_male_3544E + income_below_poverty_female_3544E) / (income_above_poverty_male_3544E + income_above_poverty_female_3544E + income_below_poverty_male_3544E + income_below_poverty_female_3544E),
+         below_poverty_ratio_4564 = (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E) / (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E + income_above_poverty_male_4554E + income_above_poverty_male_5564E + income_above_poverty_female_4554E + income_above_poverty_female_5564E),
+         below_poverty_ratio_65=(income_below_poverty_male_6574E+income_below_poverty_female_6574E)/(income_below_poverty_male_6574E + income_below_poverty_female_6574E + income_above_poverty_male_6574E + income_above_poverty_female_6574E),
+         
+         below_poverty_ratio_white = income_below_poverty_whiteE/total_poverty_whiteE,   
+         below_poverty_ratio_black = income_below_poverty_blackE/total_poverty_blackE,
+         below_poverty_ratio_asian_pacific = (income_below_poverty_asianE + income_below_poverty_pacificE)/(total_poverty_asianE + total_poverty_pacificE),
          below_poverty_ratio_native = income_below_poverty_nativeE/total_poverty_nativeE) %>%
-         rename(
-           County.Code = GEOID,
-           County = NAME
-         )%>%
-           select(Year, State_fip, County.Code, County, total_asian_pacific_pop, DSW_male, DSW_female,
-                  total_DSW, BA_higher_ratio_male, BA_higher_ratio_female, BA_higher_ratio_2534,
-                  BA_higher_ratio_3544, BA_higher_ratio_4564, BA_higher_ratio_65, BA_higher_ratio_white,
-                  BA_higher_ratio_black, BA_higher_ratio_native, BA_higher_ratio_asian_pacific,
-                  below_poverty_ratio, below_poverty_ratio_male, below_poverty_ratio_female,
-                  below_poverty_ratio_2534, below_poverty_ratio_3544, below_poverty_ratio_4564,
-                  below_poverty_ratio_65, below_poverty_ratio_white, below_poverty_ratio_black,
-                  below_poverty_ratio_native, below_poverty_ratio_asian_pacific,
-                  
-                  #raw variables
-                  BA_higher_ratio,
-                  male_seperated, female_divorced, female_widowed, female_seperated,
-                  female_married,female_never_married, male_divorced, male_widowed, male_married,
-                  male_never_married, female_nospouse_withchildren, male_nospouse_withchildren,
-                  total_female_pop, total_male_pop, total_pacific_pop, total_asian_pop, total_native,
-                  total_black, total_white, foreign_born, US_born, total_housing_unitsE, per_capita_income,
-                  mean_household_income, public_admin, other_services, arts_ent_rec, edu_health_social,
-                  prof_scientific, finance_insurance, information, transportation, retail_trade,
-                  wholesale_trade, manufacturing, construction, agriculture_mining, production_pe,
-                  natural_resources_pe, sales_pe, service_pe, management_pe, armed_forces_pe, unemployed_pop_pe, 
-                  employed_pop_pe, veterans_pe, public_admin_pe, other_services_pe, arts_ent_rec_pe, edu_health_social_pe,
-                  prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
-                  wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
-                  )
+  rename(
+    County.Code = GEOID,
+    County = NAME
+  )%>%
+  select(Year, State_fip, County.Code, County, total_asian_pacific_pop, DSW_male, DSW_female,
+         total_DSW, BA_higher_ratio_male, BA_higher_ratio_female, BA_higher_ratio_2534,
+         BA_higher_ratio_3544, BA_higher_ratio_4564, BA_higher_ratio_65, BA_higher_ratio_white,
+         BA_higher_ratio_black, BA_higher_ratio_native, BA_higher_ratio_asian_pacific,
+         below_poverty_ratio, below_poverty_ratio_male, below_poverty_ratio_female,
+         below_poverty_ratio_2534, below_poverty_ratio_3544, below_poverty_ratio_4564,
+         below_poverty_ratio_65, below_poverty_ratio_white, below_poverty_ratio_black,
+         below_poverty_ratio_native, below_poverty_ratio_asian_pacific,
+         
+         #raw variables
+         BA_higher_ratio,
+         male_seperated, female_divorced, female_widowed, female_seperated,
+         female_married,female_never_married, male_divorced, male_widowed, male_married,
+         male_never_married, female_nospouse_withchildren, male_nospouse_withchildren,
+         total_female_pop, total_male_pop, total_pacific_pop, total_asian_pop, total_native,
+         total_black, total_white, foreign_born, US_born, total_housing_unitsE, per_capita_income,
+         mean_household_income, public_admin, other_services, arts_ent_rec, edu_health_social,
+         prof_scientific, finance_insurance, information, transportation, retail_trade,
+         wholesale_trade, manufacturing, construction, agriculture_mining, production_pe,
+         natural_resources_pe, sales_pe, service_pe, management_pe, armed_forces_pe, unemployed_pop_pe, not_in_labor_force_pe,
+         employed_pop_pe, veterans_pe, public_admin_pe, other_services_pe, arts_ent_rec_pe, edu_health_social_pe,
+         prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
+         wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
+  )
 ```
 
 ```{r 2020 ACS}
@@ -411,120 +416,120 @@ year <- 2020  # data availability
 state_code <- c(1, 13, 21, 24, 28, 36, 37, 39, 42, 45, 47, 51, 54)
 
 # get codes for each variable and rename
-  data <- get_acs(
-    geography = "county",
-    variables = c(#education
-      BA_ratio="DP02_0065PE", BA_higher_ratio="DP02_0068PE", BA_male="B15002_015",
-      total_male="B01001_002", BA_female="B15002_032", total_female="B15002_019", 
-      total_white="C15002A_001", BA_higher_male_white="C15002A_006",
-      BA_higher_female_white="C15002A_011", total_black="C15002B_001",
-      BA_higher_male_black="C15002B_006", BA_higher_female_black="C15002B_011",
-      total_native="C15002C_001", BA_higher_male_native="C15002C_006",
-      BA_higher_female_native="C15002C_011", total_asian="C15002D_001",
-      BA_higher_male_asian="C15002D_006", BA_higher_female_asian="C15002D_011",
-      total_pacific="C15002E_001", BA_higher_male_pacific="C15002E_006",
-      BA_higher_female_pacific="C15002E_011", total_2534_male="B15001_011",
-      total_2534_female="B15001_052", BA_2534_male="B15001_017",
-      BA_2534_female="B15001_058", total_3544_male="B15001_019",
-      total_3544_female="B15001_060", BA_3544_male="B15001_025",
-      BA_3544_female="B15001_066", total_4564_male="B15001_027",
-      total_4564_female="B15001_068", BA_4564_male="B15001_033",
-      BA_4564_female="B15001_074", total_65_male="B15001_035",
-      total_65_female="B15001_076", BA_65_male="B15001_041",
-      BA_65_female="B15001_082", BA_or_higher= "DP02_0068P",
-      grad_2534_male= "B15001_018", grad_2534_female="B15001_059",
-      grad_3544_male="B15001_026", grad_3544_female="B15001_067", 
-      grad_4564_male="B15001_034", grad_4564_female="B15001_075",
-      grad_65_male="B15001_042", grad_65_female="B15001_083",
-      grad_male="B20004_012", grad_female="B20004_018", doctorate_male="B15002_018",
-      doctorate_female="B15002_035",professional_female="B15002_034",
-      professional_male="B15002_017", masters_male="B15002_016",
-      masters_female="B15002_033",
-      #marital status
-      male_seperated="DP02_0028PE", female_divorced="DP02_0036PE",
-      female_widowed="DP02_0035PE", female_seperated="DP02_0034PE",
-      female_married="DP02_0033PE",female_never_married="DP02_0032PE",
-      male_divorced="DP02_0030PE", male_widowed="DP02_0029PE", 
-      male_married="DP02_0027PE", male_never_married="DP02_0026PE",
-      female_nospouse_withchildren="DP02_0011PE",
-      male_nospouse_withchildren="DP02_0007PE",
-      #demographics
-      total_female_pop="DP05_0027PE", total_male_pop="DP05_0026PE",
-      total_pacific_pop="DP05_0052PE", total_asian_pop="DP05_0044PE",
-      total_native= "DP05_0039PE", total_black="DP05_0038PE",
-      total_white="DP05_0037PE", foreign_born="DP02_0094PE", US_born="DP02_0090PE",
-      #Income and Housing
-      total_housing_units="B25001_001", per_capita_income="DP03_0088E",
-      mean_household_income="DP03_0063E",                  
-      #POVERTY 	
-      total_poverty="B17001_001", income_below_poverty="B17001_002",
-      income_below_poverty_male="B17001_003",
-      income_below_poverty_female="B17001_017",
-      income_below_poverty_male_2534="B17001_011",
-      income_below_poverty_female_2534="B17001_025",
-      income_below_poverty_male_3544="B17001_012",
-      income_below_poverty_female_3544="B17001_026",
-      income_below_poverty_male_4554="B17001_013",
-      income_below_poverty_male_5564="B17001_014",
-      income_below_poverty_female_4554="B17001_027",
-      income_below_poverty_female_5564="B17001_028",
-      income_below_poverty_male_6574="B17001_015",
-      income_below_poverty_male_75="B17001_016",
-      income_below_poverty_female_6574="B17001_029",
-      
-      #income_below_poverty_male_75="B17001_030",
-      
-      income_below_poverty_white="B17001A_002",
-      income_below_poverty_black="B17001B_002",
-      income_below_poverty_native="B17001C_002",
-      income_below_poverty_asian="B17001D_002",
-      income_below_poverty_pacific="B17001E_002",
-      income_above_poverty_male="B17001A_032",
-      income_above_poverty_female="B17001A_046",
-      income_above_poverty_male_2534="B17001A_040",
-      income_above_poverty_female_2534="B17001A_054",
-      income_above_poverty_male_3544="B17001A_041",
-      income_above_poverty_female_3544="B17001A_055",
-      income_above_poverty_male_4554="B17001A_042",
-      income_above_poverty_male_5564="B17001A_043",
-      income_above_poverty_female_4554="B17001A_056",
-      income_above_poverty_female_5564="B17001A_057",
-      income_above_poverty_male_6574="B17001A_044",
-      income_above_poverty_male_75="B17001A_045",
-      income_above_poverty_female_6574="B17001A_058",
-      income_above_poverty_female_75="B17001A_059",
-      total_poverty_white="B17001A_001", total_poverty_black="B17001B_001",
-      total_poverty_native="B17001C_001", total_poverty_asian="B17001D_001",
-      total_poverty_pacific="B17001E_001",
-      #Occupation
-      public_admin_pe="DP03_0045PE", other_services_pe="DP03_0044PE",
-      arts_ent_rec_pe="DP03_0043PE", edu_health_social_pe="DP03_0042PE",
-      prof_scientific_pe="DP03_0041PE", finance_insurance_pe="DP03_0040PE",
-      information_pe="DP03_0039PE", transportation_pe="DP03_0038PE",
-      retail_trade_pe="DP03_0037PE", wholesale_trade_pe="DP03_0036PE",
-      manufacturing_pe="DP03_0035PE", construction_pe= "DP03_0034PE",
-      agriculture_mining_pe="DP03_0033PE", production_pe="DP03_0031PE",
-      natural_resources_pe="DP03_0030PE", sales_pe="DP03_0029PE", service_pe="DP03_0028PE",
-      management_pe="DP03_0027PE", armed_forces_pe="DP03_0006PE",
-      unemployed_pop_pe="DP03_0005PE", employed_pop_pe="DP03_0004PE",
-      veterans_pe="DP02_0069PE",
-      #industry estimates
-      public_admin="DP03_0045E", other_services="DP03_0044E",
-      arts_ent_rec="DP03_0043E", edu_health_social="DP03_0042E",
-      prof_scientific="DP03_0041E", finance_insurance="DP03_0040E",
-      information="DP03_0039E", transportation="DP03_0038E",
-      retail_trade="DP03_0037E", wholesale_trade="DP03_0036E",
-      manufacturing="DP03_0035E", construction= "DP03_0034E",
-      agriculture_mining="DP03_0033E"),
-      
-      year = year,
-      state = state_code,
-      survey = "acs5",
-      output = "wide"  # Fetch data in wide format but with MOE columns included
-  )
+data <- get_acs(
+  geography = "county",
+  variables = c(#education
+    BA_ratio="DP02_0065PE", BA_higher_ratio="DP02_0068PE", BA_male="B15002_015",
+    total_male="B01001_002", BA_female="B15002_032", total_female="B15002_019", 
+    total_white="C15002A_001", BA_higher_male_white="C15002A_006",
+    BA_higher_female_white="C15002A_011", total_black="C15002B_001",
+    BA_higher_male_black="C15002B_006", BA_higher_female_black="C15002B_011",
+    total_native="C15002C_001", BA_higher_male_native="C15002C_006",
+    BA_higher_female_native="C15002C_011", total_asian="C15002D_001",
+    BA_higher_male_asian="C15002D_006", BA_higher_female_asian="C15002D_011",
+    total_pacific="C15002E_001", BA_higher_male_pacific="C15002E_006",
+    BA_higher_female_pacific="C15002E_011", total_2534_male="B15001_011",
+    total_2534_female="B15001_052", BA_2534_male="B15001_017",
+    BA_2534_female="B15001_058", total_3544_male="B15001_019",
+    total_3544_female="B15001_060", BA_3544_male="B15001_025",
+    BA_3544_female="B15001_066", total_4564_male="B15001_027",
+    total_4564_female="B15001_068", BA_4564_male="B15001_033",
+    BA_4564_female="B15001_074", total_65_male="B15001_035",
+    total_65_female="B15001_076", BA_65_male="B15001_041",
+    BA_65_female="B15001_082", BA_or_higher= "DP02_0068P",
+    grad_2534_male= "B15001_018", grad_2534_female="B15001_059",
+    grad_3544_male="B15001_026", grad_3544_female="B15001_067", 
+    grad_4564_male="B15001_034", grad_4564_female="B15001_075",
+    grad_65_male="B15001_042", grad_65_female="B15001_083",
+    grad_male="B20004_012", grad_female="B20004_018", doctorate_male="B15002_018",
+    doctorate_female="B15002_035",professional_female="B15002_034",
+    professional_male="B15002_017", masters_male="B15002_016",
+    masters_female="B15002_033",
+    #marital status
+    male_seperated="DP02_0028PE", female_divorced="DP02_0036PE",
+    female_widowed="DP02_0035PE", female_seperated="DP02_0034PE",
+    female_married="DP02_0033PE",female_never_married="DP02_0032PE",
+    male_divorced="DP02_0030PE", male_widowed="DP02_0029PE", 
+    male_married="DP02_0027PE", male_never_married="DP02_0026PE",
+    female_nospouse_withchildren="DP02_0011PE",
+    male_nospouse_withchildren="DP02_0007PE",
+    #demographics
+    total_female_pop="DP05_0027PE", total_male_pop="DP05_0026PE",
+    total_pacific_pop="DP05_0052PE", total_asian_pop="DP05_0044PE",
+    total_native= "DP05_0039PE", total_black="DP05_0038PE",
+    total_white="DP05_0037PE", foreign_born="DP02_0094PE", US_born="DP02_0090PE",
+    #Income and Housing
+    total_housing_units="B25001_001", per_capita_income="DP03_0088E",
+    mean_household_income="DP03_0063E",                  
+    #POVERTY 	
+    total_poverty="B17001_001", income_below_poverty="B17001_002",
+    income_below_poverty_male="B17001_003",
+    income_below_poverty_female="B17001_017",
+    income_below_poverty_male_2534="B17001_011",
+    income_below_poverty_female_2534="B17001_025",
+    income_below_poverty_male_3544="B17001_012",
+    income_below_poverty_female_3544="B17001_026",
+    income_below_poverty_male_4554="B17001_013",
+    income_below_poverty_male_5564="B17001_014",
+    income_below_poverty_female_4554="B17001_027",
+    income_below_poverty_female_5564="B17001_028",
+    income_below_poverty_male_6574="B17001_015",
+    income_below_poverty_male_75="B17001_016",
+    income_below_poverty_female_6574="B17001_029",
+    
+    #income_below_poverty_male_75="B17001_030",
+    
+    income_below_poverty_white="B17001A_002",
+    income_below_poverty_black="B17001B_002",
+    income_below_poverty_native="B17001C_002",
+    income_below_poverty_asian="B17001D_002",
+    income_below_poverty_pacific="B17001E_002",
+    income_above_poverty_male="B17001A_032",
+    income_above_poverty_female="B17001A_046",
+    income_above_poverty_male_2534="B17001A_040",
+    income_above_poverty_female_2534="B17001A_054",
+    income_above_poverty_male_3544="B17001A_041",
+    income_above_poverty_female_3544="B17001A_055",
+    income_above_poverty_male_4554="B17001A_042",
+    income_above_poverty_male_5564="B17001A_043",
+    income_above_poverty_female_4554="B17001A_056",
+    income_above_poverty_female_5564="B17001A_057",
+    income_above_poverty_male_6574="B17001A_044",
+    income_above_poverty_male_75="B17001A_045",
+    income_above_poverty_female_6574="B17001A_058",
+    income_above_poverty_female_75="B17001A_059",
+    total_poverty_white="B17001A_001", total_poverty_black="B17001B_001",
+    total_poverty_native="B17001C_001", total_poverty_asian="B17001D_001",
+    total_poverty_pacific="B17001E_001",
+    #Occupation
+    public_admin_pe="DP03_0045PE", other_services_pe="DP03_0044PE",
+    arts_ent_rec_pe="DP03_0043PE", edu_health_social_pe="DP03_0042PE",
+    prof_scientific_pe="DP03_0041PE", finance_insurance_pe="DP03_0040PE",
+    information_pe="DP03_0039PE", transportation_pe="DP03_0038PE",
+    retail_trade_pe="DP03_0037PE", wholesale_trade_pe="DP03_0036PE",
+    manufacturing_pe="DP03_0035PE", construction_pe= "DP03_0034PE",
+    agriculture_mining_pe="DP03_0033PE", production_pe="DP03_0031PE",
+    natural_resources_pe="DP03_0030PE", sales_pe="DP03_0029PE", service_pe="DP03_0028PE",
+    management_pe="DP03_0027PE", armed_forces_pe="DP03_0006PE",
+    unemployed_pop_pe="DP03_0005PE", employed_pop_pe="DP03_0004PE",
+    veterans_pe="DP02_0069PE",not_in_labor_force_pe= "DP03_0007PE",
+    #industry estimates
+    public_admin="DP03_0045E", other_services="DP03_0044E",
+    arts_ent_rec="DP03_0043E", edu_health_social="DP03_0042E",
+    prof_scientific="DP03_0041E", finance_insurance="DP03_0040E",
+    information="DP03_0039E", transportation="DP03_0038E",
+    retail_trade="DP03_0037E", wholesale_trade="DP03_0036E",
+    manufacturing="DP03_0035E", construction= "DP03_0034E",
+    agriculture_mining="DP03_0033E"),
   
-  # Add a year column to the data
-  data$Year <- 2020
+  year = year,
+  state = state_code,
+  survey = "acs5",
+  output = "wide"  # Fetch data in wide format but with MOE columns included
+)
+
+# Add a year column to the data
+data$Year <- 2020
 
 # Combine the data from different years
 edu_data_2020 <- data
@@ -539,7 +544,7 @@ edu_data_2020 <- edu_data_2020 %>%
          total_never_married= (male_never_married + female_never_married),
          total_married=(male_married + female_married),
          total_DSW= (male_widowed + male_seperated + male_divorced + female_widowed + female_seperated + female_divorced),
-
+         
          #Calculate the ratio of BA by race
          BA_higher_ratio_white = (BA_higher_male_whiteE + BA_higher_female_whiteE) / total_whiteE,
          BA_higher_ratio_black = (BA_higher_male_blackE + BA_higher_female_blackE)/ total_blackE,
@@ -551,48 +556,48 @@ edu_data_2020 <- edu_data_2020 %>%
          BA_higher_ratio_3544 = (BA_3544_maleE + grad_3544_maleE + BA_3544_femaleE + grad_3544_femaleE) / (total_3544_maleE + total_3544_femaleE),
          BA_higher_ratio_4564 = (BA_4564_maleE + grad_4564_maleE + BA_4564_femaleE + grad_4564_femaleE) / (total_4564_maleE + total_4564_femaleE),
          BA_higher_ratio_65 = (BA_65_maleE + grad_65_maleE + BA_65_femaleE + grad_65_femaleE) / (total_65_maleE + total_65_femaleE),
-
+         
          #Poverty Ratios
          below_poverty_ratio = income_below_povertyE/total_povertyE,
          below_poverty_ratio_male = income_below_poverty_maleE/(income_below_poverty_maleE + income_above_poverty_maleE),
-        below_poverty_ratio_female = income_below_poverty_femaleE/(income_below_poverty_femaleE + income_above_poverty_femaleE),
-        below_poverty_ratio_2534 = (income_below_poverty_male_2534E + income_below_poverty_female_2534E) / (income_above_poverty_male_2534E + income_above_poverty_female_2534E + income_below_poverty_male_2534E + income_below_poverty_female_2534E),
-        below_poverty_ratio_3544 = (income_below_poverty_male_3544E + income_below_poverty_female_3544E) / (income_above_poverty_male_3544E + income_above_poverty_female_3544E + income_below_poverty_male_3544E + income_below_poverty_female_3544E),
-        below_poverty_ratio_4564 = (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E) / (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E + income_above_poverty_male_4554E + income_above_poverty_male_5564E + income_above_poverty_female_4554E + income_above_poverty_female_5564E),
-        below_poverty_ratio_65=(income_below_poverty_male_6574E+income_below_poverty_female_6574E)/(income_below_poverty_male_6574E + income_below_poverty_female_6574E + income_above_poverty_male_6574E + income_above_poverty_female_6574E),
-
-below_poverty_ratio_white = income_below_poverty_whiteE/total_poverty_whiteE,   
-below_poverty_ratio_black = income_below_poverty_blackE/total_poverty_blackE,
-below_poverty_ratio_asian_pacific = (income_below_poverty_asianE + income_below_poverty_pacificE)/(total_poverty_asianE + total_poverty_pacificE),
+         below_poverty_ratio_female = income_below_poverty_femaleE/(income_below_poverty_femaleE + income_above_poverty_femaleE),
+         below_poverty_ratio_2534 = (income_below_poverty_male_2534E + income_below_poverty_female_2534E) / (income_above_poverty_male_2534E + income_above_poverty_female_2534E + income_below_poverty_male_2534E + income_below_poverty_female_2534E),
+         below_poverty_ratio_3544 = (income_below_poverty_male_3544E + income_below_poverty_female_3544E) / (income_above_poverty_male_3544E + income_above_poverty_female_3544E + income_below_poverty_male_3544E + income_below_poverty_female_3544E),
+         below_poverty_ratio_4564 = (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E) / (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E + income_above_poverty_male_4554E + income_above_poverty_male_5564E + income_above_poverty_female_4554E + income_above_poverty_female_5564E),
+         below_poverty_ratio_65=(income_below_poverty_male_6574E+income_below_poverty_female_6574E)/(income_below_poverty_male_6574E + income_below_poverty_female_6574E + income_above_poverty_male_6574E + income_above_poverty_female_6574E),
+         
+         below_poverty_ratio_white = income_below_poverty_whiteE/total_poverty_whiteE,   
+         below_poverty_ratio_black = income_below_poverty_blackE/total_poverty_blackE,
+         below_poverty_ratio_asian_pacific = (income_below_poverty_asianE + income_below_poverty_pacificE)/(total_poverty_asianE + total_poverty_pacificE),
          below_poverty_ratio_native = income_below_poverty_nativeE/total_poverty_nativeE) %>%
-         rename(
-           County.Code = GEOID,
-           County = NAME
-         )%>%
-           select(Year, State_fip, County.Code, County, total_asian_pacific_pop, DSW_male, DSW_female,
-                  total_DSW, BA_higher_ratio_male, BA_higher_ratio_female, BA_higher_ratio_2534,
-                  BA_higher_ratio_3544, BA_higher_ratio_4564, BA_higher_ratio_65, BA_higher_ratio_white,
-                  BA_higher_ratio_black, BA_higher_ratio_native, BA_higher_ratio_asian_pacific,
-                  below_poverty_ratio, below_poverty_ratio_male, below_poverty_ratio_female,
-                  below_poverty_ratio_2534, below_poverty_ratio_3544, below_poverty_ratio_4564,
-                  below_poverty_ratio_65, below_poverty_ratio_white, below_poverty_ratio_black,
-                  below_poverty_ratio_native, below_poverty_ratio_asian_pacific,
-                  
-                  #raw variables
-                  BA_higher_ratio,
-                  male_seperated, female_divorced, female_widowed, female_seperated,
-                  female_married,female_never_married, male_divorced, male_widowed, male_married,
-                  male_never_married, female_nospouse_withchildren, male_nospouse_withchildren,
-                  total_female_pop, total_male_pop, total_pacific_pop, total_asian_pop, total_native,
-                  total_black, total_white, foreign_born, US_born, total_housing_unitsE, per_capita_income,
-                  mean_household_income, public_admin, other_services, arts_ent_rec, edu_health_social,
-                  prof_scientific, finance_insurance, information, transportation, retail_trade,
-                  wholesale_trade, manufacturing, construction, agriculture_mining, production_pe,
-                  natural_resources_pe, sales_pe, service_pe, management_pe, armed_forces_pe, unemployed_pop_pe, 
-                  employed_pop_pe, veterans_pe, public_admin_pe, other_services_pe, arts_ent_rec_pe, edu_health_social_pe,
-                  prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
-                  wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
-                  )
+  rename(
+    County.Code = GEOID,
+    County = NAME
+  )%>%
+  select(Year, State_fip, County.Code, County, total_asian_pacific_pop, DSW_male, DSW_female,
+         total_DSW, BA_higher_ratio_male, BA_higher_ratio_female, BA_higher_ratio_2534,
+         BA_higher_ratio_3544, BA_higher_ratio_4564, BA_higher_ratio_65, BA_higher_ratio_white,
+         BA_higher_ratio_black, BA_higher_ratio_native, BA_higher_ratio_asian_pacific,
+         below_poverty_ratio, below_poverty_ratio_male, below_poverty_ratio_female,
+         below_poverty_ratio_2534, below_poverty_ratio_3544, below_poverty_ratio_4564,
+         below_poverty_ratio_65, below_poverty_ratio_white, below_poverty_ratio_black,
+         below_poverty_ratio_native, below_poverty_ratio_asian_pacific,
+         
+         #raw variables
+         BA_higher_ratio,
+         male_seperated, female_divorced, female_widowed, female_seperated,
+         female_married,female_never_married, male_divorced, male_widowed, male_married,
+         male_never_married, female_nospouse_withchildren, male_nospouse_withchildren,
+         total_female_pop, total_male_pop, total_pacific_pop, total_asian_pop, total_native,
+         total_black, total_white, foreign_born, US_born, total_housing_unitsE, per_capita_income,
+         mean_household_income, public_admin, other_services, arts_ent_rec, edu_health_social,
+         prof_scientific, finance_insurance, information, transportation, retail_trade,
+         wholesale_trade, manufacturing, construction, agriculture_mining, production_pe,
+         natural_resources_pe, sales_pe, service_pe, management_pe, armed_forces_pe, unemployed_pop_pe, not_in_labor_force_pe,
+         employed_pop_pe, veterans_pe, public_admin_pe, other_services_pe, arts_ent_rec_pe, edu_health_social_pe,
+         prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
+         wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
+  )
 ```
 
 ```{r 2021 ACS}
@@ -604,120 +609,120 @@ year <- 2021  # data availability
 state_code <- c(1, 13, 21, 24, 28, 36, 37, 39, 42, 45, 47, 51, 54)
 
 # get codes for each variable and rename
-  data <- get_acs(
-    geography = "county",
-    variables = c(#education
-      BA_ratio="DP02_0065PE", BA_higher_ratio="DP02_0068PE", BA_male="B15002_015",
-      total_male="B01001_002", BA_female="B15002_032", total_female="B15002_019", 
-      total_white="C15002A_001", BA_higher_male_white="C15002A_006",
-      BA_higher_female_white="C15002A_011", total_black="C15002B_001",
-      BA_higher_male_black="C15002B_006", BA_higher_female_black="C15002B_011",
-      total_native="C15002C_001", BA_higher_male_native="C15002C_006",
-      BA_higher_female_native="C15002C_011", total_asian="C15002D_001",
-      BA_higher_male_asian="C15002D_006", BA_higher_female_asian="C15002D_011",
-      total_pacific="C15002E_001", BA_higher_male_pacific="C15002E_006",
-      BA_higher_female_pacific="C15002E_011", total_2534_male="B15001_011",
-      total_2534_female="B15001_052", BA_2534_male="B15001_017",
-      BA_2534_female="B15001_058", total_3544_male="B15001_019",
-      total_3544_female="B15001_060", BA_3544_male="B15001_025",
-      BA_3544_female="B15001_066", total_4564_male="B15001_027",
-      total_4564_female="B15001_068", BA_4564_male="B15001_033",
-      BA_4564_female="B15001_074", total_65_male="B15001_035",
-      total_65_female="B15001_076", BA_65_male="B15001_041",
-      BA_65_female="B15001_082", BA_or_higher= "DP02_0068P",
-      grad_2534_male= "B15001_018", grad_2534_female="B15001_059",
-      grad_3544_male="B15001_026", grad_3544_female="B15001_067", 
-      grad_4564_male="B15001_034", grad_4564_female="B15001_075",
-      grad_65_male="B15001_042", grad_65_female="B15001_083",
-      grad_male="B20004_012", grad_female="B20004_018", doctorate_male="B15002_018",
-      doctorate_female="B15002_035",professional_female="B15002_034",
-      professional_male="B15002_017", masters_male="B15002_016",
-      masters_female="B15002_033",
-      #marital status
-      male_seperated="DP02_0028PE", female_divorced="DP02_0036PE",
-      female_widowed="DP02_0035PE", female_seperated="DP02_0034PE",
-      female_married="DP02_0033PE",female_never_married="DP02_0032PE",
-      male_divorced="DP02_0030PE", male_widowed="DP02_0029PE", 
-      male_married="DP02_0027PE", male_never_married="DP02_0026PE",
-      female_nospouse_withchildren="DP02_0011PE",
-      male_nospouse_withchildren="DP02_0007PE",
-      #demographics
-      total_female_pop="DP05_0027PE", total_male_pop="DP05_0026PE",
-      total_pacific_pop="DP05_0052PE", total_asian_pop="DP05_0044PE",
-      total_native= "DP05_0039PE", total_black="DP05_0038PE",
-      total_white="DP05_0037PE", foreign_born="DP02_0094PE", US_born="DP02_0090PE",
-      #Income and Housing
-      total_housing_units="B25001_001", per_capita_income="DP03_0088E",
-      mean_household_income="DP03_0063E",                  
-      #POVERTY 	
-      total_poverty="B17001_001", income_below_poverty="B17001_002",
-      income_below_poverty_male="B17001_003",
-      income_below_poverty_female="B17001_017",
-      income_below_poverty_male_2534="B17001_011",
-      income_below_poverty_female_2534="B17001_025",
-      income_below_poverty_male_3544="B17001_012",
-      income_below_poverty_female_3544="B17001_026",
-      income_below_poverty_male_4554="B17001_013",
-      income_below_poverty_male_5564="B17001_014",
-      income_below_poverty_female_4554="B17001_027",
-      income_below_poverty_female_5564="B17001_028",
-      income_below_poverty_male_6574="B17001_015",
-      income_below_poverty_male_75="B17001_016",
-      income_below_poverty_female_6574="B17001_029",
-      
-      #income_below_poverty_male_75="B17001_030",
-      
-      income_below_poverty_white="B17001A_002",
-      income_below_poverty_black="B17001B_002",
-      income_below_poverty_native="B17001C_002",
-      income_below_poverty_asian="B17001D_002",
-      income_below_poverty_pacific="B17001E_002",
-      income_above_poverty_male="B17001A_032",
-      income_above_poverty_female="B17001A_046",
-      income_above_poverty_male_2534="B17001A_040",
-      income_above_poverty_female_2534="B17001A_054",
-      income_above_poverty_male_3544="B17001A_041",
-      income_above_poverty_female_3544="B17001A_055",
-      income_above_poverty_male_4554="B17001A_042",
-      income_above_poverty_male_5564="B17001A_043",
-      income_above_poverty_female_4554="B17001A_056",
-      income_above_poverty_female_5564="B17001A_057",
-      income_above_poverty_male_6574="B17001A_044",
-      income_above_poverty_male_75="B17001A_045",
-      income_above_poverty_female_6574="B17001A_058",
-      income_above_poverty_female_75="B17001A_059",
-      total_poverty_white="B17001A_001", total_poverty_black="B17001B_001",
-      total_poverty_native="B17001C_001", total_poverty_asian="B17001D_001",
-      total_poverty_pacific="B17001E_001",
-      #Occupation
-      public_admin_pe="DP03_0045PE", other_services_pe="DP03_0044PE",
-      arts_ent_rec_pe="DP03_0043PE", edu_health_social_pe="DP03_0042PE",
-      prof_scientific_pe="DP03_0041PE", finance_insurance_pe="DP03_0040PE",
-      information_pe="DP03_0039PE", transportation_pe="DP03_0038PE",
-      retail_trade_pe="DP03_0037PE", wholesale_trade_pe="DP03_0036PE",
-      manufacturing_pe="DP03_0035PE", construction_pe= "DP03_0034PE",
-      agriculture_mining_pe="DP03_0033PE", production_pe="DP03_0031PE",
-      natural_resources_pe="DP03_0030PE", sales_pe="DP03_0029PE", service_pe="DP03_0028PE",
-      management_pe="DP03_0027PE", armed_forces_pe="DP03_0006PE",
-      unemployed_pop_pe="DP03_0005PE", employed_pop_pe="DP03_0004PE",
-      veterans_pe="DP02_0069PE",
-      #industry estimates
-      public_admin="DP03_0045E", other_services="DP03_0044E",
-      arts_ent_rec="DP03_0043E", edu_health_social="DP03_0042E",
-      prof_scientific="DP03_0041E", finance_insurance="DP03_0040E",
-      information="DP03_0039E", transportation="DP03_0038E",
-      retail_trade="DP03_0037E", wholesale_trade="DP03_0036E",
-      manufacturing="DP03_0035E", construction= "DP03_0034E",
-      agriculture_mining="DP03_0033E"),
-      
-      year = year,
-      state = state_code,
-      survey = "acs5",
-      output = "wide"  # Fetch data in wide format but with MOE columns included
-  )
+data <- get_acs(
+  geography = "county",
+  variables = c(#education
+    BA_ratio="DP02_0065PE", BA_higher_ratio="DP02_0068PE", BA_male="B15002_015",
+    total_male="B01001_002", BA_female="B15002_032", total_female="B15002_019", 
+    total_white="C15002A_001", BA_higher_male_white="C15002A_006",
+    BA_higher_female_white="C15002A_011", total_black="C15002B_001",
+    BA_higher_male_black="C15002B_006", BA_higher_female_black="C15002B_011",
+    total_native="C15002C_001", BA_higher_male_native="C15002C_006",
+    BA_higher_female_native="C15002C_011", total_asian="C15002D_001",
+    BA_higher_male_asian="C15002D_006", BA_higher_female_asian="C15002D_011",
+    total_pacific="C15002E_001", BA_higher_male_pacific="C15002E_006",
+    BA_higher_female_pacific="C15002E_011", total_2534_male="B15001_011",
+    total_2534_female="B15001_052", BA_2534_male="B15001_017",
+    BA_2534_female="B15001_058", total_3544_male="B15001_019",
+    total_3544_female="B15001_060", BA_3544_male="B15001_025",
+    BA_3544_female="B15001_066", total_4564_male="B15001_027",
+    total_4564_female="B15001_068", BA_4564_male="B15001_033",
+    BA_4564_female="B15001_074", total_65_male="B15001_035",
+    total_65_female="B15001_076", BA_65_male="B15001_041",
+    BA_65_female="B15001_082", BA_or_higher= "DP02_0068P",
+    grad_2534_male= "B15001_018", grad_2534_female="B15001_059",
+    grad_3544_male="B15001_026", grad_3544_female="B15001_067", 
+    grad_4564_male="B15001_034", grad_4564_female="B15001_075",
+    grad_65_male="B15001_042", grad_65_female="B15001_083",
+    grad_male="B20004_012", grad_female="B20004_018", doctorate_male="B15002_018",
+    doctorate_female="B15002_035",professional_female="B15002_034",
+    professional_male="B15002_017", masters_male="B15002_016",
+    masters_female="B15002_033",
+    #marital status
+    male_seperated="DP02_0028PE", female_divorced="DP02_0036PE",
+    female_widowed="DP02_0035PE", female_seperated="DP02_0034PE",
+    female_married="DP02_0033PE",female_never_married="DP02_0032PE",
+    male_divorced="DP02_0030PE", male_widowed="DP02_0029PE", 
+    male_married="DP02_0027PE", male_never_married="DP02_0026PE",
+    female_nospouse_withchildren="DP02_0011PE",
+    male_nospouse_withchildren="DP02_0007PE",
+    #demographics
+    total_female_pop="DP05_0027PE", total_male_pop="DP05_0026PE",
+    total_pacific_pop="DP05_0052PE", total_asian_pop="DP05_0044PE",
+    total_native= "DP05_0039PE", total_black="DP05_0038PE",
+    total_white="DP05_0037PE", foreign_born="DP02_0094PE", US_born="DP02_0090PE",
+    #Income and Housing
+    total_housing_units="B25001_001", per_capita_income="DP03_0088E",
+    mean_household_income="DP03_0063E",                  
+    #POVERTY 	
+    total_poverty="B17001_001", income_below_poverty="B17001_002",
+    income_below_poverty_male="B17001_003",
+    income_below_poverty_female="B17001_017",
+    income_below_poverty_male_2534="B17001_011",
+    income_below_poverty_female_2534="B17001_025",
+    income_below_poverty_male_3544="B17001_012",
+    income_below_poverty_female_3544="B17001_026",
+    income_below_poverty_male_4554="B17001_013",
+    income_below_poverty_male_5564="B17001_014",
+    income_below_poverty_female_4554="B17001_027",
+    income_below_poverty_female_5564="B17001_028",
+    income_below_poverty_male_6574="B17001_015",
+    income_below_poverty_male_75="B17001_016",
+    income_below_poverty_female_6574="B17001_029",
+    
+    #income_below_poverty_male_75="B17001_030",
+    
+    income_below_poverty_white="B17001A_002",
+    income_below_poverty_black="B17001B_002",
+    income_below_poverty_native="B17001C_002",
+    income_below_poverty_asian="B17001D_002",
+    income_below_poverty_pacific="B17001E_002",
+    income_above_poverty_male="B17001A_032",
+    income_above_poverty_female="B17001A_046",
+    income_above_poverty_male_2534="B17001A_040",
+    income_above_poverty_female_2534="B17001A_054",
+    income_above_poverty_male_3544="B17001A_041",
+    income_above_poverty_female_3544="B17001A_055",
+    income_above_poverty_male_4554="B17001A_042",
+    income_above_poverty_male_5564="B17001A_043",
+    income_above_poverty_female_4554="B17001A_056",
+    income_above_poverty_female_5564="B17001A_057",
+    income_above_poverty_male_6574="B17001A_044",
+    income_above_poverty_male_75="B17001A_045",
+    income_above_poverty_female_6574="B17001A_058",
+    income_above_poverty_female_75="B17001A_059",
+    total_poverty_white="B17001A_001", total_poverty_black="B17001B_001",
+    total_poverty_native="B17001C_001", total_poverty_asian="B17001D_001",
+    total_poverty_pacific="B17001E_001",
+    #Occupation
+    public_admin_pe="DP03_0045PE", other_services_pe="DP03_0044PE",
+    arts_ent_rec_pe="DP03_0043PE", edu_health_social_pe="DP03_0042PE",
+    prof_scientific_pe="DP03_0041PE", finance_insurance_pe="DP03_0040PE",
+    information_pe="DP03_0039PE", transportation_pe="DP03_0038PE",
+    retail_trade_pe="DP03_0037PE", wholesale_trade_pe="DP03_0036PE",
+    manufacturing_pe="DP03_0035PE", construction_pe= "DP03_0034PE",
+    agriculture_mining_pe="DP03_0033PE", production_pe="DP03_0031PE",
+    natural_resources_pe="DP03_0030PE", sales_pe="DP03_0029PE", service_pe="DP03_0028PE",
+    management_pe="DP03_0027PE", armed_forces_pe="DP03_0006PE",
+    unemployed_pop_pe="DP03_0005PE", employed_pop_pe="DP03_0004PE",
+    veterans_pe="DP02_0069PE", not_in_labor_force_pe= "DP03_0007PE",
+    #industry estimates
+    public_admin="DP03_0045E", other_services="DP03_0044E",
+    arts_ent_rec="DP03_0043E", edu_health_social="DP03_0042E",
+    prof_scientific="DP03_0041E", finance_insurance="DP03_0040E",
+    information="DP03_0039E", transportation="DP03_0038E",
+    retail_trade="DP03_0037E", wholesale_trade="DP03_0036E",
+    manufacturing="DP03_0035E", construction= "DP03_0034E",
+    agriculture_mining="DP03_0033E"),
   
-  # Add a year column to the data
-  data$Year <- 2021
+  year = year,
+  state = state_code,
+  survey = "acs5",
+  output = "wide"  # Fetch data in wide format but with MOE columns included
+)
+
+# Add a year column to the data
+data$Year <- 2021
 
 # Combine the data from different years
 edu_data_2021 <- data
@@ -732,7 +737,7 @@ edu_data_2021 <- edu_data_2021 %>%
          total_never_married= (male_never_married + female_never_married),
          total_married=(male_married + female_married),
          total_DSW= (male_widowed + male_seperated + male_divorced + female_widowed + female_seperated + female_divorced),
-
+         
          #Calculate the ratio of BA by race
          BA_higher_ratio_white = (BA_higher_male_whiteE + BA_higher_female_whiteE) / total_whiteE,
          BA_higher_ratio_black = (BA_higher_male_blackE + BA_higher_female_blackE)/ total_blackE,
@@ -744,48 +749,48 @@ edu_data_2021 <- edu_data_2021 %>%
          BA_higher_ratio_3544 = (BA_3544_maleE + grad_3544_maleE + BA_3544_femaleE + grad_3544_femaleE) / (total_3544_maleE + total_3544_femaleE),
          BA_higher_ratio_4564 = (BA_4564_maleE + grad_4564_maleE + BA_4564_femaleE + grad_4564_femaleE) / (total_4564_maleE + total_4564_femaleE),
          BA_higher_ratio_65 = (BA_65_maleE + grad_65_maleE + BA_65_femaleE + grad_65_femaleE) / (total_65_maleE + total_65_femaleE),
-
+         
          #Poverty Ratios
          below_poverty_ratio = income_below_povertyE/total_povertyE,
          below_poverty_ratio_male = income_below_poverty_maleE/(income_below_poverty_maleE + income_above_poverty_maleE),
-        below_poverty_ratio_female = income_below_poverty_femaleE/(income_below_poverty_femaleE + income_above_poverty_femaleE),
-        below_poverty_ratio_2534 = (income_below_poverty_male_2534E + income_below_poverty_female_2534E) / (income_above_poverty_male_2534E + income_above_poverty_female_2534E + income_below_poverty_male_2534E + income_below_poverty_female_2534E),
-        below_poverty_ratio_3544 = (income_below_poverty_male_3544E + income_below_poverty_female_3544E) / (income_above_poverty_male_3544E + income_above_poverty_female_3544E + income_below_poverty_male_3544E + income_below_poverty_female_3544E),
-        below_poverty_ratio_4564 = (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E) / (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E + income_above_poverty_male_4554E + income_above_poverty_male_5564E + income_above_poverty_female_4554E + income_above_poverty_female_5564E),
-        below_poverty_ratio_65=(income_below_poverty_male_6574E+income_below_poverty_female_6574E)/(income_below_poverty_male_6574E + income_below_poverty_female_6574E + income_above_poverty_male_6574E + income_above_poverty_female_6574E),
-
-below_poverty_ratio_white = income_below_poverty_whiteE/total_poverty_whiteE,   
-below_poverty_ratio_black = income_below_poverty_blackE/total_poverty_blackE,
-below_poverty_ratio_asian_pacific = (income_below_poverty_asianE + income_below_poverty_pacificE)/(total_poverty_asianE + total_poverty_pacificE),
+         below_poverty_ratio_female = income_below_poverty_femaleE/(income_below_poverty_femaleE + income_above_poverty_femaleE),
+         below_poverty_ratio_2534 = (income_below_poverty_male_2534E + income_below_poverty_female_2534E) / (income_above_poverty_male_2534E + income_above_poverty_female_2534E + income_below_poverty_male_2534E + income_below_poverty_female_2534E),
+         below_poverty_ratio_3544 = (income_below_poverty_male_3544E + income_below_poverty_female_3544E) / (income_above_poverty_male_3544E + income_above_poverty_female_3544E + income_below_poverty_male_3544E + income_below_poverty_female_3544E),
+         below_poverty_ratio_4564 = (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E) / (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E + income_above_poverty_male_4554E + income_above_poverty_male_5564E + income_above_poverty_female_4554E + income_above_poverty_female_5564E),
+         below_poverty_ratio_65=(income_below_poverty_male_6574E+income_below_poverty_female_6574E)/(income_below_poverty_male_6574E + income_below_poverty_female_6574E + income_above_poverty_male_6574E + income_above_poverty_female_6574E),
+         
+         below_poverty_ratio_white = income_below_poverty_whiteE/total_poverty_whiteE,   
+         below_poverty_ratio_black = income_below_poverty_blackE/total_poverty_blackE,
+         below_poverty_ratio_asian_pacific = (income_below_poverty_asianE + income_below_poverty_pacificE)/(total_poverty_asianE + total_poverty_pacificE),
          below_poverty_ratio_native = income_below_poverty_nativeE/total_poverty_nativeE) %>%
-         rename(
-           County.Code = GEOID,
-           County = NAME
-         )%>%
-           select(Year, State_fip, County.Code, County, total_asian_pacific_pop, DSW_male, DSW_female,
-                  total_DSW, BA_higher_ratio_male, BA_higher_ratio_female, BA_higher_ratio_2534,
-                  BA_higher_ratio_3544, BA_higher_ratio_4564, BA_higher_ratio_65, BA_higher_ratio_white,
-                  BA_higher_ratio_black, BA_higher_ratio_native, BA_higher_ratio_asian_pacific,
-                  below_poverty_ratio, below_poverty_ratio_male, below_poverty_ratio_female,
-                  below_poverty_ratio_2534, below_poverty_ratio_3544, below_poverty_ratio_4564,
-                  below_poverty_ratio_65, below_poverty_ratio_white, below_poverty_ratio_black,
-                  below_poverty_ratio_native, below_poverty_ratio_asian_pacific,
-                  
-                  #raw variables
-                  BA_higher_ratio,
-                  male_seperated, female_divorced, female_widowed, female_seperated,
-                  female_married,female_never_married, male_divorced, male_widowed, male_married,
-                  male_never_married, female_nospouse_withchildren, male_nospouse_withchildren,
-                  total_female_pop, total_male_pop, total_pacific_pop, total_asian_pop, total_native,
-                  total_black, total_white, foreign_born, US_born, total_housing_unitsE, per_capita_income,
-                  mean_household_income, public_admin, other_services, arts_ent_rec, edu_health_social,
-                  prof_scientific, finance_insurance, information, transportation, retail_trade,
-                  wholesale_trade, manufacturing, construction, agriculture_mining, production_pe,
-                  natural_resources_pe, sales_pe, service_pe, management_pe, armed_forces_pe, unemployed_pop_pe, 
-                  employed_pop_pe, veterans_pe, public_admin_pe, other_services_pe, arts_ent_rec_pe, edu_health_social_pe,
-                  prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
-                  wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
-                  )
+  rename(
+    County.Code = GEOID,
+    County = NAME
+  )%>%
+  select(Year, State_fip, County.Code, County, total_asian_pacific_pop, DSW_male, DSW_female,
+         total_DSW, BA_higher_ratio_male, BA_higher_ratio_female, BA_higher_ratio_2534,
+         BA_higher_ratio_3544, BA_higher_ratio_4564, BA_higher_ratio_65, BA_higher_ratio_white,
+         BA_higher_ratio_black, BA_higher_ratio_native, BA_higher_ratio_asian_pacific,
+         below_poverty_ratio, below_poverty_ratio_male, below_poverty_ratio_female,
+         below_poverty_ratio_2534, below_poverty_ratio_3544, below_poverty_ratio_4564,
+         below_poverty_ratio_65, below_poverty_ratio_white, below_poverty_ratio_black,
+         below_poverty_ratio_native, below_poverty_ratio_asian_pacific,
+         
+         #raw variables
+         BA_higher_ratio,
+         male_seperated, female_divorced, female_widowed, female_seperated,
+         female_married,female_never_married, male_divorced, male_widowed, male_married,
+         male_never_married, female_nospouse_withchildren, male_nospouse_withchildren,
+         total_female_pop, total_male_pop, total_pacific_pop, total_asian_pop, total_native,
+         total_black, total_white, foreign_born, US_born, total_housing_unitsE, per_capita_income,
+         mean_household_income, public_admin, other_services, arts_ent_rec, edu_health_social,
+         prof_scientific, finance_insurance, information, transportation, retail_trade,
+         wholesale_trade, manufacturing, construction, agriculture_mining, production_pe,
+         natural_resources_pe, sales_pe, service_pe, management_pe, armed_forces_pe, unemployed_pop_pe, not_in_labor_force_pe,
+         employed_pop_pe, veterans_pe, public_admin_pe, other_services_pe, arts_ent_rec_pe, edu_health_social_pe,
+         prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
+         wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
+  )
 ```
 
 ```{r 2022 ACS}
@@ -797,120 +802,120 @@ year <- 2022  # data availability
 state_code <- c(1, 13, 21, 24, 28, 36, 37, 39, 42, 45, 47, 51, 54)
 
 # get codes for each variable and rename
-  data <- get_acs(
-    geography = "county",
-    variables = c(#education
-      BA_ratio="DP02_0065PE", BA_higher_ratio="DP02_0068PE", BA_male="B15002_015",
-      total_male="B01001_002", BA_female="B15002_032", total_female="B15002_019", 
-      total_white="C15002A_001", BA_higher_male_white="C15002A_006",
-      BA_higher_female_white="C15002A_011", total_black="C15002B_001",
-      BA_higher_male_black="C15002B_006", BA_higher_female_black="C15002B_011",
-      total_native="C15002C_001", BA_higher_male_native="C15002C_006",
-      BA_higher_female_native="C15002C_011", total_asian="C15002D_001",
-      BA_higher_male_asian="C15002D_006", BA_higher_female_asian="C15002D_011",
-      total_pacific="C15002E_001", BA_higher_male_pacific="C15002E_006",
-      BA_higher_female_pacific="C15002E_011", total_2534_male="B15001_011",
-      total_2534_female="B15001_052", BA_2534_male="B15001_017",
-      BA_2534_female="B15001_058", total_3544_male="B15001_019",
-      total_3544_female="B15001_060", BA_3544_male="B15001_025",
-      BA_3544_female="B15001_066", total_4564_male="B15001_027",
-      total_4564_female="B15001_068", BA_4564_male="B15001_033",
-      BA_4564_female="B15001_074", total_65_male="B15001_035",
-      total_65_female="B15001_076", BA_65_male="B15001_041",
-      BA_65_female="B15001_082", BA_or_higher= "DP02_0068P",
-      grad_2534_male= "B15001_018", grad_2534_female="B15001_059",
-      grad_3544_male="B15001_026", grad_3544_female="B15001_067", 
-      grad_4564_male="B15001_034", grad_4564_female="B15001_075",
-      grad_65_male="B15001_042", grad_65_female="B15001_083",
-      grad_male="B20004_012", grad_female="B20004_018", doctorate_male="B15002_018",
-      doctorate_female="B15002_035",professional_female="B15002_034",
-      professional_male="B15002_017", masters_male="B15002_016",
-      masters_female="B15002_033",
-      #marital status
-      male_seperated="DP02_0028PE", female_divorced="DP02_0036PE",
-      female_widowed="DP02_0035PE", female_seperated="DP02_0034PE",
-      female_married="DP02_0033PE",female_never_married="DP02_0032PE",
-      male_divorced="DP02_0030PE", male_widowed="DP02_0029PE", 
-      male_married="DP02_0027PE", male_never_married="DP02_0026PE",
-      female_nospouse_withchildren="DP02_0011PE",
-      male_nospouse_withchildren="DP02_0007PE",
-      #demographics
-      total_female_pop="DP05_0027PE", total_male_pop="DP05_0026PE",
-      total_pacific_pop="DP05_0052PE", total_asian_pop="DP05_0044PE",
-      total_native= "DP05_0039PE", total_black="DP05_0038PE",
-      total_white="DP05_0037PE", foreign_born="DP02_0094PE", US_born="DP02_0090PE",
-      #Income and Housing
-      total_housing_units="B25001_001", per_capita_income="DP03_0088E",
-      mean_household_income="DP03_0063E",                  
-      #POVERTY 	
-      total_poverty="B17001_001", income_below_poverty="B17001_002",
-      income_below_poverty_male="B17001_003",
-      income_below_poverty_female="B17001_017",
-      income_below_poverty_male_2534="B17001_011",
-      income_below_poverty_female_2534="B17001_025",
-      income_below_poverty_male_3544="B17001_012",
-      income_below_poverty_female_3544="B17001_026",
-      income_below_poverty_male_4554="B17001_013",
-      income_below_poverty_male_5564="B17001_014",
-      income_below_poverty_female_4554="B17001_027",
-      income_below_poverty_female_5564="B17001_028",
-      income_below_poverty_male_6574="B17001_015",
-      income_below_poverty_male_75="B17001_016",
-      income_below_poverty_female_6574="B17001_029",
-      
-      #income_below_poverty_male_75="B17001_030",
-      
-      income_below_poverty_white="B17001A_002",
-      income_below_poverty_black="B17001B_002",
-      income_below_poverty_native="B17001C_002",
-      income_below_poverty_asian="B17001D_002",
-      income_below_poverty_pacific="B17001E_002",
-      income_above_poverty_male="B17001A_032",
-      income_above_poverty_female="B17001A_046",
-      income_above_poverty_male_2534="B17001A_040",
-      income_above_poverty_female_2534="B17001A_054",
-      income_above_poverty_male_3544="B17001A_041",
-      income_above_poverty_female_3544="B17001A_055",
-      income_above_poverty_male_4554="B17001A_042",
-      income_above_poverty_male_5564="B17001A_043",
-      income_above_poverty_female_4554="B17001A_056",
-      income_above_poverty_female_5564="B17001A_057",
-      income_above_poverty_male_6574="B17001A_044",
-      income_above_poverty_male_75="B17001A_045",
-      income_above_poverty_female_6574="B17001A_058",
-      income_above_poverty_female_75="B17001A_059",
-      total_poverty_white="B17001A_001", total_poverty_black="B17001B_001",
-      total_poverty_native="B17001C_001", total_poverty_asian="B17001D_001",
-      total_poverty_pacific="B17001E_001",
-      #Occupation
-      public_admin_pe="DP03_0045PE", other_services_pe="DP03_0044PE",
-      arts_ent_rec_pe="DP03_0043PE", edu_health_social_pe="DP03_0042PE",
-      prof_scientific_pe="DP03_0041PE", finance_insurance_pe="DP03_0040PE",
-      information_pe="DP03_0039PE", transportation_pe="DP03_0038PE",
-      retail_trade_pe="DP03_0037PE", wholesale_trade_pe="DP03_0036PE",
-      manufacturing_pe="DP03_0035PE", construction_pe= "DP03_0034PE",
-      agriculture_mining_pe="DP03_0033PE", production_pe="DP03_0031PE",
-      natural_resources_pe="DP03_0030PE", sales_pe="DP03_0029PE", service_pe="DP03_0028PE",
-      management_pe="DP03_0027PE", armed_forces_pe="DP03_0006PE",
-      unemployed_pop_pe="DP03_0005PE", employed_pop_pe="DP03_0004PE",
-      veterans_pe="DP02_0069PE",
-      #industry estimates
-      public_admin="DP03_0045E", other_services="DP03_0044E",
-      arts_ent_rec="DP03_0043E", edu_health_social="DP03_0042E",
-      prof_scientific="DP03_0041E", finance_insurance="DP03_0040E",
-      information="DP03_0039E", transportation="DP03_0038E",
-      retail_trade="DP03_0037E", wholesale_trade="DP03_0036E",
-      manufacturing="DP03_0035E", construction= "DP03_0034E",
-      agriculture_mining="DP03_0033E"),
-      
-      year = year,
-      state = state_code,
-      survey = "acs5",
-      output = "wide"  # Fetch data in wide format but with MOE columns included
-  )
+data <- get_acs(
+  geography = "county",
+  variables = c(#education
+    BA_ratio="DP02_0065PE", BA_higher_ratio="DP02_0068PE", BA_male="B15002_015",
+    total_male="B01001_002", BA_female="B15002_032", total_female="B15002_019", 
+    total_white="C15002A_001", BA_higher_male_white="C15002A_006",
+    BA_higher_female_white="C15002A_011", total_black="C15002B_001",
+    BA_higher_male_black="C15002B_006", BA_higher_female_black="C15002B_011",
+    total_native="C15002C_001", BA_higher_male_native="C15002C_006",
+    BA_higher_female_native="C15002C_011", total_asian="C15002D_001",
+    BA_higher_male_asian="C15002D_006", BA_higher_female_asian="C15002D_011",
+    total_pacific="C15002E_001", BA_higher_male_pacific="C15002E_006",
+    BA_higher_female_pacific="C15002E_011", total_2534_male="B15001_011",
+    total_2534_female="B15001_052", BA_2534_male="B15001_017",
+    BA_2534_female="B15001_058", total_3544_male="B15001_019",
+    total_3544_female="B15001_060", BA_3544_male="B15001_025",
+    BA_3544_female="B15001_066", total_4564_male="B15001_027",
+    total_4564_female="B15001_068", BA_4564_male="B15001_033",
+    BA_4564_female="B15001_074", total_65_male="B15001_035",
+    total_65_female="B15001_076", BA_65_male="B15001_041",
+    BA_65_female="B15001_082", BA_or_higher= "DP02_0068P",
+    grad_2534_male= "B15001_018", grad_2534_female="B15001_059",
+    grad_3544_male="B15001_026", grad_3544_female="B15001_067", 
+    grad_4564_male="B15001_034", grad_4564_female="B15001_075",
+    grad_65_male="B15001_042", grad_65_female="B15001_083",
+    grad_male="B20004_012", grad_female="B20004_018", doctorate_male="B15002_018",
+    doctorate_female="B15002_035",professional_female="B15002_034",
+    professional_male="B15002_017", masters_male="B15002_016",
+    masters_female="B15002_033",
+    #marital status
+    male_seperated="DP02_0028PE", female_divorced="DP02_0036PE",
+    female_widowed="DP02_0035PE", female_seperated="DP02_0034PE",
+    female_married="DP02_0033PE",female_never_married="DP02_0032PE",
+    male_divorced="DP02_0030PE", male_widowed="DP02_0029PE", 
+    male_married="DP02_0027PE", male_never_married="DP02_0026PE",
+    female_nospouse_withchildren="DP02_0011PE",
+    male_nospouse_withchildren="DP02_0007PE",
+    #demographics
+    total_female_pop="DP05_0027PE", total_male_pop="DP05_0026PE",
+    total_pacific_pop="DP05_0052PE", total_asian_pop="DP05_0044PE",
+    total_native= "DP05_0039PE", total_black="DP05_0038PE",
+    total_white="DP05_0037PE", foreign_born="DP02_0094PE", US_born="DP02_0090PE",
+    #Income and Housing
+    total_housing_units="B25001_001", per_capita_income="DP03_0088E",
+    mean_household_income="DP03_0063E",                  
+    #POVERTY 	
+    total_poverty="B17001_001", income_below_poverty="B17001_002",
+    income_below_poverty_male="B17001_003",
+    income_below_poverty_female="B17001_017",
+    income_below_poverty_male_2534="B17001_011",
+    income_below_poverty_female_2534="B17001_025",
+    income_below_poverty_male_3544="B17001_012",
+    income_below_poverty_female_3544="B17001_026",
+    income_below_poverty_male_4554="B17001_013",
+    income_below_poverty_male_5564="B17001_014",
+    income_below_poverty_female_4554="B17001_027",
+    income_below_poverty_female_5564="B17001_028",
+    income_below_poverty_male_6574="B17001_015",
+    income_below_poverty_male_75="B17001_016",
+    income_below_poverty_female_6574="B17001_029",
+    
+    #income_below_poverty_male_75="B17001_030",
+    
+    income_below_poverty_white="B17001A_002",
+    income_below_poverty_black="B17001B_002",
+    income_below_poverty_native="B17001C_002",
+    income_below_poverty_asian="B17001D_002",
+    income_below_poverty_pacific="B17001E_002",
+    income_above_poverty_male="B17001A_032",
+    income_above_poverty_female="B17001A_046",
+    income_above_poverty_male_2534="B17001A_040",
+    income_above_poverty_female_2534="B17001A_054",
+    income_above_poverty_male_3544="B17001A_041",
+    income_above_poverty_female_3544="B17001A_055",
+    income_above_poverty_male_4554="B17001A_042",
+    income_above_poverty_male_5564="B17001A_043",
+    income_above_poverty_female_4554="B17001A_056",
+    income_above_poverty_female_5564="B17001A_057",
+    income_above_poverty_male_6574="B17001A_044",
+    income_above_poverty_male_75="B17001A_045",
+    income_above_poverty_female_6574="B17001A_058",
+    income_above_poverty_female_75="B17001A_059",
+    total_poverty_white="B17001A_001", total_poverty_black="B17001B_001",
+    total_poverty_native="B17001C_001", total_poverty_asian="B17001D_001",
+    total_poverty_pacific="B17001E_001",
+    #Occupation
+    public_admin_pe="DP03_0045PE", other_services_pe="DP03_0044PE",
+    arts_ent_rec_pe="DP03_0043PE", edu_health_social_pe="DP03_0042PE",
+    prof_scientific_pe="DP03_0041PE", finance_insurance_pe="DP03_0040PE",
+    information_pe="DP03_0039PE", transportation_pe="DP03_0038PE",
+    retail_trade_pe="DP03_0037PE", wholesale_trade_pe="DP03_0036PE",
+    manufacturing_pe="DP03_0035PE", construction_pe= "DP03_0034PE",
+    agriculture_mining_pe="DP03_0033PE", production_pe="DP03_0031PE",
+    natural_resources_pe="DP03_0030PE", sales_pe="DP03_0029PE", service_pe="DP03_0028PE",
+    management_pe="DP03_0027PE", armed_forces_pe="DP03_0006PE",
+    unemployed_pop_pe="DP03_0005PE", employed_pop_pe="DP03_0004PE",
+    veterans_pe="DP02_0069PE", not_in_labor_force_pe= "DP03_0007PE",
+    #industry estimates
+    public_admin="DP03_0045E", other_services="DP03_0044E",
+    arts_ent_rec="DP03_0043E", edu_health_social="DP03_0042E",
+    prof_scientific="DP03_0041E", finance_insurance="DP03_0040E",
+    information="DP03_0039E", transportation="DP03_0038E",
+    retail_trade="DP03_0037E", wholesale_trade="DP03_0036E",
+    manufacturing="DP03_0035E", construction= "DP03_0034E",
+    agriculture_mining="DP03_0033E"),
   
-  # Add a year column to the data
-  data$Year <- 2022
+  year = year,
+  state = state_code,
+  survey = "acs5",
+  output = "wide"  # Fetch data in wide format but with MOE columns included
+)
+
+# Add a year column to the data
+data$Year <- 2022
 
 # Combine the data from different years
 edu_data_2022 <- data
@@ -925,7 +930,7 @@ edu_data_2022 <- edu_data_2022 %>%
          total_never_married= (male_never_married + female_never_married),
          total_married=(male_married + female_married),
          total_DSW= (male_widowed + male_seperated + male_divorced + female_widowed + female_seperated + female_divorced),
-
+         
          #Calculate the ratio of BA by race
          BA_higher_ratio_white = (BA_higher_male_whiteE + BA_higher_female_whiteE) / total_whiteE,
          BA_higher_ratio_black = (BA_higher_male_blackE + BA_higher_female_blackE)/ total_blackE,
@@ -937,60 +942,60 @@ edu_data_2022 <- edu_data_2022 %>%
          BA_higher_ratio_3544 = (BA_3544_maleE + grad_3544_maleE + BA_3544_femaleE + grad_3544_femaleE) / (total_3544_maleE + total_3544_femaleE),
          BA_higher_ratio_4564 = (BA_4564_maleE + grad_4564_maleE + BA_4564_femaleE + grad_4564_femaleE) / (total_4564_maleE + total_4564_femaleE),
          BA_higher_ratio_65 = (BA_65_maleE + grad_65_maleE + BA_65_femaleE + grad_65_femaleE) / (total_65_maleE + total_65_femaleE),
-
+         
          #Poverty Ratios
          below_poverty_ratio = income_below_povertyE/total_povertyE,
          below_poverty_ratio_male = income_below_poverty_maleE/(income_below_poverty_maleE + income_above_poverty_maleE),
-        below_poverty_ratio_female = income_below_poverty_femaleE/(income_below_poverty_femaleE + income_above_poverty_femaleE),
-        below_poverty_ratio_2534 = (income_below_poverty_male_2534E + income_below_poverty_female_2534E) / (income_above_poverty_male_2534E + income_above_poverty_female_2534E + income_below_poverty_male_2534E + income_below_poverty_female_2534E),
-        below_poverty_ratio_3544 = (income_below_poverty_male_3544E + income_below_poverty_female_3544E) / (income_above_poverty_male_3544E + income_above_poverty_female_3544E + income_below_poverty_male_3544E + income_below_poverty_female_3544E),
-        below_poverty_ratio_4564 = (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E) / (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E + income_above_poverty_male_4554E + income_above_poverty_male_5564E + income_above_poverty_female_4554E + income_above_poverty_female_5564E),
-        below_poverty_ratio_65=(income_below_poverty_male_6574E+income_below_poverty_female_6574E)/(income_below_poverty_male_6574E + income_below_poverty_female_6574E + income_above_poverty_male_6574E + income_above_poverty_female_6574E),
-
-below_poverty_ratio_white = income_below_poverty_whiteE/total_poverty_whiteE,   
-below_poverty_ratio_black = income_below_poverty_blackE/total_poverty_blackE,
-below_poverty_ratio_asian_pacific = (income_below_poverty_asianE + income_below_poverty_pacificE)/(total_poverty_asianE + total_poverty_pacificE),
+         below_poverty_ratio_female = income_below_poverty_femaleE/(income_below_poverty_femaleE + income_above_poverty_femaleE),
+         below_poverty_ratio_2534 = (income_below_poverty_male_2534E + income_below_poverty_female_2534E) / (income_above_poverty_male_2534E + income_above_poverty_female_2534E + income_below_poverty_male_2534E + income_below_poverty_female_2534E),
+         below_poverty_ratio_3544 = (income_below_poverty_male_3544E + income_below_poverty_female_3544E) / (income_above_poverty_male_3544E + income_above_poverty_female_3544E + income_below_poverty_male_3544E + income_below_poverty_female_3544E),
+         below_poverty_ratio_4564 = (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E) / (income_below_poverty_male_4554E + income_below_poverty_male_5564E + income_below_poverty_female_4554E + income_below_poverty_female_5564E + income_above_poverty_male_4554E + income_above_poverty_male_5564E + income_above_poverty_female_4554E + income_above_poverty_female_5564E),
+         below_poverty_ratio_65=(income_below_poverty_male_6574E+income_below_poverty_female_6574E)/(income_below_poverty_male_6574E + income_below_poverty_female_6574E + income_above_poverty_male_6574E + income_above_poverty_female_6574E),
+         
+         below_poverty_ratio_white = income_below_poverty_whiteE/total_poverty_whiteE,   
+         below_poverty_ratio_black = income_below_poverty_blackE/total_poverty_blackE,
+         below_poverty_ratio_asian_pacific = (income_below_poverty_asianE + income_below_poverty_pacificE)/(total_poverty_asianE + total_poverty_pacificE),
          below_poverty_ratio_native = income_below_poverty_nativeE/total_poverty_nativeE) %>%
-         rename(
-           County.Code = GEOID,
-           County = NAME
-         )%>%
-           select(Year, State_fip, County.Code, County, total_asian_pacific_pop, DSW_male, DSW_female,
-                  total_DSW, BA_higher_ratio_male, BA_higher_ratio_female, BA_higher_ratio_2534,
-                  BA_higher_ratio_3544, BA_higher_ratio_4564, BA_higher_ratio_65, BA_higher_ratio_white,
-                  BA_higher_ratio_black, BA_higher_ratio_native, BA_higher_ratio_asian_pacific,
-                  below_poverty_ratio, below_poverty_ratio_male, below_poverty_ratio_female,
-                  below_poverty_ratio_2534, below_poverty_ratio_3544, below_poverty_ratio_4564,
-                  below_poverty_ratio_65, below_poverty_ratio_white, below_poverty_ratio_black,
-                  below_poverty_ratio_native, below_poverty_ratio_asian_pacific,
-                  
-                  #raw variables
-                  BA_higher_ratio,
-                  male_seperated, female_divorced, female_widowed, female_seperated,
-                  female_married,female_never_married, male_divorced, male_widowed, male_married,
-                  male_never_married, female_nospouse_withchildren, male_nospouse_withchildren,
-                  total_female_pop, total_male_pop, total_pacific_pop, total_asian_pop, total_native,
-                  total_black, total_white, foreign_born, US_born, total_housing_unitsE, per_capita_income,
-                  mean_household_income, public_admin, other_services, arts_ent_rec, edu_health_social,
-                  prof_scientific, finance_insurance, information, transportation, retail_trade,
-                  wholesale_trade, manufacturing, construction, agriculture_mining, production_pe,
-                  natural_resources_pe, sales_pe, service_pe, management_pe, armed_forces_pe, unemployed_pop_pe, 
-                  employed_pop_pe, veterans_pe, public_admin_pe, other_services_pe, arts_ent_rec_pe, edu_health_social_pe,
-                  prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
-                  wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
-                  )
+  rename(
+    County.Code = GEOID,
+    County = NAME
+  )%>%
+  select(Year, State_fip, County.Code, County, total_asian_pacific_pop, DSW_male, DSW_female,
+         total_DSW, BA_higher_ratio_male, BA_higher_ratio_female, BA_higher_ratio_2534,
+         BA_higher_ratio_3544, BA_higher_ratio_4564, BA_higher_ratio_65, BA_higher_ratio_white,
+         BA_higher_ratio_black, BA_higher_ratio_native, BA_higher_ratio_asian_pacific,
+         below_poverty_ratio, below_poverty_ratio_male, below_poverty_ratio_female,
+         below_poverty_ratio_2534, below_poverty_ratio_3544, below_poverty_ratio_4564,
+         below_poverty_ratio_65, below_poverty_ratio_white, below_poverty_ratio_black,
+         below_poverty_ratio_native, below_poverty_ratio_asian_pacific,
+         
+         #raw variables
+         BA_higher_ratio,
+         male_seperated, female_divorced, female_widowed, female_seperated,
+         female_married,female_never_married, male_divorced, male_widowed, male_married,
+         male_never_married, female_nospouse_withchildren, male_nospouse_withchildren,
+         total_female_pop, total_male_pop, total_pacific_pop, total_asian_pop, total_native,
+         total_black, total_white, foreign_born, US_born, total_housing_unitsE, per_capita_income,
+         mean_household_income, public_admin, other_services, arts_ent_rec, edu_health_social,
+         prof_scientific, finance_insurance, information, transportation, retail_trade,
+         wholesale_trade, manufacturing, construction, agriculture_mining, production_pe,
+         natural_resources_pe, sales_pe, service_pe, management_pe, armed_forces_pe, unemployed_pop_pe, not_in_labor_force_pe,
+         employed_pop_pe, veterans_pe, public_admin_pe, other_services_pe, arts_ent_rec_pe, edu_health_social_pe,
+         prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
+         wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
+  )
 ```
 
 
 ```{r merge}
 #merge all acs years into one data frame
-appalachia_acs_2018_2022 = rbind(edu_data_2018, edu_data_2019, edu_data_2020, edu_data_2021, edu_data_2022)
-View(appalachia_acs_2018_2022)
+appalachia_acs_2015_2022 = rbind(edu_data_1518, edu_data_2019, edu_data_2020, edu_data_2021, edu_data_2022)
+View(appalachia_acs_2015_2022)
 ```
 
-```{r data export,eval=FALSE}
-write.csv(appalachia_acs_2018_2022, 
-          file = here("Data/merged_data", "appalachia_acs_2018_2022.csv"),
+```{r data export}
+write.csv(appalachia_acs_2015_2022, 
+          file = here("Data/merged_data", "appalachia_acs_2015_2022.csv"),
           row.names = FALSE) 
 ```
 
