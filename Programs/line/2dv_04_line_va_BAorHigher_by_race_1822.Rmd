@@ -1,0 +1,64 @@
+---
+title: "VA BA or Higher by race 1822"
+author: "Brynna Wert"
+date: "2024-06-18"
+output: html_document
+---
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(viridis)
+```
+
+```{r}
+ 
+# Select and filter the relevant columns and rows
+BA_higher_race <- virginia_2018_2022 %>%
+  select(Year, BA_higher_ratio_white, BA_higher_ratio_black, BA_higher_ratio_asian_pacific, BA_higher_ratio_native)
+```
+
+```{r}
+# Convert columns to numeric
+BA_higher_race <- BA_higher_race %>%
+  mutate(across(starts_with("BA_higher_ratio"), as.numeric))
+```
+
+```{r}
+# Convert to long format
+BA_higher_race_long <- BA_higher_race %>%
+  pivot_longer(
+    cols = starts_with("BA_higher_ratio"), 
+    names_to = "Race", 
+    names_prefix = "BA_higher_ratio_",
+    values_to = "BA_higher"
+  )
+
+# Calculate the mean death rate
+BA_higher_race_mean <- BA_higher_race_long %>%
+  group_by(Year, Race) %>%
+  summarise(Mean_BA_higher = mean(BA_higher, na.rm = TRUE)* 100, .groups = "drop")
+
+#rename the legend
+race_labels <- c(
+  "asian_pacific" = "Asian/Pacific Islander",
+  "black" = "Black",
+  "native" = "Native American",
+  "white" = "White"
+)
+
+# Create the line plot
+ggplot(BA_higher_race_mean, aes(x = Year, y = Mean_BA_higher, color = Race, group = Race)) +
+  geom_line(size = 1) +
+  geom_point(size = 3) +
+  labs(title = "Virginia Percentage with BA or Higher by Race in 2018-2022",
+       caption = "Data obtained from American Commmunity Survey",
+       x = "Year",
+       y = "Mean with BA or Higher (%)") +
+  theme_minimal() +
+  
+  scale_color_viridis_d() +  # Using viridis for colorblind-friendly palette 
+  scale_color_manual(values = viridis::viridis(4), labels = race_labels)  # Manually setting the labels for the races
+```
