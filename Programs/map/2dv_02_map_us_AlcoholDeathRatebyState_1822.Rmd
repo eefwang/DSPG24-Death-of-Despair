@@ -1,0 +1,102 @@
+---
+title: "state map visuals for dod causes over the years"
+author: "filza mutaal"
+date: "2024-06-07"
+output: html_document
+---
+
+```{r}
+# Load the necessary library
+library(dplyr)
+
+# Sample dataset (assuming you already have this loaded)
+# year.state.all_death <- read.csv("your_dataset.csv")
+
+# Convert the State variable to uppercase
+year.state.all_death <- year.state.all_death %>%
+  mutate(State = toupper(State))
+
+# View the updated dataset
+head(year.state.all_death)
+```
+
+
+
+
+
+
+```{r}
+library(sf)
+library(leaflet)
+library(dplyr)
+
+# Define the path to the shapefile
+shapefile_path <- "C:/Users/mutaalf/Desktop/DOD Code/States_shapefile-shp/States_shapefile.shp"
+
+# Read the shapefile
+states <- st_read(shapefile_path)
+print("Shapefile read successfully")
+print(str(states))  # Print structure of the spatial data
+
+# Rename the State_Name column in the spatial data to State
+states <- states %>% rename(State = State_Name)
+
+# Convert the State variable to uppercase in the year.state.alcohol dataset
+year.state.alcohol <- year.state.alcohol %>%
+  mutate(State = toupper(State))
+
+# Assuming 'year.state.alcohol' is already loaded in your environment
+year.state.alcohol_1822 <- year.state.alcohol %>%
+  group_by(State) %>%
+  summarise(
+    Total_Deaths = sum(Deaths),
+    Total_Population = sum(Population),
+    alcohol_death_rate = (Total_Deaths / Total_Population) * 100000,  # Alcohol Death rate per 100,000 population
+    .groups = "drop"  # Optional: drop the grouping once summarisation is done
+  ) %>%
+  na.omit()
+
+print("Summarized data:")
+print(str(year.state.alcohol_1822))  # Print structure of the summarized data
+
+# Merge the summarized data with the spatial data
+states_merged <- merge(states, year.state.alcohol_1822, by = "State")
+print("Merged data:")
+print(str(states_merged))  # Print structure of the merged data
+
+# Check if merged data contains any geometries
+print(st_geometry(states_merged))
+
+mybins <- c(0, 15, 30, 45, 60, 75, 90)
+
+# Define the color palette for the death rate
+pal <- colorBin(
+  palette = "viridis",
+  domain = states_merged$alcohol_death_rate,
+  bins = mybins
+)
+
+# Create the leaflet map
+map <- leaflet(states_merged) %>%
+  addTiles() %>%
+  addPolygons(
+    fillColor = ~pal(alcohol_death_rate),
+    fillOpacity = 0.7,
+    color = "white",
+    weight = 1,
+    popup = ~paste("State:", State, "<br>Death rate:", alcohol_death_rate)
+  ) %>%
+  addLegend(
+    pal = pal,
+    values = ~alcohol_death_rate,
+    opacity = 0.7,
+    title = "Average Alcohol Death Rates per 100,000 people 2018-2022",
+    position = "bottomleft"
+  )
+
+# Display the map
+map
+```
+
+
+
