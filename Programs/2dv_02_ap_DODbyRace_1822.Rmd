@@ -1,0 +1,60 @@
+```{r}
+library(dplyr)
+sum(is.na(APDOD$Death.Rate))
+sum(is.na(APDOD$Death.Rate.Indian))
+DOD <- DOD%>%
+  rename(FIPS = County.Code)
+DOD$FIPS = as.integer(DOD$FIPS)
+Subregions_in_Appalachia_2021_Data$FIPS = as.integer(Subregions_in_Appalachia_2021_Data$FIPS)
+APDOD <- Subregions_in_Appalachia_2021_Data %>%
+  left_join(DOD, by = c("FIPS"))
+APDOD <- APDOD %>%
+  filter(Year >= 2018 & Year <= 2022)
+```
+
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(viridis)
+ 
+# Load the dataset
+mcod_total_DOD <- read.delim("C:/Users/mutaalf/Desktop/DOD Code/DOD.txt", sep = ",", header = TRUE)
+ 
+# Select and filter the relevant columns and rows
+DOD_race <- mcod_total_DOD %>%
+  select(Year, County.Code, Death.Rate.White, Death.Rate.Black, Death.Rate.Asian, Death.Rate.Indian) %>%
+  filter(Year >= 2018 & Year <= 2022)
+ 
+# Convert to long format and calculate mean death rate
+DOD_race_long <- DOD_race %>%
+  pivot_longer(
+    cols = starts_with("Death.Rate"), 
+    names_to = "Race", 
+    names_prefix = "Death.Rate.",
+    values_to = "Death.Rate"
+  ) %>%
+  group_by(Year, Race) %>%
+  summarise(Mean.Death.Rate = mean(Death.Rate, na.rm = TRUE), .groups = "drop") %>%
+  ungroup()
+ 
+
+# Plotting with ggplot
+race_labels <- c("White", "Black", "Asian", "Indian")
+ 
+# Plotting with ggplot
+ggplot(DOD_race_long, aes(x = Year, y = Mean.Death.Rate, color = factor(Race, levels = race_labels))) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_color_viridis_d(option = "D", labels = race_labels) +
+  labs(title = "Appalachia DOD Death Rate by Race",
+       x = "Year",
+       y = "Average Death Rate",
+       color = "Race",
+       caption = "Proportion of suppressed data: 15.56%") +  # Replace with your actual caption
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.caption = element_text(hjust = 0.5, size = 10, face = "italic"))
+```

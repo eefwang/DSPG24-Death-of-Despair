@@ -1,0 +1,61 @@
+```{r}
+library(dplyr)
+sum(is.na(APDOD$Death.Rate))
+sum(is.na(APDOD$Death.Rate.Indian))
+DOD <- DOD%>%
+  rename(FIPS = County.Code)
+DOD$FIPS = as.integer(DOD$FIPS)
+Subregions_in_Appalachia_2021_Data$FIPS = as.integer(Subregions_in_Appalachia_2021_Data$FIPS)
+APDOD <- Subregions_in_Appalachia_2021_Data %>%
+  left_join(DOD, by = c("FIPS"))
+APDOD <- APDOD %>%
+  filter(Year >= 2018 & Year <= 2022)
+```
+
+```{r}
+# Load necessary libraries
+# Load necessary libraries
+library(tidyverse)
+library(viridis)
+
+# Assuming your data frame is called APDOD
+# Calculate the total number of NA values for each specified column
+na_counts <- APDOD %>%
+  select(Death.Rate.25.34, Death.Rate.35.44, Death.Rate.45.64, Death.Rate.65.) %>%
+  summarize_all(~ sum(is.na(.)))
+
+# Sum the NA values across all specified columns
+total_na <- sum(na_counts)
+
+# Calculate the proportion of NA values
+total_entries <- 2115 * 4
+na_proportion <- total_na / total_entries
+
+# Transform the data to long format
+APDOD_long <- APDOD %>%
+  select(Year, Death.Rate.25.34, Death.Rate.35.44, Death.Rate.45.64, Death.Rate.65.) %>%
+  pivot_longer(cols = -Year, names_to = "Age_Group", values_to = "Death_Rate") %>%
+  na.omit()  # Remove rows with NA values
+
+# Calculate the average death rate for each age group by year
+APDOD_avg <- APDOD_long %>%
+  group_by(Year, Age_Group) %>%
+  summarize(Average_Death_Rate = mean(Death_Rate))
+
+# Create the line graph using ggplot2 with viridis color palette
+ggplot(APDOD_avg, aes(x = Year, y = Average_Death_Rate, color = Age_Group)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  scale_color_viridis(discrete = TRUE, option = "D",
+                      labels = c("25-34 years", "35-44 years", "45-64 years", "65+ years")) +
+  labs(title = "Average Death Rate by Age Group",) +
+  labs(title = "Appalachia DOD Death Rate by Age Group",
+       x = "Year",
+       y = "Average Death Rate",
+       color = "Age Group",
+       caption = "40% of data from age group 25-44 is suppressed and 0% of 45+") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5),
+        plot.caption = element_text(hjust = 0.5, size = 10, face = "italic"))
+```
+

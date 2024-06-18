@@ -1,0 +1,48 @@
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(corrplot)
+library(viridis)
+
+# Ensure the dataset is clean and filter the necessary columns
+corr_data <- appalachia_2018_2022 %>%
+  mutate(
+    mean_household_income = as.numeric(as.character(mean_household_income)),
+    unemployed_pop = as.numeric(as.character(unemployed_pop)),
+    BA_higher_ratio = as.numeric(as.character(BA_higher_ratio)),
+    below_poverty_ratio = as.numeric(as.character(below_poverty_ratio)),
+    total_DSW = as.numeric(as.character(total_DSW)),
+    RUCC_2023= as.numeric(as.character(RUCC_2023)),
+    DOD_death_rate = as.numeric(as.character(DOD_death_rate))
+  ) %>%
+  select(mean_household_income, unemployed_pop, BA_higher_ratio, below_poverty_ratio, total_DSW, RUCC_2023, DOD_death_rate)
+
+# Remove rows with NA values
+corr_data <- na.omit(corr_data)
+
+# Update variable names for better readability
+colnames(corr_data) <- c("Mean Household Income", "Unemployed Population", "BA Higher Ratio", "Below Poverty Ratio", "Total DSW", "RUCC Codes", "DOD Death Rate")
+
+# Scatterplot matrix
+pairs(corr_data, pch = 18, upper.panel = NULL, main = "Appalachia Counties Scatterplot Matrix")
+
+# Correlation plot with enhanced color variation and customized legend scale
+corr_matrix <- cor(corr_data)
+
+# Define breaks for the correlation scale
+breaks <- seq(-1, 1, by = 0.25)
+
+# Define custom color palette with viridis
+corr_colors <- viridis::viridis(length(breaks) - 1)
+
+
+# Plot the correlation matrix with customized color legend
+corrplot(corr_matrix, method = "color", type = "lower", col = corr_colors, 
+         title = "Appalachia Variables Correlation Plot", mar = c(0, 2, 2, 4),  # Increase right margin
+         cl.length = length(breaks), 
+         cl.cex = 0.8, cl.align.text = "r", cl.ratio = 0.2, 
+         tl.cex = 0.9, 
+         tl.col = "black", tl.srt = 30, # Set text rotation to 30 degrees
+         addCoef.col = "black", number.cex = 0.7, cl.offset = 0.5, # Adjust the size of the numbers inside boxes and the legend
+         addgrid.col = "black")
+```
