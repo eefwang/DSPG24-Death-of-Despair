@@ -1,0 +1,88 @@
+
+```{r}
+# Load necessary libraries
+library(sf)
+library(leaflet)
+library(dplyr)
+library(viridis)
+
+# Define the path to the shapefile
+shapefile_path <- "C:/Users/mutaalf/Desktop/DOD Code/States_shapefile-shp/States_shapefile.shp"
+
+# Read the shapefile
+states <- st_read(shapefile_path)
+print("Shapefile read successfully")
+print(str(states))  # Print structure of the spatial data
+
+# Rename the State_Name column in the spatial data to State (adjust if needed)
+states <- states %>% rename(State = State_Name)
+
+# Ensure the State variable is in uppercase in the merged_state_death dataset
+merged_state_death <- merged_state_death %>%
+  mutate(State = toupper(State))
+
+# Convert relevant columns to numeric
+merged_state_death <- merged_state_death %>%
+  mutate(
+    drugs_deaths = as.numeric(drugs_deaths),
+    alcohol_deaths = as.numeric(alcohol_deaths),
+    suicide_deaths = as.numeric(suicide_deaths)
+  )
+
+# Filter out rows with NA values in the relevant columns
+merged_state_death <- merged_state_death %>%
+  filter(!is.na(drugs_deaths) & !is.na(alcohol_deaths) & !is.na(suicide_deaths))
+
+# Calculate the average death rates for each cause in every state over the 5 years
+state_avg_deaths <- merged_state_death %>%
+  group_by(State) %>%
+  summarise(
+    avg_drugs_deaths = mean(drugs_deaths, na.rm = TRUE),
+    avg_suicide_deaths = mean(suicide_deaths, na.rm = TRUE),
+    avg_alcohol_deaths = mean(alcohol_deaths, na.rm = TRUE)
+  ) %>%
+  ungroup()
+
+# Determine the most prevalent cause of death for each state
+state_avg_deaths <- state_avg_deaths %>%
+  mutate(max_cause = case_when(
+    avg_drugs_deaths > avg_suicide_deaths & avg_drugs_deaths > avg_alcohol_deaths ~ "Drug Overdoses",
+    avg_suicide_deaths > avg_drugs_deaths & avg_suicide_deaths > avg_alcohol_deaths ~ "Suicide",
+    avg_alcohol_deaths > avg_drugs_deaths & avg_alcohol_deaths > avg_suicide_deaths ~ "Alcohol"
+  ))
+
+print("State average death data:")
+print(str(state_avg_deaths))  # Print structure of the summarized state death data
+
+# Merge the summarized data with the spatial data
+states_merged <- merge(states, state_avg_deaths, by = "State")
+print("Merged data:")
+print(str(states_merged))  # Print structure of the merged data
+
+# Check if merged data contains any geometries
+print(st_geometry(states_merged))
+
+# Define the color palette for the max cause of death
+pal <- colorFactor(palette = viridis(3), domain = states_merged$max_cause)
+
+# Create the leaflet map
+map <- leaflet(states_merged) %>%
+  addTiles() %>%
+  addPolygons(
+    fillColor = ~pal(max_cause),
+    fillOpacity = 0.7,
+    color = "white",
+    weight = 1,
+    popup = ~paste("State:", State, "<br>Most prevalent cause of death:", max_cause)
+  ) %>%
+  addLegend(
+    pal = pal,
+    values = ~max_cause,
+    opacity = 0.7,
+    title = "Most Prevalent Cause of Death of Despair 2018-2022",
+    position = "bottomleft"
+  )
+
+# Display the map
+map
+```
