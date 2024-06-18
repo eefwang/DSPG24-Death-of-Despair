@@ -1,0 +1,210 @@
+```{r}
+library(tibble)
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+
+# Create the tribble with the provided data
+data <- tribble(
+  ~State_or_jurisdiction, ~`2009`, ~`2011`, ~`2013`, ~`2015`, ~`2017`, ~`2019`,
+  "Total", 13513, 13720, 14148, 13873, 13585, 15961,
+  "Alabama", 135, 147, 154, 139, 129, 153,
+  "Alaska", 80, 76, 93, 88, 89, 96,
+  "Arizona", 222, 219, 313, 341, 341, 446,
+  "Arkansas", 55, 61, 89, 76, 118, 167,
+  "California", 1738, 1639, 1551, 1399, 1311, 1797,
+  "Colorado", 413, 448, 488, 403, 381, 408,
+  "Connecticut", 199, 188, 212, 215, 210, 220,
+  "Delaware", 40, 37, 42, 38, 34, 44,
+  "District_of_Columbia", 39, 36, 37, 33, 27, 26,
+  "Florida", 625, 617, 622, 669, 668, 725,
+  "Georgia", 257, 249, 360, 322, 292, 358,
+  "Hawaii", 123, 119, 123, 169, 168, 167,
+  "Idaho", 66, 103, 117, 132, 124, 124,
+  "Illinois", 615, 638, 650, 654, 633, 775,
+  "Indiana", 298, 274, 275, 263, 305, 393,
+  "Iowa", 112, 126, 144, 151, 163, 187,
+  "Kansas", 201, 220, 210, 208, 182, 179,
+  "Kentucky", 294, 318, 328, 334, 359, 449,
+  "Louisiana", 163, 143, 166, 159, 136, 146,
+  "Maine", 164, 213, 222, 208, 199, 186,
+  "Maryland", 343, 349, 360, 382, 387, 431,
+  "Massachusetts", 313, 322, 316, 321, 351, 438,
+  "Michigan", 490, 494, 489, 463, 456, 467,
+  "Minnesota", 298, 315, 354, 352, 356, 403,
+  "Mississippi", 103, 98, 101, 99, 89, 110,
+  "Missouri", 249, 289, 258, 265, 257, 281,
+  "Montana", 60, 57, 72, 66, 70, 88,
+  "Nebraska", 114, 123, 114, 132, 125, 131,
+  "Nevada", 85, 82, 81, 79, 77, 106,
+  "New_Hampshire", 58, 54, 55, 58, 67, 80,
+  "New_Jersey", 340, 361, 372, 377, 344, 370,
+  "New_Mexico", 145, 145, 139, 159, 136, 166,
+  "New_York", 963, 942, 905, 901, 842, 925,
+  "North_Carolina", 413, 436, 433, 440, 472, 552,
+  "North_Dakota", 59, 58, 65, 64, 71, 85,
+  "Ohio", 393, 373, 378, 370, 409, 554,
+  "Oklahoma", 199, 197, 223, 208, 191, 208,
+  "Oregon", 245, 235, 246, 237, 226, 234,
+  "Pennsylvania", 533, 578, 539, 523, 502, 600,
+  "Puerto_Rico", 151, 152, 161, 146, 97, 97,
+  "Rhode_Island", 60, 59, 62, 47, 48, 59,
+  "South_Carolina", 113, 105, 111, 109, 108, 121,
+  "South_Dakota", 59, 58, 63, 70, 58, 59,
+  "Tennessee", 192, 208, 221, 227, 217, 313,
+  "Texas", 459, 475, 461, 442, 431, 512,
+  "Utah", 142, 145, 171, 184, 239, 310,
+  "Vermont", 41, 42, 44, 44, 42, 48,
+  "Virginia", 219, 213, 226, 230, 223, 254,
+  "Washington", 434, 453, 451, 418, 396, 452,
+  "West_Virginia", 83, 96, 101, 103, 102, 116,
+  "Wisconsin", 255, 265, 318, 288, 273, 276,
+  "Wyoming", 57, 60, 53, 59, 47, 57
+)
+
+# Filter to only include Appalachian states
+appalachian_states <- c("Virginia", "West_Virginia")
+
+df_appalachian <- data %>% 
+  filter(State_or_jurisdiction %in% appalachian_states) %>% 
+  gather(key = "Year", value = "Number_of_facilities", -State_or_jurisdiction)
+
+# Plot the data
+ggplot(df_appalachian, aes(x = Year, y = Number_of_facilities, color = State_or_jurisdiction, group = State_or_jurisdiction)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Number of Substance Abuse Treatment Facilities in Appalachian States (2009-2019)",
+       x = "Year",
+       y = "Number of Facilities") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(labels = scales::comma)
+
+```
+
+
+```{r}
+library(tibble)
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+
+# Create the tribble with the provided data
+data_clients <- tribble(
+  ~State_or_jurisdiction, ~`2009`, ~`2011`, ~`2013`, ~`2015`, ~`2017`, ~`2019`,
+  "Total", 1182077, 1224127, 1249629, 1305647, 1356015, 1460706,
+  "Alabama", 15820, 15924, 15089, 14548, 13771, 14578,
+  "Alaska", 3464, 2840, 3900, 3363, 3556, 9477,
+  "Arizona", 29994, 31514, 31832, 33978, 41929, 79399,
+  "Arkansas", 3721, 3401, 5927, 7154, 6089, 7640,
+  "California", 137960, 132562, 117159, 111961, 118607, 96960,
+  "Colorado", 39179, 38927, 42256, 34793, 32213, 52388,
+  "Connecticut", 24831, 25914, 33267, 37817, 41873, 43404,
+  "Delaware", 4117, 4607, 5278, 10327, 7738, 17307,
+  "District_of_Columbia", 5410, 4166, 3833, 2824, 2763, 1827,
+  "Florida", 49975, 51201, 53641, 63287, 62427, 57335,
+  "Georgia", 19237, 21804, 24003, 25379, 25466, 23465,
+  "Hawaii", 4462, 4464, 5205, 5768, 4922, 5217,
+  "Idaho", 4246, 5171, 6619, 6287, 7026, 5634,
+  "Illinois", 45149, 43971, 42945, 44616, 44265, 50948,
+  "Indiana", 31721, 25186, 28288, 25465, 33301, 37077,
+  "Iowa", 7892, 8977, 9731, 8975, 11631, 8838,
+  "Kansas", 10314, 11381, 10863, 11471, 10710, 10492,
+  "Kentucky", 19392, 20481, 24071, 23565, 29228, 28452,
+  "Louisiana", 13829, 11180, 9903, 12011, 10066, 10633,
+  "Maine", 9553, 10769, 11373, 10849, 11801, 14550,
+  "Maryland", 42867, 38792, 42128, 46913, 48654, 52759,
+  "Massachusetts", 36815, 46891, 44133, 45438, 58280, 66912,
+  "Michigan", 40044, 45147, 47749, 46781, 54064, 47072,
+  "Minnesota", 14074, 17354, 18034, 19235, 25993, 20779,
+  "Mississippi", 5967, 5807, 6726, 4699, 4164, 6179,
+  "Missouri", 21004, 21455, 23028, 25015, 21914, 19996,
+  "Montana", 3602, 9885, 4429, 5064, 5762, 4537,
+  "Nebraska", 4864, 6354, 6374, 5735, 6461, 5868,
+  "Nevada", 7004, 7218, 7048, 6930, 5903, 7249,
+  "New_Hampshire", 5107, 5931, 6702, 8164, 8631, 6473,
+  "New_Jersey", 31634, 31777, 36605, 36708, 35659, 38326,
+  "New_Mexico", 15315, 12664, 12868, 15062, 18808, 18111,
+  "New_York", 121527, 122929, 114660, 113713, 110078, 113028,
+  "North_Carolina", 28997, 36312, 40575, 42026, 49179, 49520,
+  "North_Dakota", 2108, 2457, 1785, 2404, 2781, 3754,
+  "Ohio", 35664, 37238, 37262, 45129, 56197, 66296,
+  "Oklahoma", 14929, 14858, 16700, 16783, 14466, 23332,
+  "Oregon", 23136, 23166, 21898, 30401, 24027, 20268,
+  "Pennsylvania", 49528, 53377, 57715, 59584, 64303, 66969,
+  "Puerto_Rico", 13669, 16166, 15169, 11358, 9232, 6312,
+  "Rhode_Island", 8623, 9742, 10404, 14269, 8001, 8609,
+  "South_Carolina", 14187, 14217, 15824, 18236, 16844, 20539,
+  "South_Dakota", 3002, 2987, 3267, 2964, 2941, 2864,
+  "Tennessee", 12544, 16590, 14149, 22445, 16765, 28899,
+  "Texas", 34503, 36875, 34704, 35293, 35474, 35995,
+  "Utah", 13492, 12470, 12586, 12496, 14326, 29186,
+  "Vermont", 4722, 4182, 5230, 7380, 7015, 6055,
+  "Virginia", 20846, 21731, 22838, 22305, 22413, 25609,
+  "Washington", 42734, 41097, 42030, 50633, 43846, 44959,
+  "West_Virginia", 10062, 10711, 10057, 10099, 18115, 10109,
+  "Wisconsin", 15526, 19413, 28657, 24371, 22628, 25574,
+  "Wyoming", 3411, 3396, 2798, 3261, 3236, 2499
+)
+
+# Filter to only include Appalachian states
+appalachian_states <- c( "Virginia", "West_Virginia")
+
+df_clients_appalachian <- data_clients %>% 
+  filter(State_or_jurisdiction %in% appalachian_states) %>% 
+  pivot_longer(cols = starts_with("20"), names_to = "Year", values_to = "Number_of_clients")
+
+# Plot the data
+ggplot(df_clients_appalachian, aes(x = Year, y = Number_of_clients, color = State_or_jurisdiction, group = State_or_jurisdiction)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Number of Clients in Substance Abuse Treatment Facilities in Appalachian States (2009-2019)",
+       x = "Year",
+       y = "Number of Clients") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(labels = scales::comma)
+```
+
+
+
+```{r}
+library(tibble)
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(viridis) # Load the viridis package
+
+# Data for number of facilities
+data_facilities <- tribble(
+  ~State_or_jurisdiction, ~`2009`, ~`2011`, ~`2013`, ~`2015`, ~`2017`, ~`2019`,
+  "West_Virginia", 83, 96, 101, 103, 102, 116
+)
+
+# Data for number of clients
+data_clients <- tribble(
+  ~State_or_jurisdiction, ~`2009`, ~`2011`, ~`2013`, ~`2015`, ~`2017`, ~`2019`,
+  "West_Virginia", 10062, 10711, 10057, 10099, 18115, 10109
+)
+
+# Reshape the data to long format
+df_facilities_long <- data_facilities %>% 
+  pivot_longer(cols = starts_with("20"), names_to = "Year", values_to = "Number_of_facilities")
+
+df_clients_long <- data_clients %>% 
+  pivot_longer(cols = starts_with("20"), names_to = "Year", values_to = "Number_of_clients")
+
+# Merge the data frames
+df_merged <- merge(df_facilities_long, df_clients_long, 
+                   by = c("State_or_jurisdiction", "Year"))
+
+# Plot the correlation using viridis palette
+ggplot(df_merged, aes(x = Number_of_facilities, y = Number_of_clients, color = State_or_jurisdiction)) +
+  geom_point(size = 3) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Correlation between Number of Facilities and Number of Clients",
+       x = "Number of Facilities",
+       y = "Number of Clients") +
+  scale_color_viridis(discrete = TRUE) + # Apply the viridis color scale
+  theme_minimal()
+```
