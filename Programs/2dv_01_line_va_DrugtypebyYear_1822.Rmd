@@ -1,0 +1,108 @@
+```{r}
+library(tidyverse)
+library(readxl)
+library(viridis)
+#Manually create a data frame from your given structure:
+
+# Create the data frame
+drug_data <- tribble(
+  ~Drug_Class, ~`2018`, ~`2019`, ~`2020`, ~`2021`, ~`2022`,
+  "All Drugs", 16.9, 18.1, 25.8, 30.5, 29,
+  "Any Opioids", 14, 14.8, 21.8, 25.9, 24.5,
+  "Fentanyl and other synthetic opioids", 9.9, 11.6, 19.2, 24, 22.9,
+  "Methadone", 1.1, 0.9, 1, 1.2, 0.8,
+  "Heroin", 6.3, 6.2, 5.8, 4.7, 2.9,
+  "Benzodiazepine", 2.2, 1.9, 2.7, 3, 2,
+  "Psychostimulant", 1.6, 2.4, 4.8, 6.6, 6.7,
+  "Cocaine", 4.8, 4.8, 6.3, 8.8, 10.4
+)
+
+# Transform the data to long format
+drug_data_long <- drug_data %>%
+  pivot_longer(cols = -Drug_Class, names_to = "Year", values_to = "Deaths")
+
+# Convert Year to numeric
+drug_data_long$Year <- as.numeric(drug_data_long$Year)
+#Create the line graph using ggplot2 with the viridis color palette:
+
+# Create the line graph using ggplot2 with viridis color palette
+ggplot(drug_data_long, aes(x = Year, y = Deaths, color = Drug_Class)) +
+  geom_line(size = 2) +
+  scale_color_viridis(discrete = TRUE) +
+  labs(title = "Trends in diffeent drug deaths in Virginia",
+       x = "Year",
+       y = "Death Rate",
+       color = "Type of Drug") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+
+```{r}
+library(tidyverse)
+library(readxl)
+library(viridis)
+
+# Create the data frame
+drug_data <- tribble(
+  ~Drug_Class, ~`2018`, ~`2019`, ~`2020`, ~`2021`, ~`2022`,
+  "All Drugs", 16.9, 18.1, 25.8, 30.5, 29,
+  "Any Opioids", 14, 14.8, 21.8, 25.9, 24.5,
+  "Fentanyl and other synthetic opioids", 9.9, 11.6, 19.2, 24, 22.9,
+  "Methadone (used to treat opioid addiction)", 1.1, 0.9, 1, 1.2, 0.8,
+  "Heroin", 6.3, 6.2, 5.8, 4.7, 2.9,
+  "Benzodiazepine", 2.2, 1.9, 2.7, 3, 2,
+  "Psychostimulant", 1.6, 2.4, 4.8, 6.6, 6.7,
+  "Cocaine", 4.8, 4.8, 6.3, 8.8, 10.4
+)
+
+# Transform the data to long format
+drug_data_long <- drug_data %>%
+  pivot_longer(cols = -Drug_Class, names_to = "Year", values_to = "Deaths") %>%
+  mutate(Year = as.numeric(Year),
+         LineType = case_when(
+           Drug_Class == "All Drugs" ~ "dashed",
+           Drug_Class == "Any Opioids" ~ "dotted",
+           TRUE ~ "solid"
+         ),
+         Color = case_when(
+           Drug_Class == "All Drugs" ~ "black",
+           Drug_Class == "Any Opioids" ~ "black",
+           TRUE ~ Drug_Class
+         ))
+
+# Define viridis colors
+viridis_colors <- viridis(6)
+
+# Create the line graph using ggplot2 with viridis color palette
+ggplot(drug_data_long, aes(x = Year, y = Deaths, color = Drug_Class, linetype = Drug_Class)) +
+  geom_line(size = 2) +
+  scale_color_manual(values = c(
+    "All Drugs" = "black",
+    "Any Opioids" = "black",
+    "Fentanyl and other synthetic opioids" = viridis_colors[1],
+    "Methadone (used to treat opioid addiction)" = viridis_colors[2],
+    "Heroin" = viridis_colors[3],
+    "Benzodiazepine" = viridis_colors[4],
+    "Psychostimulant" = viridis_colors[5],
+    "Cocaine" = viridis_colors[6]
+  )) +
+  scale_linetype_manual(values = c(
+    "All Drugs" = "dashed",
+    "Any Opioids" = "dotted",
+    "Fentanyl and other synthetic opioids" = "solid",
+    "Methadone (used to treat opioid addiction)" = "solid",
+    "Heroin" = "solid",
+    "Benzodiazepine" = "solid",
+    "Psychostimulant" = "solid",
+    "Cocaine" = "solid"
+  )) +
+  labs(title = "Death Rate by drug type (Virginia)",
+       x = "Year",
+       y = "Death Rate per 100.000 people",
+       color = "Type of Drug",
+       linetype = "Type of Drug",
+       caption = "Data obtained by Virginia Department of Health") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```

@@ -1,0 +1,54 @@
+
+
+
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(corrplot)
+library(viridis)
+
+# Ensure the dataset is clean and filter the necessary columns
+corr_data <- virginia_2018_2022 %>%
+  mutate(
+    Median_household_income = as.numeric(as.character(Median_household_income)),
+    per_capita_income = as.numeric(as.character(per_capita_income)),
+    unemployed_pop = as.numeric(as.character(unemployed_pop)),
+    Adult_smoking = as.numeric(as.character(Adult_smoking)),
+    DOD_death_rate = as.numeric(as.character(DOD_death_rate)),
+    VDH_death_rate = as.numeric(as.character(VDH_death_rate)),
+    BA_higher_ratio = as.numeric(as.character(BA_higher_ratio)),
+    Poor_fair_health = as.numeric(as.character(Poor_fair_health)),
+    Children_in_poverty = as.numeric(as.character(Children_in_poverty)),
+    below_poverty_ratio = as.numeric(as.character(below_poverty_ratio))
+  ) %>%
+  select(Median_household_income, per_capita_income, unemployed_pop, Adult_smoking, DOD_death_rate, VDH_death_rate, BA_higher_ratio, Poor_fair_health, Children_in_poverty, below_poverty_ratio)
+
+# Remove rows with NA values
+corr_data <- na.omit(corr_data)
+
+# Update variable names for better readability
+colnames(corr_data) <- c("Median Household Income", "Per Capita Income", "Unemployed Population", "Adult Smoking", "DOD Death Rate", "VDH Death Rate", "BA Higher Ratio", "Poor or Fair Health", "Children in Poverty", "Below Poverty Ratio")
+
+# Scatterplot matrix
+pairs(corr_data, pch = 18, upper.panel = NULL, main = "Virginia Counties Scatterplot Matrix")
+
+# Correlation plot with enhanced color variation and customized legend scale
+corr_matrix <- cor(corr_data)
+
+# Define breaks for the correlation scale
+breaks <- seq(-1, 1, by = 0.25)
+
+# Define custom color palette with viridis
+corr_colors <- viridis::viridis(length(breaks) - 1)
+
+
+# Plot the correlation matrix with customized color legend
+corrplot(corr_matrix, method = "color", type = "lower", col = corr_colors, 
+         title = "VA Variables Correlation Plot", mar = c(0, 2, 2, 4),  # Increase right margin
+         cl.length = length(breaks), 
+         cl.cex = 0.8, cl.align.text = "r", cl.ratio = 0.2, 
+         tl.cex = 0.9, 
+         tl.col = "black", tl.srt = 30, # Set text rotation to 30 degrees
+         addCoef.col = "black", number.cex = 0.7, cl.offset = 0.5, # Adjust the size of the numbers inside boxes and the legend
+         addgrid.col = "black")
+```
