@@ -53,7 +53,7 @@ race_labels <- c(
 ggplot(BA_higher_race_mean, aes(x = Year, y = Mean_BA_higher, color = Race, group = Race)) +
   geom_line(size = 1) +
   geom_point(size = 3) +
-  labs(title = "Appalachia Percentage with BA or Higher by Race in 2018-2022",
+  labs(title = "Appalachia Population with BA or Higher by Race (2018-2022)",
        caption = "Data obtained from American Commmunity Survey",
        x = "Year",
        y = "Mean with BA or Higher (%)") +
