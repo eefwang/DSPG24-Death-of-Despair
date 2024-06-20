@@ -49,12 +49,12 @@ ggplot(DOD_race_long, aes(x = Year, y = Mean.Death.Rate, color = factor(Race, le
   geom_line(size = 1) +
   geom_point(size = 2) +
   scale_color_viridis_d(option = "D", labels = race_labels) +
-  labs(title = "Appalachia DOD Death Rate by Race",
+  labs(title = "Appalachia DOD Rates by Race (2018-2022)",
        x = "Year",
        y = "Average Death Rate",
        color = "Race",
-       caption = "Proportion of suppressed data: 15.56%") +  # Replace with your actual caption
+       caption = "Data obtained from the Center for Disease Control and Prevention\nNote: 15.6% of the dataset is suppressed") +  # Replace with your actual caption
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5),
-        plot.caption = element_text(hjust = 0.5, size = 10, face = "italic"))
+        plot.caption = element_text(hjust = 0.5, size = 10))
 ```
