@@ -7,7 +7,7 @@ library(viridis)
 corr_data <- appalachia_2018_2022 %>%
   mutate(
     employed_pop = as.numeric(as.character(employed_pop_pe)),
-    DOD_death_rate = as.numeric(as.character(DOD_death_rate))
+    DOD_death_rate = (as.numeric(as.character(DOD_death_rate))*100)
   ) %>%
   select(employed_pop_pe, DOD_death_rate)
 
@@ -18,9 +18,10 @@ corr_data <- na.omit(corr_data)
 ggplot(corr_data, aes(x = employed_pop_pe, y = DOD_death_rate)) +
   geom_point(color = viridis(256)[50], size = 2, alpha = 0.7) +  # Use a consistent viridis color for points with transparency
   geom_smooth(method = "lm", color = viridis(256)[200], size = 1.5, se = FALSE) +  # Add a prominent regression line
-  labs(title = "Employed Population and DOD Death Rate",
+  labs(title = "Employed Population and DOD Rate",
        x = "Employed Population",
-       y = "DOD Death Rate") +
+       y = "DOD Rate (%)",
+       caption = "Data obtained from the American Community Survey and Center for Disease Control and Prevention") +
   theme_minimal(base_size = 15) +
   theme(
     plot.title = element_text(hjust = 0.5, face = "bold"),

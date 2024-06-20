@@ -55,12 +55,16 @@ corr_colors <- viridis::viridis(length(breaks) - 1)
 
 # Plot the correlation matrix with customized color legend
 corrplot(corr_matrix, method = "color", type = "lower", col = corr_colors, 
-         title = "Appalachia Occupations Correlation Plot", mar = c(0, 2, 2, 4),  # Increase right margin
+         title = "Appalachia Occupations Correlation Matrix", mar = c(0, 2, 2, 4),  # Increase right margin
          cl.length = length(breaks), 
          cl.cex = 0.8, cl.align.text = "r", cl.ratio = 0.2, 
          tl.cex = 0.9, 
          tl.col = "black", tl.srt = 30, # Set text rotation to 30 degrees
          addCoef.col = "black", number.cex = 0.6, cl.offset = 0.5, # Adjust the size of the numbers inside boxes and the legend
          addgrid.col = "black")
+
+# Add a caption
+mtext("Data obtained from the American Community Survey", 
+      side = 1, line = 4, adj = 1, cex = 0.8)
 
 ```
