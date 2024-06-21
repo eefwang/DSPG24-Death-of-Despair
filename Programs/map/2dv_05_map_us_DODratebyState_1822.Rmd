@@ -38,11 +38,11 @@ print(str(states))  # Print structure of the spatial data
 # Rename the State_Name column in the spatial data to State
 states <- states %>% rename(State = State_Name)
 
-# Convert the State variable to uppercase in the year.state.alcohol dataset
+# Convert the State variable to uppercase in the year.state.DOD dataset
 year.state.DOD <- year.state.DOD %>%
   mutate(State = toupper(State))
 
-# Assuming 'year.state.alcohol' is already loaded in your environment
+# Assuming 'year.state.DOD' is already loaded in your environment
 year.state.DOD_1822 <- year.state.DOD %>%
   group_by(State) %>%
   summarise(
@@ -64,7 +64,7 @@ print(str(states_merged))  # Print structure of the merged data
 # Check if merged data contains any geometries
 print(st_geometry(states_merged))
 
-mybins <- c(60, 80,100,120,140,160)
+mybins <- c(60, 80, 100, 120, 140, 160)
 
 # Define the color palette for the death rate
 pal <- colorBin(
@@ -87,7 +87,7 @@ map <- leaflet(states_merged) %>%
     pal = pal,
     values = ~DOD_death_rate,
     opacity = 0.7,
-    title = "Average DOD Rates per 100,000 people 2018-2022",
+    title = "U.S. Average DOD Rates per 100,000 people (2018-2022)<br><span style='font-size:10px; color: black;'>Data obtained from the National Center for Health Statistics (CDC)</span>",
     position = "bottomleft"
   )
 

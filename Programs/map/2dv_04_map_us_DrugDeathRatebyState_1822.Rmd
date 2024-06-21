@@ -38,11 +38,11 @@ print(str(states))  # Print structure of the spatial data
 # Rename the State_Name column in the spatial data to State
 states <- states %>% rename(State = State_Name)
 
-# Convert the State variable to uppercase in the year.state.alcohol dataset
+# Convert the State variable to uppercase in the year.state.drugs dataset
 year.state.drugs <- year.state.drugs %>%
   mutate(State = toupper(State))
 
-# Assuming 'year.state.alcohol' is already loaded in your environment
+# Assuming 'year.state.drugs' is already loaded in your environment
 year.state.drugs_1822 <- year.state.drugs %>%
   group_by(State) %>%
   summarise(
@@ -87,7 +87,7 @@ map <- leaflet(states_merged) %>%
     pal = pal,
     values = ~drugs_death_rate,
     opacity = 0.7,
-    title = "Average Drug Death Rates per 100,000 people 2018-2022",
+    title = "U.S. Average Drug Death Rates per 100,000 people (2018-2022)<br><span style='font-size:10px; color: black;'>Data obtained from the National Center for Health Statistics (CDC)</span>",
     position = "bottomleft"
   )
 
