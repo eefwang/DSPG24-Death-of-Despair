@@ -18,7 +18,7 @@ corr_data <- na.omit(corr_data)
 ggplot(corr_data, aes(x = unemployed_pop_pe, y = DOD_death_rate)) +
   geom_point(color = viridis(256)[50], size = 2, alpha = 0.7) +  # Use a consistent viridis color for points with transparency
   geom_smooth(method = "lm", color = viridis(256)[200], size = 1.5, se = FALSE) +  # Add a prominent regression line
-  labs(title = "Unemployed Population and DOD Rate",
+  labs(title = "Appalachian Unemployed Population and DOD Rate (2018-2022)",
        x = "Unemployed Population",
        y = "DOD Rate (%)",
        caption = "Data obtained from the American Community Survey and Center for Disease Control and Prevention") +
