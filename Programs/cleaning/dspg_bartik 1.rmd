@@ -7,7 +7,6 @@ library(dplyr)
 
 us_2015_2019 <- data.frame(NULL)
 
-
 for (y in 2015:2018) {
   
   got.it <- get_acs(geography = 'county', year = y, variables = c('DP05_0001', 'DP03_0062', 'DP02_0066P', 'DP02_0067P', 'DP03_0009P', 'DP02_0082P', 'DP03_0019', 'DP03_0021', 'DP04_0001', 'DP03_0033', 'DP03_0034', 'DP03_0035', 'DP03_0036', 'DP03_0037', 'DP03_0038', 'DP03_0039', 'DP03_0040', 'DP03_0041', 'DP03_0042', 'DP03_0043', 'DP03_0044', 'DP03_0045'))
@@ -17,17 +16,13 @@ for (y in 2015:2018) {
   
 }
 
-
-for (y in 2019) {
-  
-  got.it <- get_acs(geography = 'county', year = y, variables = c('DP05_0001', 'DP03_0062', 'DP02_0067P', 'DP02_0068P', 'DP03_0009P', 'DP02_0083P', 'DP03_0019', 'DP03_0021', 'DP04_0001', 'DP03_0033', 'DP03_0034', 'DP03_0035', 'DP03_0036', 'DP03_0037', 'DP03_0038', 'DP03_0039', 'DP03_0040', 'DP03_0041', 'DP03_0042', 'DP03_0043', 'DP03_0044', 'DP03_0045'))
-  
-  got.it <- cbind(got.it, rep(y, nrow(got.it)))
-  us_2015_2019 <- rbind(us_2015_2019, got.it)
-  
-}
-
 colnames(us_2015_2019)[ncol(us_2015_2019)] <- 'Year'
+
+got.it <- get_acs(geography = 'county', year = 2019, variables = c('DP05_0001', 'DP03_0062', 'DP02_0067P', 'DP02_0068P', 'DP03_0009P', 'DP02_0083P', 'DP03_0019', 'DP03_0021', 'DP04_0001', 'DP03_0033', 'DP03_0034', 'DP03_0035', 'DP03_0036', 'DP03_0037', 'DP03_0038', 'DP03_0039', 'DP03_0040', 'DP03_0041', 'DP03_0042', 'DP03_0043', 'DP03_0044', 'DP03_0045'))
+
+got.it <- as.data.frame(cbind(got.it, rep(2019, nrow(got.it))))
+colnames(got.it)[ncol(got.it)] <- 'Year'
+us_2015_2019 <- rbind(us_2015_2019, got.it)
 
 pop <- c()
 inc <- c()
@@ -55,7 +50,7 @@ pad <- c()
 years <- c()
 fips <- c()
 
-for (y in unique(us_2015_2019$Year)) {
+for (y in 2015:2018) {
   
   tmp <- us_2015_2019 %>% filter(Year == y)
   
@@ -65,10 +60,10 @@ for (y in unique(us_2015_2019$Year)) {
     
     pop <- c(pop, log(tmp21[which(tmp21$variable == 'DP05_0001'),]$estimate[1]))
     inc <- c(inc, log(tmp21[which(tmp21$variable == 'DP03_0062'),]$estimate[1]))
-    ed <- c(ed, tmp21[which(tmp21$variable == 'DP02_0068P'),]$estimate[1])
-    ed2 <- c(ed2, tmp21[which(tmp21$variable == 'DP02_0067P'),]$estimate[1])
+    ed <- c(ed, tmp21[which(tmp21$variable == 'DP02_0067P'),]$estimate[1])
+    ed2 <- c(ed2, tmp21[which(tmp21$variable == 'DP02_0066P'),]$estimate[1])
     emp <- c(emp, tmp21[which(tmp21$variable == 'DP03_0009P'),]$estimate[1])
-    movers <- c(movers, tmp21[which(tmp21$variable == 'DP02_0083P'),]$estimate[1])
+    movers <- c(movers, tmp21[which(tmp21$variable == 'DP02_0082P'),]$estimate[1])
     comms <- c(comms, log(tmp21[which(tmp21$variable == 'DP03_0019'),]$estimate[1]))
     pt <- c(pt, max(0, log(tmp21[which(tmp21$variable == 'DP03_0021'),]$estimate[1])))
     hunits <- c(hunits, log(tmp21[which(tmp21$variable == 'DP04_0001'),]$estimate[1]))
@@ -89,6 +84,39 @@ for (y in unique(us_2015_2019$Year)) {
     fips <- c(fips, c)
     
   }
+  
+}
+
+tmp <- us_2015_2019 %>% filter(Year == 2019)
+
+for (c in unique(us_2015_2019$GEOID)) {
+  
+  tmp21 <- tmp %>% filter(GEOID == c)
+  
+  pop <- c(pop, log(tmp21[which(tmp21$variable == 'DP05_0001'),]$estimate[1]))
+  inc <- c(inc, log(tmp21[which(tmp21$variable == 'DP03_0062'),]$estimate[1]))
+  ed <- c(ed, tmp21[which(tmp21$variable == 'DP02_0068P'),]$estimate[1])
+  ed2 <- c(ed2, tmp21[which(tmp21$variable == 'DP02_0067P'),]$estimate[1])
+  emp <- c(emp, tmp21[which(tmp21$variable == 'DP03_0009P'),]$estimate[1])
+  movers <- c(movers, tmp21[which(tmp21$variable == 'DP02_0083P'),]$estimate[1])
+  comms <- c(comms, log(tmp21[which(tmp21$variable == 'DP03_0019'),]$estimate[1]))
+  pt <- c(pt, max(0, log(tmp21[which(tmp21$variable == 'DP03_0021'),]$estimate[1])))
+  hunits <- c(hunits, log(tmp21[which(tmp21$variable == 'DP04_0001'),]$estimate[1]))
+  outdo <- c(outdo, tmp21[which(tmp21$variable == 'DP03_0033'),]$estimate[1])
+  cons <- c(cons, tmp21[which(tmp21$variable == 'DP03_0034'),]$estimate[1])
+  manu <- c(manu, tmp21[which(tmp21$variable == 'DP03_0035'),]$estimate[1])
+  whole <- c(whole, tmp21[which(tmp21$variable == 'DP03_0036'),]$estimate[1])
+  retail <- c(retail, tmp21[which(tmp21$variable == 'DP03_0037'),]$estimate[1])
+  trans <- c(trans, tmp21[which(tmp21$variable == 'DP03_0038'),]$estimate[1])
+  fin <- c(fin, tmp21[which(tmp21$variable == 'DP03_0039'),]$estimate[1])
+  info <- c(info, tmp21[which(tmp21$variable == 'DP03_0040'),]$estimate[1])
+  pro <- c(pro, tmp21[which(tmp21$variable == 'DP03_0041'),]$estimate[1])
+  sw <- c(sw, tmp21[which(tmp21$variable == 'DP03_0042'),]$estimate[1])
+  amen <- c(amen, tmp21[which(tmp21$variable == 'DP03_0043'),]$estimate[1])
+  other <- c(other, tmp21[which(tmp21$variable == 'DP03_0044'),]$estimate[1])
+  pad <- c(pad, tmp21[which(tmp21$variable == 'DP03_0045'),]$estimate[1])
+  years <- c(years, 2019)
+  fips <- c(fips, c)
   
 }
 

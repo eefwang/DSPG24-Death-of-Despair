@@ -4,6 +4,11 @@ author: "Elisabeth Wasserman"
 date: "2024-06-20"
 output: html_document
 ---
+```{r import}
+virginia_2018_2022 = read.csv(here("Data/merged_data", "virginia_2018_2022.csv"), sep = ",", header = TRUE)
+appalachia_2018_2022 = read.csv(here("Data/merged_data", "appalachia_2018_2022.csv"), sep = ",", header = TRUE)
+
+```
 
 ```{r}
 virginia_ols_dod_1822 <- lm(DOD_death_rate ~ MHP_ratio + PCP_ratio + Median_household_income + Avg_mentally_unhealthy_days + Excessive_drinking + Teen_birth_rate + Poor_fair_health + Adult_smoking + Children_in_poverty + Severe_housing_problems + total_DSW + BA_higher_ratio + below_poverty_ratio + unemployed_pop_pe, data = virginia_2018_2022)
