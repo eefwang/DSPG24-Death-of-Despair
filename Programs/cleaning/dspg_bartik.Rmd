@@ -10,7 +10,7 @@ us_2015_2019 <- data.frame(NULL)
 
 for (y in 2015:2018) {
   
-  got.it <- get_acs(geography = 'county', year = y, variables = c('DP05_0001', 'DP03_0062', 'DP02_0066P', 'DP02_0067P', 'DP03_0009P', 'DP02_0083P', 'DP03_0019', 'DP03_0021', 'DP04_0001', 'DP03_0033', 'DP03_0034', 'DP03_0035', 'DP03_0036', 'DP03_0037', 'DP03_0038', 'DP03_0039', 'DP03_0040', 'DP03_0041', 'DP03_0042', 'DP03_0043', 'DP03_0044', 'DP03_0045'))
+  got.it <- get_acs(geography = 'county', year = y, variables = c('DP05_0001', 'DP03_0062', 'DP02_0066P', 'DP02_0067P', 'DP03_0009P', 'DP02_0082P', 'DP03_0019', 'DP03_0021', 'DP04_0001', 'DP03_0033', 'DP03_0034', 'DP03_0035', 'DP03_0036', 'DP03_0037', 'DP03_0038', 'DP03_0039', 'DP03_0040', 'DP03_0041', 'DP03_0042', 'DP03_0043', 'DP03_0044', 'DP03_0045'))
   
   got.it <- cbind(got.it, rep(y, nrow(got.it)))
   us_2015_2019 <- rbind(us_2015_2019, got.it)
