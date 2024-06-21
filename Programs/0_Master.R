@@ -15,7 +15,7 @@ rmarkdown::render(here("Programs/cleaning", "1cl_02_ACS_Retrieval.Rmd"))
 rmarkdown::render(here("Programs/cleaning", "1cl_03_Merge_VA_APP_Data.Rmd"))
 
 #Merge Data with Map
-#rmarkdown::render(here("Programs/cleaning", "1cl_04_Merged_Map_Data.Rmd"))
+rmarkdown::render(here("Programs/cleaning", "1cl_04_Merged_Map_Data.Rmd"))
 
 #Merge Data with Map
 rmarkdown::render(here("Programs/cleaning", "1cl_05_Bartik_1822.Rmd"))
