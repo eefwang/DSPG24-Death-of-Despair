@@ -12,8 +12,15 @@ library(tidycensus)
 library(tidyverse)
 library(sf)
 library(leaflet)
+library(tigris)
 ```
 # Shp Data too large to upload on Github
+
+```{r}
+virginia_2018_2022 = read.csv(here("Data/merged_data", "virginia_2018_2022.csv"), sep = ",", header = TRUE)
+appalachia_2018_2022 = read.csv(here("Data/merged_data", "appalachia_2018_2022.csv"), sep = ",", header = TRUE)
+```
+
 ```{r map data}
 #use tigris library to get county shapefiles
 options(tigris_use_cache = TRUE)
@@ -26,28 +33,20 @@ for (state in appalachian_states) {
   all_counties[[state]] <- state_counties
 }
 
-# Combine all counties into a single sf object
+# combine all counties into a single sf object
 us_counties <- do.call(rbind, all_counties)
-
 us_counties$GEOID = as.integer(us_counties$GEOID)
 ```
 
 ```{r}
-test <- va_counties %>%
-  left_join(virginia_2018_2022, by = c("GEOID" = "FIPS"), multiple = "all")
-```
+#merging with virginia
+map_virginia_2018_2022 <- us_counties %>%
+  filter(STATEFP == "51") %>%
+  right_join(virginia_2018_2022, by = c("GEOID" = "FIPS"), multiple = "all")
 
-# Map with Shapefile Merge
-```{r, eval=FALSE}
-#create FIPS for shapefile
-counties_shapefile$FIPS = paste(counties_shapefile$STATEFP, counties_shapefile$COUNTYFP, sep="")
-counties_shapefile$FIPS <- as.integer(counties_shapefile$FIPS)
-
-#appalachia mapping and variables
-map_appalachia_2018_2022 = right_join(counties_shapefile, appalachia_2018_2022, by = c("FIPS"), multiple = "all")
-
-#virginia mapping and variables
-map_virginia_2018_2022 = right_join(counties_shapefile, virginia_2018_2022, by = c("FIPS"), multiple = "all")
+#merging with appalachia
+map_appalachia_2018_2022 <- us_counties %>%
+  right_join(appalachia_2018_2022, by = c("GEOID" = "FIPS"), multiple = "all")
 ```
 
 #Map Data Export 
