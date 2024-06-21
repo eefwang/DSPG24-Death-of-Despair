@@ -1,0 +1,32 @@
+---
+title: "Virginia OLS Regression"
+author: "Elisabeth Wasserman"
+date: "2024-06-20"
+output: html_document
+---
+
+```{r}
+virginia_ols_dod_1822 <- lm(DOD_death_rate ~ MHP_ratio + PCP_ratio + Median_household_income + Avg_mentally_unhealthy_days + Excessive_drinking + Teen_birth_rate + Poor_fair_health + Adult_smoking + Children_in_poverty + Severe_housing_problems + total_DSW + BA_higher_ratio + below_poverty_ratio + unemployed_pop_pe, data = virginia_2018_2022)
+
+virginia_ols_dod_1822_test1 <- lm(DOD_death_rate ~ MHP_ratio + PCP_ratio + Excessive_drinking + Teen_birth_rate + Poor_fair_health + Severe_housing_problems + total_DSW + BA_higher_ratio + unemployed_pop_pe, data = virginia_2018_2022)
+
+virginia_ols_dod_1822_test2 <- lm(DOD_death_rate ~ Median_household_income + BA_higher_ratio + unemployed_pop_pe, data = virginia_2018_2022)
+
+#virginia_ols_dod_1519 <- lm(DOD_death_rate ~ BA_higher_ratio + unemployed_pop_pe + Median_household_income, data = virginia_2015_2019)
+
+#virginia_ols_edvisits_1519 <- lm(Annual.Overdose.Visits ~ BA_higher_ratio + unemployed_pop_pe + Median_household_income, data = virginia_2015_2019)
+```
+
+```{r}
+library(leaps)
+regFull <- regsubsets(DOD_death_rate ~ MHP_ratio + PCP_ratio + Median_household_income + Avg_mentally_unhealthy_days + Excessive_drinking + Teen_birth_rate + Poor_fair_health + Adult_smoking + Children_in_poverty + Severe_housing_problems + total_DSW + BA_higher_ratio + below_poverty_ratio + unemployed_pop_pe, data = virginia_2018_2022, 
+                          method = 'exhaustive', nbest = 1)
+output = summary(regFull, all.best = TRUE)
+
+criterionMat <- cbind(output$rsq,output$adjr2,output$cp, output$bic)
+colnames(criterionMat) = c('R2', 'AdjR2', 'Cp','BIC')
+
+resultsMat = cbind(output$outmat, round(criterionMat,3))
+resultsMat
+```
+
