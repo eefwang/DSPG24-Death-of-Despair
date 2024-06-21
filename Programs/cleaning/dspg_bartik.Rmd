@@ -1,0 +1,380 @@
+First I gotta get data
+
+```{r}
+
+library(tidycensus)
+library(dplyr)
+
+us_2015_2019 <- data.frame(NULL)
+
+
+for (y in 2015:2018) {
+  
+  got.it <- get_acs(geography = 'county', year = y, variables = c('DP05_0001', 'DP03_0062', 'DP02_0066P', 'DP02_0067P', 'DP03_0009P', 'DP02_0083P', 'DP03_0019', 'DP03_0021', 'DP04_0001', 'DP03_0033', 'DP03_0034', 'DP03_0035', 'DP03_0036', 'DP03_0037', 'DP03_0038', 'DP03_0039', 'DP03_0040', 'DP03_0041', 'DP03_0042', 'DP03_0043', 'DP03_0044', 'DP03_0045'))
+  
+  got.it <- cbind(got.it, rep(y, nrow(got.it)))
+  us_2015_2019 <- rbind(us_2015_2019, got.it)
+  
+}
+
+
+for (y in 2019) {
+  
+  got.it <- get_acs(geography = 'county', year = y, variables = c('DP05_0001', 'DP03_0062', 'DP02_0067P', 'DP02_0068P', 'DP03_0009P', 'DP02_0083P', 'DP03_0019', 'DP03_0021', 'DP04_0001', 'DP03_0033', 'DP03_0034', 'DP03_0035', 'DP03_0036', 'DP03_0037', 'DP03_0038', 'DP03_0039', 'DP03_0040', 'DP03_0041', 'DP03_0042', 'DP03_0043', 'DP03_0044', 'DP03_0045'))
+  
+  got.it <- cbind(got.it, rep(y, nrow(got.it)))
+  us_2015_2019 <- rbind(us_2015_2019, got.it)
+  
+}
+
+colnames(us_2015_2019)[ncol(us_2015_2019)] <- 'Year'
+
+pop <- c()
+inc <- c()
+ed <- c()
+ed2 <- c()
+emp <- c()
+school <- c()
+hunits <- c()
+movers <- c()
+comms <- c()
+pt <- c()
+outdo <- c()
+cons <- c()
+manu <- c()
+whole <- c()
+retail <- c()
+trans <- c()
+fin <- c()
+info <- c()
+pro <- c()
+sw <- c()
+amen <- c()
+other <- c()
+pad <- c()
+years <- c()
+fips <- c()
+
+for (y in unique(us_2015_2019$Year)) {
+  
+  tmp <- us_2015_2019 %>% filter(Year == y)
+  
+  for (c in unique(us_2015_2019$GEOID)) {
+    
+    tmp21 <- tmp %>% filter(GEOID == c)
+    
+    pop <- c(pop, log(tmp21[which(tmp21$variable == 'DP05_0001'),]$estimate[1]))
+    inc <- c(inc, log(tmp21[which(tmp21$variable == 'DP03_0062'),]$estimate[1]))
+    ed <- c(ed, tmp21[which(tmp21$variable == 'DP02_0068P'),]$estimate[1])
+    ed2 <- c(ed2, tmp21[which(tmp21$variable == 'DP02_0067P'),]$estimate[1])
+    emp <- c(emp, tmp21[which(tmp21$variable == 'DP03_0009P'),]$estimate[1])
+    movers <- c(movers, tmp21[which(tmp21$variable == 'DP02_0083P'),]$estimate[1])
+    comms <- c(comms, log(tmp21[which(tmp21$variable == 'DP03_0019'),]$estimate[1]))
+    pt <- c(pt, max(0, log(tmp21[which(tmp21$variable == 'DP03_0021'),]$estimate[1])))
+    hunits <- c(hunits, log(tmp21[which(tmp21$variable == 'DP04_0001'),]$estimate[1]))
+    outdo <- c(outdo, tmp21[which(tmp21$variable == 'DP03_0033'),]$estimate[1])
+    cons <- c(cons, tmp21[which(tmp21$variable == 'DP03_0034'),]$estimate[1])
+    manu <- c(manu, tmp21[which(tmp21$variable == 'DP03_0035'),]$estimate[1])
+    whole <- c(whole, tmp21[which(tmp21$variable == 'DP03_0036'),]$estimate[1])
+    retail <- c(retail, tmp21[which(tmp21$variable == 'DP03_0037'),]$estimate[1])
+    trans <- c(trans, tmp21[which(tmp21$variable == 'DP03_0038'),]$estimate[1])
+    fin <- c(fin, tmp21[which(tmp21$variable == 'DP03_0039'),]$estimate[1])
+    info <- c(info, tmp21[which(tmp21$variable == 'DP03_0040'),]$estimate[1])
+    pro <- c(pro, tmp21[which(tmp21$variable == 'DP03_0041'),]$estimate[1])
+    sw <- c(sw, tmp21[which(tmp21$variable == 'DP03_0042'),]$estimate[1])
+    amen <- c(amen, tmp21[which(tmp21$variable == 'DP03_0043'),]$estimate[1])
+    other <- c(other, tmp21[which(tmp21$variable == 'DP03_0044'),]$estimate[1])
+    pad <- c(pad, tmp21[which(tmp21$variable == 'DP03_0045'),]$estimate[1])
+    years <- c(years, y)
+    fips <- c(fips, c)
+    
+  }
+  
+}
+
+data <- as.data.frame(cbind(as.integer(fips), as.integer(years), as.numeric(pop), as.numeric(inc), as.numeric(ed), as.numeric(ed2), as.numeric(emp), as.numeric(movers), as.numeric(comms), as.numeric(pt), as.numeric(hunits), as.numeric(outdo), as.numeric(cons), as.numeric(manu), as.numeric(whole), as.numeric(retail), as.numeric(trans), as.numeric(fin), as.numeric(info), as.numeric(pro), as.numeric(sw), as.numeric(amen), as.numeric(other), as.numeric(pad)))
+
+colnames(data) <- c('County', 'Year', 'Population', 'Income', 'Education_BS', 'Education_HS', 'Unemployment', 'New_Residents', 'Commute_Solo_By_Car', 'Public_Transit', 'Housing_Units', 'agriculture_mining', 'construction', 'manufacturing', 'wholesale_trade', 'retail_trade', 'transportation', 'finance_insurance', 'information', 'prof_scientific', 'edu_health_social', 'arts_ent_rec', 'other_services', 'public_admin')
+
+```
+
+Next I add the outcomes data for VA counties
+
+```{r}
+virginia_2015_2019 <- read.csv(here("Data/merged_data","virginia_2015_2019.csv"))
+
+virginia_2015_2019$FIPS <- as.integer(virginia_2015_2019$FIPS)
+data$County <- as.integer(data$County)
+data$va <- ifelse(floor(data$County / 1000) == 51, 1, 0)
+va_data <- data %>% filter(va == 1)
+
+ed <- c()
+dod <- c()
+mhp <- c()
+pcp <- c()
+
+for (i in 1:nrow(va_data)) {
+  
+  tmp <- virginia_2015_2019 %>% filter(Year == va_data$Year[i]) %>% filter(FIPS == va_data$County[i])
+  
+  ed <- c(ed, tmp$Annual.Overdose.Visits[1])
+  dod <- c(dod, tmp$DOD_death_rate[1])
+  mhp <- c(mhp, tmp$Mental_health_providers[1])
+  pcp <- c(pcp, tmp$Primary_care_physicians[1])
+  
+}
+
+va_data$ED_Visits_X <- ed
+va_data$ED_Visits <- log(ed + 1)
+va_data$DOD_Rate <- dod
+va_data$Mental_Health_Providers <- log(mhp + 1)
+va_data$Primary_Care_Physicians <- log(pcp + 1)
+
+```
+
+
+Next I gotta create differenced data for VA counties
+
+```{r}
+
+diffs <- data.frame(NULL)
+
+for (y in unique(va_data$Year)[-c(1)]) {
+  
+  tmp1 <- va_data %>% filter(Year == y-1)
+  tmp2 <- va_data %>% filter(Year == y)
+  
+  tmp <- tmp2 - tmp1
+  tmp <- cbind(rep(y, length(unique(va_data$County))), unique(va_data$County), tmp)
+  diffs <- rbind(diffs, tmp)
+  
+}
+
+colnames(diffs)[c(1,2)] <- c('Year', 'County')
+diffs <- diffs[,c(1:2, 5:ncol(diffs))]
+
+```
+
+Next I create the job growth data
+
+```{r}
+
+va_data$Jobs <- va_data$agriculture_mining + va_data$construction + va_data$manufacturing + va_data$wholesale_trade + va_data$retail_trade + va_data$transportation + va_data$finance_insurance + va_data$information + va_data$prof_scientific + va_data$edu_health_social + va_data$arts_ent_rec + va_data$other_services + va_data$public_admin
+
+egr <- c()
+
+for (y in unique(diffs$Year)) {
+  
+  dt <- va_data %>% filter(Year %in% c(y-1,y))
+  
+  for (i in 1:length(unique(dt$County))) {
+    
+    tmp <- dt %>% filter(County == dt$County[i])
+    
+    tmp_rates <- c((tmp$agriculture_mining[2] / tmp$agriculture_mining[1]) - 1, 
+                   (tmp$construction[2] / tmp$construction[1]) - 1, 
+                   (tmp$manufacturing[2] / tmp$manufacturing[1]) - 1, 
+                   (tmp$wholesale_trade[2] / tmp$wholesale_trade[1]) - 1, 
+                   (tmp$retail_trade[2] / tmp$retail_trade[1]) - 1, 
+                   (tmp$transportation[2] / tmp$transportation[1]) - 1, 
+                   (tmp$finance_insurance[2] / tmp$finance_insurance[1]) - 1, 
+                   (tmp$information[2] / tmp$information[1]) - 1, 
+                   (tmp$prof_scientific[2] / tmp$prof_scientific[1]) - 1, 
+                   (tmp$edu_health_social[2] / tmp$edu_health_social[1]) - 1, 
+                   (tmp$arts_ent_rec[2] / tmp$arts_ent_rec[1]) - 1, 
+                   (tmp$other_services[2] / tmp$other_services[1]) - 1, 
+                   (tmp$public_admin[2] / tmp$public_admin[1]) - 1)
+    
+    tmp_rates[is.infinite(tmp_rates)] <- 0
+    tmp_rates[is.na(tmp_rates)] <- 0
+    tmp_rates[is.infinite(tmp_rates)] <- 0
+    
+    val <- tmp$agriculture_mining[1]/tmp$Jobs[1]*tmp_rates[1] + tmp$construction[1]/tmp$Jobs[1]*tmp_rates[2] + tmp$manufacturing[1]/tmp$Jobs[1]*tmp_rates[3] + tmp$wholesale_trade[1]/tmp$Jobs[1]*tmp_rates[4] + tmp$retail_trade[1]/tmp$Jobs[1]*tmp_rates[5] + tmp$transportation[1]/tmp$Jobs[1]*tmp_rates[6] + tmp$finance_insurance[1]/tmp$Jobs[1]*tmp_rates[7] + tmp$information[1]/tmp$Jobs[1]*tmp_rates[8] + tmp$prof_scientific[1]/tmp$Jobs[1]*tmp_rates[9] + tmp$edu_health_social[1]/tmp$Jobs[1]*tmp_rates[10] + tmp$arts_ent_rec[1]/tmp$Jobs[1]*tmp_rates[11] + tmp$other_services[1]/tmp$Jobs[1]*tmp_rates[12] + tmp$public_admin[1]/tmp$Jobs[1]*tmp_rates[13]
+    
+    egr <- c(egr, val)
+    
+  }
+  
+}
+
+diffs <- cbind(diffs, egr)
+colnames(diffs)[ncol(diffs)] <- 'Employment_Growth_Rate'
+
+```
+
+Next I create national job growth rates by sector-year
+
+```{r}
+
+us.rates <- data.frame(NULL)
+
+for (y in unique(diffs$Year)) {
+  
+  update <- data %>% filter(Year == y)
+  baseline <- data %>% filter(Year == y-1)
+  
+  out.rate <- (sum(update$agriculture_mining, na.rm = TRUE) / sum(baseline$agriculture_mining, na.rm = TRUE)) - 1
+  con.rate <- (sum(update$construction, na.rm = TRUE) / sum(baseline$construction, na.rm = TRUE)) - 1
+  man.rate <- (sum(update$manufacturing, na.rm = TRUE) / sum(baseline$manufacturing, na.rm = TRUE)) - 1
+  who.rate <- (sum(update$wholesale_trade, na.rm = TRUE) / sum(baseline$wholesale_trade, na.rm = TRUE)) - 1
+  ret.rate <- (sum(update$retail_trade, na.rm = TRUE) / sum(baseline$retail_trade, na.rm = TRUE)) - 1
+  tra.rate <- (sum(update$transportation, na.rm = TRUE) / sum(baseline$transportation, na.rm = TRUE)) - 1
+  fin.rate <- (sum(update$finance_insurance, na.rm = TRUE) / sum(baseline$finance_insurance, na.rm = TRUE)) - 1
+  inf.rate <- (sum(update$information, na.rm = TRUE) / sum(baseline$information, na.rm = TRUE)) - 1
+  pro.rate <- (sum(update$prof_scientific, na.rm = TRUE) / sum(baseline$prof_scientific, na.rm = TRUE)) - 1
+  soc.rate <- (sum(update$edu_health_social, na.rm = TRUE) / sum(baseline$edu_health_social, na.rm = TRUE)) - 1
+  ame.rate <- (sum(update$arts_ent_rec, na.rm = TRUE) / sum(baseline$arts_ent_rec, na.rm = TRUE)) - 1
+  oth.rate <- (sum(update$other_services, na.rm = TRUE) / sum(baseline$other_services, na.rm = TRUE)) - 1
+  pub.rate <- (sum(update$public_admin, na.rm = TRUE) / sum(baseline$public_admin, na.rm = TRUE)) - 1
+  
+  if (y == 2016) {
+    
+    rates.16 <- c(out.rate, con.rate, man.rate, who.rate, ret.rate, tra.rate, fin.rate, inf.rate, pro.rate, soc.rate, ame.rate, oth.rate, pub.rate)
+    
+  }
+  
+  if (y == 2017) {
+    
+    rates.17 <- c(out.rate, con.rate, man.rate, who.rate, ret.rate, tra.rate, fin.rate, inf.rate, pro.rate, soc.rate, ame.rate, oth.rate, pub.rate)
+    
+  }
+  
+  if (y == 2018) {
+    
+    rates.18 <- c(out.rate, con.rate, man.rate, who.rate, ret.rate, tra.rate, fin.rate, inf.rate, pro.rate, soc.rate, ame.rate, oth.rate, pub.rate)
+    
+  }
+  
+  if (y == 2019) {
+    
+    rates.19 <- c(out.rate, con.rate, man.rate, who.rate, ret.rate, tra.rate, fin.rate, inf.rate, pro.rate, soc.rate, ame.rate, oth.rate, pub.rate)
+    
+  }
+  
+}
+
+us.rates <- as.data.frame(cbind(rates.16, rates.17, rates.18, rates.19))
+colnames(us.rates) <- c('R2016', 'R2017', 'R2018', 'R2019')
+
+
+
+```
+
+Now I create the Bartik instrument
+
+```{r}
+
+bartik <- c()
+
+for (y in 2016:2019) {
+  
+  xxx <- va_data %>% filter(Year == y-1)
+  
+  for (c in unique(diffs$County)) {
+    
+    tmp <- xxx %>% filter(County == c)
+    
+    tmp_rates <- us.rates[,abs(2015-y)]
+    
+    val <- tmp$agriculture_mining[1]/tmp$Jobs[1]*tmp_rates[1] + tmp$construction[1]/tmp$Jobs[1]*tmp_rates[2] + tmp$manufacturing[1]/tmp$Jobs[1]*tmp_rates[3] + tmp$wholesale_trade[1]/tmp$Jobs[1]*tmp_rates[4] + tmp$retail_trade[1]/tmp$Jobs[1]*tmp_rates[5] + tmp$transportation[1]/tmp$Jobs[1]*tmp_rates[6] + tmp$finance_insurance[1]/tmp$Jobs[1]*tmp_rates[7] + tmp$information[1]/tmp$Jobs[1]*tmp_rates[8] + tmp$prof_scientific[1]/tmp$Jobs[1]*tmp_rates[9] + tmp$edu_health_social[1]/tmp$Jobs[1]*tmp_rates[10] + tmp$arts_ent_rec[1]/tmp$Jobs[1]*tmp_rates[11] + tmp$other_services[1]/tmp$Jobs[1]*tmp_rates[12] + tmp$public_admin[1]/tmp$Jobs[1]*tmp_rates[13]
+    
+    bartik <- c(bartik, val)
+    
+  }
+  
+}
+
+diffs <- cbind(diffs, bartik)
+colnames(diffs)[ncol(diffs)] <- 'Bartik'
+
+```
+
+Adding initial levels to diffs
+
+```{r}
+
+yep <- c()
+
+for (i in 1:nrow(diffs)) {
+  
+  tmp <- virginia_2015_2019 %>% filter(Year == (diffs$Year[i]-1)) %>% filter(FIPS == diffs$County[1])
+  yep <- c(yep, tmp$Annual.Overdose.Visits[1])
+  
+}
+
+diffs$PY_Visits <- yep
+
+```
+
+Running IV regressions
+
+```{r}
+
+library(AER)
+library(lmtest)
+library(stargazer)
+
+xdiffs <- diffs %>% filter(abs(Employment_Growth_Rate) < .10)
+
+dod1 <- ivreg(DOD_Rate ~ Employment_Growth_Rate | . - Employment_Growth_Rate + Bartik, data = xdiffs)
+dod2 <- ivreg(DOD_Rate ~ Employment_Growth_Rate + PY_Visits + Education_BS + Education_HS + New_Residents + Unemployment + Mental_Health_Providers +  Commute_Solo_By_Car + Public_Transit + factor(Year) | . - Employment_Growth_Rate + Bartik, data = xdiffs)
+
+dod3 <- lm(DOD_Rate ~ Employment_Growth_Rate, data = xdiffs)
+dod4 <- lm(DOD_Rate ~ Employment_Growth_Rate + PY_Visits + Education_BS + Education_HS + New_Residents + Unemployment + Mental_Health_Providers +  Commute_Solo_By_Car + Public_Transit + factor(Year), data = xdiffs)
+
+dod1x <- coeftest(dod1, vcov = vcovCL, cluster = ~County)
+dod2x <- coeftest(dod2, vcov = vcovCL, cluster = ~County)
+dod3x <- coeftest(dod3, vcov = vcovCL, cluster = ~County)
+dod4x <- coeftest(dod4, vcov = vcovCL, cluster = ~County)
+
+stargazer(dod1, dod2, dod3, dod4, type = 'text', omit = c('Year'))
+stargazer(dod1x, dod2x, dod3x, dod4x, type = 'text', omit = c('Year'))
+
+aov1 <- ivreg(ED_Visits ~ Employment_Growth_Rate | . - Employment_Growth_Rate + Bartik, data = xdiffs)
+aov2 <- ivreg(ED_Visits ~ Employment_Growth_Rate + PY_Visits + Education_BS + Education_HS + New_Residents + Unemployment + Mental_Health_Providers +  Commute_Solo_By_Car + Public_Transit + factor(Year) | . - Employment_Growth_Rate + Bartik, data = xdiffs)
+
+aov3 <- lm(ED_Visits ~ Employment_Growth_Rate, data = xdiffs)
+aov4 <- lm(ED_Visits ~ Employment_Growth_Rate + PY_Visits + Education_BS + Education_HS + New_Residents + Unemployment + Mental_Health_Providers +  Commute_Solo_By_Car + Public_Transit + factor(Year), data = xdiffs)
+
+aov1x <- coeftest(aov1, vcov = vcovCL, cluster = ~County)
+aov2x <- coeftest(aov2, vcov = vcovCL, cluster = ~County)
+aov3x <- coeftest(aov3, vcov = vcovCL, cluster = ~County)
+aov4x <- coeftest(aov4, vcov = vcovCL, cluster = ~County)
+
+stargazer(aov1, aov2, aov3, aov4, type = 'text', omit = c('Year'))
+stargazer(aov1x, aov2x, aov3x, aov4x, type = 'text', omit = c('Year'))
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
