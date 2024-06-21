@@ -27,7 +27,7 @@ ggplot(corr_data, aes(x = mean_household_income, y = DOD_percent)) +
   labs(title = "Appalachian Mean Household Income and DOD Death Rate (2018-2022)",
        caption = "Data obtained from the American Commmunity Survey and National Center for Health Statistics (CDC)",
        x = "Mean Household Income",
-       y = "DOD Death Rate (%)") +
+       y = "DOD Rate (%)") +
   theme_minimal(base_size = 15) +
   theme(
     plot.title = element_text(hjust = 0.5, size = 14),
