@@ -1,0 +1,168 @@
+"Notes"	"Year"	"Year Code"	"State"	"State Code"	"Ten-Year Age Groups"	"Ten-Year Age Groups Code"	Deaths	Population	Crude Rate
+	"2018"	"2018"	"Virginia"	"51"	"25-34 years"	"25-34"	566	1154729	49.0
+	"2018"	"2018"	"Virginia"	"51"	"35-44 years"	"35-44"	645	1079388	59.8
+	"2018"	"2018"	"Virginia"	"51"	"45-54 years"	"45-54"	710	1107577	64.1
+	"2018"	"2018"	"Virginia"	"51"	"55-64 years"	"55-64"	857	1093343	78.4
+	"2018"	"2018"	"Virginia"	"51"	"65-74 years"	"65-74"	413	771803	53.5
+	"2018"	"2018"	"Virginia"	"51"	"75-84 years"	"75-84"	233	381500	61.1
+	"2018"	"2018"	"Virginia"	"51"	"85+ years"	"85+"	63	150743	41.8
+	"2019"	"2019"	"Virginia"	"51"	"25-34 years"	"25-34"	628	1153217	54.5
+	"2019"	"2019"	"Virginia"	"51"	"35-44 years"	"35-44"	637	1086177	58.6
+	"2019"	"2019"	"Virginia"	"51"	"45-54 years"	"45-54"	765	1081932	70.7
+	"2019"	"2019"	"Virginia"	"51"	"55-64 years"	"55-64"	856	1100462	77.8
+	"2019"	"2019"	"Virginia"	"51"	"65-74 years"	"65-74"	458	794600	57.6
+	"2019"	"2019"	"Virginia"	"51"	"75-84 years"	"75-84"	276	398857	69.2
+	"2019"	"2019"	"Virginia"	"51"	"85+ years"	"85+"	72	153283	47.0
+	"2020"	"2020"	"Virginia"	"51"	"25-34 years"	"25-34"	787	1156558	68.0
+	"2020"	"2020"	"Virginia"	"51"	"35-44 years"	"35-44"	922	1099688	83.8
+	"2020"	"2020"	"Virginia"	"51"	"45-54 years"	"45-54"	944	1065395	88.6
+	"2020"	"2020"	"Virginia"	"51"	"55-64 years"	"55-64"	1040	1102510	94.3
+	"2020"	"2020"	"Virginia"	"51"	"65-74 years"	"65-74"	580	819347	70.8
+	"2020"	"2020"	"Virginia"	"51"	"75-84 years"	"75-84"	255	413401	61.7
+	"2020"	"2020"	"Virginia"	"51"	"85+ years"	"85+"	69	155381	44.4
+	"2021"	"2021"	"Virginia"	"51"	"25-34 years"	"25-34"	901	1138438	79.1
+	"2021"	"2021"	"Virginia"	"51"	"35-44 years"	"35-44"	1005	1131004	88.9
+	"2021"	"2021"	"Virginia"	"51"	"45-54 years"	"45-54"	971	1066810	91.0
+	"2021"	"2021"	"Virginia"	"51"	"55-64 years"	"55-64"	1085	1111077	97.7
+	"2021"	"2021"	"Virginia"	"51"	"65-74 years"	"65-74"	609	844535	72.1
+	"2021"	"2021"	"Virginia"	"51"	"75-84 years"	"75-84"	236	408730	57.7
+	"2021"	"2021"	"Virginia"	"51"	"85+ years"	"85+"	82	139684	58.7
+	"2022 "	"2022"	"Virginia"	"51"	"25-34 years"	"25-34"	820	1131756	72.5
+	"2022 "	"2022"	"Virginia"	"51"	"35-44 years"	"35-44"	992	1137868	87.2
+	"2022 "	"2022"	"Virginia"	"51"	"45-54 years"	"45-54"	960	1055602	90.9
+	"2022 "	"2022"	"Virginia"	"51"	"55-64 years"	"55-64"	1129	1094875	103.1
+	"2022 "	"2022"	"Virginia"	"51"	"65-74 years"	"65-74"	621	848654	73.2
+	"2022 "	"2022"	"Virginia"	"51"	"75-84 years"	"75-84"	284	445806	63.7
+	"2022 "	"2022"	"Virginia"	"51"	"85+ years"	"85+"	86	155224	55.4
+"---"
+"Dataset: Multiple Cause of Death, 2018-2022, Single Race"
+"Query Parameters:"
+"Title: VA.DOD.AGE.1822"
+"Single Race 6: American Indian or Alaska Native; Asian; Black or African American; Native Hawaiian or Other Pacific Islander;"
+"White"
+"States: Virginia (51)"
+"Ten-Year Age Groups: 25-34 years; 35-44 years; 45-54 years; 55-64 years; 65-74 years; 75-84 years; 85+ years"
+"UCD - ICD-10 Codes: F10.0 (Mental and behavioural disorders due to use of alcohol, acute intoxication); F10.1 (Mental and"
+"behavioural disorders due to use of alcohol, harmful use); F10.2 (Mental and behavioural disorders due to use of alcohol,"
+"dependence syndrome); F10.3 (Mental and behavioural disorders due to use of alcohol, withdrawal state); F10.4 (Mental and"
+"behavioural disorders due to use of alcohol, withdrawal state with delirium); F10.5 (Mental and behavioural disorders due to use"
+"of alcohol, psychotic disorder); F10.6 (Mental and behavioural disorders due to use of alcohol, amnesic syndrome); F10.7 (Mental"
+"and behavioural disorders due to use of alcohol, residual and late-onset psychotic disorder); F10.8 (Mental and behavioural"
+"disorders due to use of alcohol, other mental and behavioural disorders); F10.9 (Mental and behavioural disorders due to use of"
+"alcohol, unspecified mental and behavioural disorder); F11.0 (Mental and behavioural disorders due to use of opioids, acute"
+"intoxication); F11.1 (Mental and behavioural disorders due to use of opioids, harmful use); F11.2 (Mental and behavioural"
+"disorders due to use of opioids, dependence syndrome); F11.3 (Mental and behavioural disorders due to use of opioids, withdrawal"
+"state); F11.4 (Mental and behavioural disorders due to use of opioids, withdrawal state with delirium); F11.5 (Mental and"
+"behavioural disorders due to use of opioids, psychotic disorder); F11.6 (Mental and behavioural disorders due to use of opioids,"
+"amnesic syndrome); F11.7 (Mental and behavioural disorders due to use of opioids, residual and late-onset psychotic disorder);"
+"F11.8 (Mental and behavioural disorders due to use of opioids, other mental and behavioural disorders); F11.9 (Mental and"
+"behavioural disorders due to use of opioids, unspecified mental and behavioural disorder); F12.0 (Mental and behavioural"
+"disorders due to use of cannabinoids, acute intoxication); F12.1 (Mental and behavioural disorders due to use of cannabinoids,"
+"harmful use); F12.2 (Mental and behavioural disorders due to use of cannabinoids, dependence syndrome); F12.3 (Mental and"
+"behavioural disorders due to use of cannabinoids, withdrawal state); F12.4 (Mental and behavioural disorders due to use of"
+"cannabinoids, withdrawal state with delirium); F12.5 (Mental and behavioural disorders due to use of cannabinoids, psychotic"
+"disorder); F12.6 (Mental and behavioural disorders due to use of cannabinoids, amnesic syndrome); F12.7 (Mental and behavioural"
+"disorders due to use of cannabinoids, residual and late-onset psychotic disorder); F12.8 (Mental and behavioural disorders due"
+"to use of cannabinoids, other mental and behavioural disorders); F12.9 (Mental and behavioural disorders due to use of"
+"cannabinoids, unspecified mental and behavioural disorder); F13.0 (Mental and behavioural disorders due to use of sedatives or"
+"hypnotics, acute intoxication); F13.1 (Mental and behavioural disorders due to use of sedatives or hypnotics, harmful use);"
+"F13.2 (Mental and behavioural disorders due to use of sedatives or hypnotics, dependence syndrome); F13.3 (Mental and"
+"behavioural disorders due to use of sedatives or hypnotics, withdrawal state); F13.4 (Mental and behavioural disorders due to"
+"use of sedatives or hypnotics, withdrawal state with delirium); F13.5 (Mental and behavioural disorders due to use of sedatives"
+"or hypnotics, psychotic disorder); F13.6 (Mental and behavioural disorders due to use of sedatives or hypnotics, amnesic"
+"syndrome); F13.7 (Mental and behavioural disorders due to use of sedatives or hypnotics, residual and late-onset psychotic"
+"disorder); F13.8 (Mental and behavioural disorders due to use of sedatives or hypnotics, other mental and behavioural"
+"disorders); F13.9 (Mental and behavioural disorders due to use of sedatives or hypnotics, unspecified mental and behavioural"
+"disorder); F14.0 (Mental and behavioural disorders due to use of cocaine, acute intoxication); F14.1 (Mental and behavioural"
+"disorders due to use of cocaine, harmful use); F14.2 (Mental and behavioural disorders due to use of cocaine, dependence"
+"syndrome); F14.3 (Mental and behavioural disorders due to use of cocaine, withdrawal state); F14.4 (Mental and behavioural"
+"disorders due to use of cocaine, withdrawal state with delirium); F14.5 (Mental and behavioural disorders due to use of cocaine,"
+"psychotic disorder); F14.6 (Mental and behavioural disorders due to use of cocaine, amnesic syndrome); F14.7 (Mental and"
+"behavioural disorders due to use of cocaine, residual and late-onset psychotic disorder); F14.8 (Mental and behavioural"
+"disorders due to use of cocaine, other mental and behavioural disorders); F14.9 (Mental and behavioural disorders due to use of"
+"cocaine, unspecified mental and behavioural disorder); F15.0 (Mental and behavioural disorders due to use of other stimulants,"
+"including caffeine, acute intoxication); F15.1 (Mental and behavioural disorders due to use of other stimulants, including"
+"caffeine, harmful use); F15.2 (Mental and behavioural disorders due to use of other stimulants, including caffeine, dependence"
+"syndrome); F15.3 (Mental and behavioural disorders due to use of other stimulants, including caffeine, withdrawal state); F15.4"
+"(Mental and behavioural disorders due to use of other stimulants, including caffeine, withdrawal state with delirium); F15.5"
+"(Mental and behavioural disorders due to use of other stimulants, including caffeine, psychotic disorder); F15.6 (Mental and"
+"behavioural disorders due to use of other stimulants, including caffeine, amnesic syndrome); F15.7 (Mental and behavioural"
+"disorders due to use of other stimulants, including caffeine, residual and late-onset psychotic disorder); F15.8 (Mental and"
+"behavioural disorders due to use of other stimulants, including caffeine, other mental and behavioural disorders); F15.9 (Mental"
+"and behavioural disorders due to use of other stimulants, including caffeine, unspecified mental and behavioural disorder);"
+"F16.0 (Mental and behavioural disorders due to use of hallucinogens, acute intoxication); F16.1 (Mental and behavioural"
+"disorders due to use of hallucinogens, harmful use); F16.2 (Mental and behavioural disorders due to use of hallucinogens,"
+"dependence syndrome); F16.3 (Mental and behavioural disorders due to use of hallucinogens, withdrawal state); F16.4 (Mental and"
+"behavioural disorders due to use of hallucinogens, withdrawal state with delirium); F16.5 (Mental and behavioural disorders due"
+"to use of hallucinogens, psychotic disorder); F16.6 (Mental and behavioural disorders due to use of hallucinogens, amnesic"
+"syndrome); F16.7 (Mental and behavioural disorders due to use of hallucinogens, residual and late-onset psychotic disorder);"
+"F16.8 (Mental and behavioural disorders due to use of hallucinogens, other mental and behavioural disorders); F16.9 (Mental and"
+"behavioural disorders due to use of hallucinogens, unspecified mental and behavioural disorder); F18.0 (Mental and behavioural"
+"disorders due to use of volatile solvents, acute intoxication); F18.1 (Mental and behavioural disorders due to use of volatile"
+"solvents, harmful use); F18.2 (Mental and behavioural disorders due to use of volatile solvents, dependence syndrome); F18.3"
+"(Mental and behavioural disorders due to use of volatile solvents, withdrawal state); F18.4 (Mental and behavioural disorders"
+"due to use of volatile solvents, withdrawal state with delirium); F18.5 (Mental and behavioural disorders due to use of volatile"
+"solvents, psychotic disorder); F18.6 (Mental and behavioural disorders due to use of volatile solvents, amnesic syndrome); F18.7"
+"(Mental and behavioural disorders due to use of volatile solvents, residual and late-onset psychotic disorder); F18.8 (Mental"
+"and behavioural disorders due to use of volatile solvents, other mental and behavioural disorders); F18.9 (Mental and"
+"behavioural disorders due to use of volatile solvents, unspecified mental and behavioural disorder); F19.0 (Mental and"
+"behavioural disorders due to multiple drug use and use of other psychoactive substances, acute intoxication); F19.1 (Mental and"
+"behavioural disorders due to multiple drug use and use of other psychoactive substances, harmful use); F19.2 (Mental and"
+"behavioural disorders due to multiple drug use and use of other psychoactive substances, dependence syndrome); F19.3 (Mental and"
+"behavioural disorders due to multiple drug use and use of other psychoactive substances, withdrawal state); F19.4 (Mental and"
+"behavioural disorders due to multiple drug use and use of other psychoactive substances, withdrawal state with delirium); F19.5"
+"(Mental and behavioural disorders due to multiple drug use and use of other psychoactive substances, psychotic disorder); F19.6"
+"(Mental and behavioural disorders due to multiple drug use and use of other psychoactive substances, amnesic syndrome); F19.7"
+"(Mental and behavioural disorders due to multiple drug use and use of other psychoactive substances, residual and late-onset"
+"psychotic disorder); F19.8 (Mental and behavioural disorders due to multiple drug use and use of other psychoactive substances,"
+"other mental and behavioural disorders); F19.9 (Mental and behavioural disorders due to multiple drug use and use of other"
+"psychoactive substances, unspecified mental and behavioural disorder); G31.2 (Degeneration of nervous system due to alcohol);"
+"K70.0 (Alcoholic fatty liver); K70.1 (Alcoholic hepatitis); K70.2 (Alcoholic fibrosis and sclerosis of liver); K70.3 (Alcoholic"
+"cirrhosis of liver); K70.4 (Alcoholic hepatic failure); K70.9 (Alcoholic liver disease, unspecified); K74.6 (Other and"
+"unspecified cirrhosis of liver); X40 (Accidental poisoning by and exposure to nonopioid analgesics, antipyretics and"
+"antirheumatics); X41 (Accidental poisoning by and exposure to antiepileptic, sedative-hypnotic, antiparkinsonism and"
+"psychotropic drugs, not elsewhere classified); X42 (Accidental poisoning by and exposure to narcotics and psychodysleptics"
+"[hallucinogens], not elsewhere classified); X43 (Accidental poisoning by and exposure to other drugs acting on the autonomic"
+"nervous system); X44 (Accidental poisoning by and exposure to other and unspecified drugs, medicaments and biological"
+"substances); X45 (Accidental poisoning by and exposure to alcohol); X60-X84 (Intentional self-harm); Y10 (Poisoning by and"
+"exposure to nonopioid analgesics, antipyretics and antirheumatics, undetermined intent); Y11 (Poisoning by and exposure to"
+"antiepileptic, sedative-hypnotic, antiparkinsonism and psychotropic drugs, not elsewhere classified, undetermined intent); Y12"
+"(Poisoning by and exposure to narcotics and psychodysleptics [hallucinogens], not elsewhere classified, undetermined intent);"
+"Y13 (Poisoning by and exposure to other drugs acting on the autonomic nervous system, undetermined intent); Y14 (Poisoning by"
+"and exposure to other and unspecified drugs, medicaments and biological substances, undetermined intent); Y15 (Poisoning by and"
+"exposure to alcohol, undetermined intent); Y87.0 (Sequelae of intentional self-harm)"
+"Group By: Year; State; Ten-Year Age Groups"
+"Show Totals: False"
+"Show Zero Values: True"
+"Show Suppressed: True"
+"Calculate Rates Per: 100,000"
+"Rate Options: Default intercensal populations for years 2001-2009 (except Infant Age Groups)"
+"---"
+"Help: See http://wonder.cdc.gov/wonder/help/mcd-expanded.html for more information."
+"---"
+"Query Date: Jun 21, 2024 2:16:28 PM"
+"---"
+"Suggested Citation: Centers for Disease Control and Prevention, National Center for Health Statistics. National Vital Statistics"
+"System, Mortality 2018-2022 on CDC WONDER Online Database, released in 2024. Data are from the Multiple Cause of Death Files,"
+"2018-2022, as compiled from data provided by the 57 vital statistics jurisdictions through the Vital Statistics Cooperative"
+"Program. Accessed at http://wonder.cdc.gov/mcd-icd10-expanded.html on Jun 21, 2024 2:16:28 PM"
+"---"
+Caveats:
+"1. Deaths of persons with Age ""Not Stated"" are included in ""All"" counts and rates, but are not distributed among age groups,"
+"so are not included in age-specific counts, age-specific rates or in any age-adjusted rates. More information:"
+"http://wonder.cdc.gov/wonder/help/mcd-expanded.html#Not Stated."
+"2. The population figures for years 2022 and later are single-race estimates of the July 1 resident population, from the Vintage"
+"2022 postcensal series released by the Census Bureau on June 22, 2023. The 2022 series is based on the Modified Blended Base"
+"produced by the US Census Bureau in lieu of the April 1, 2020 decennial population count. The Modified Blended Base consists of"
+"the blend of Vintage 2020 postcensal population estimates for April 1, 2020, 2020 Demographic Analysis Estimates, and 2020"
+"Census data from the internal Census Edited File (CEF). The population figures for year 2021 are single-race estimates of the"
+"July 1 resident population, based on the Blended Base produced by the US Census Bureau in lieu of the April 1, 2020 decennial"
+"population count, from the Vintage 2021 postcensal series released by the Census Bureau on June 30, 2022. The population figures"
+"for year 2020 are single-race estimates of the July 1 resident population, from the Vintage 2020 postcensal series based on"
+"April 2010 Census, released by the Census Bureau on July 27, 2021. The population figures for year 2019 are single-race"
+"estimates of the July 1 resident population, from the Vintage 2019 postcensal series based on April 2010 Census, released by the"
+"Census Bureau on June 25, 2020. The population figures for year 2018 are single-race estimates of the July 1 resident"
+"population, from the Vintage 2018 postcensal series based on April 2010 Census, released by the Census Bureau on June 20, 2019."
+"More information: http://wonder.cdc.gov/wonder/help/mcd-expanded.html#Population Data."
+"3. Changes to cause of death classification affect reporting trends. More information:"
+"http://wonder.cdc.gov/wonder/help/mcd-expanded.html#ICD-10 Changes."
