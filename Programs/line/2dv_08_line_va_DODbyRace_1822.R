@@ -36,4 +36,5 @@ and American Natives is suppressed") +
         legend.title = element_text(size = 12),
         legend.text = element_text(size = 10),
         plot.caption = element_text(hjust = 0.5, size = 9),
-        guides(color = guide_legend(override.aes = list(shape = NA))))
+        guides(color = guide_legend(override.aes = list(shape = NA))))+
+  scale_color_viridis(discrete = TRUE) 

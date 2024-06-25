@@ -22,4 +22,5 @@ ggplot(data = VA_DOD_AGE_1822, aes(x = Year, y = Crude.Rate, color = Ten.Year.Ag
        caption = "Data obtained by National Center of Health Statistics (CDC)") +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.7),
-        plot.caption = element_text(hjust = 0.5, size = 9))
+        plot.caption = element_text(hjust = 0.5, size = 9))+
+  scale_color_viridis(discrete = TRUE) 

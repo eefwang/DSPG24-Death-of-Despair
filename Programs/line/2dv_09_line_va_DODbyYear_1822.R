@@ -19,4 +19,5 @@ ggplot(data = VA_DOD_1822, aes(x = Year, y = Crude.Rate)) +
        x = "Year",
        y = "Death Rate (per 100,000)") +
   theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5))
+  theme(plot.title = element_text(hjust = 0.5))+
+  scale_color_viridis(discrete = TRUE) 

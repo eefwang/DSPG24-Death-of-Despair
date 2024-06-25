@@ -2,6 +2,7 @@
 library(ggplot2)
 library(dplyr)
 library(here)
+library(viridis)
 
 #Data Import
 VA_DOD_SEX_1822 <- read.csv(here("Data/raw_data/MCOD VA 1822", "VA.DOD.SEX.1822.txt"), sep = "\t", header = TRUE)
@@ -22,4 +23,5 @@ ggplot(data = VA_DOD_SEX_1822, aes(x = Year, y = Crude.Rate, color = Gender, gro
        caption = "Data obtained by National Center for Health Statistics (CDC)") +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5),
-        plot.caption = element_text(hjust = 0.5, size = 9))
+        plot.caption = element_text(hjust = 0.5, size = 9))+
+  scale_color_viridis(discrete = TRUE) 
