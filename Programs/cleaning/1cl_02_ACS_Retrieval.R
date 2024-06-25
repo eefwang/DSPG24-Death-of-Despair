@@ -1,19 +1,11 @@
----
-title: "ACS Retrieval"
-author: "Elisabeth Wasserman"
-date: "2024-06-07"
-output: html_document
----
-```{r}
 library(dplyr)
 library(tidycensus)
 library(tidyverse)
 library(here)
-```
 
-Due to some changes in variable names, we retrieve the ACS data separately for each year from 2018-2022
+#Due to some changes in variable names, we retrieve the ACS data separately for each year from 2018-2022
 
-```{r 2018 ACS}
+#2018 ACS
 variables_2018 <- load_variables(year = 2018, dataset = "acs5", cache = TRUE)
 
 year <- 2015:2018
@@ -211,10 +203,10 @@ edu_data_1518 <- edu_data_1518 %>%
          prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
          wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
   )
-```
 
 
-```{r 2019 ACS}
+
+#2019 ACS
 variables_2019 <- load_variables(year = 2019, dataset = "acs5", cache = TRUE)
 
 year <- 2019
@@ -405,9 +397,9 @@ edu_data_2019 <- edu_data_2019 %>%
          prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
          wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
   )
-```
 
-```{r 2020 ACS}
+
+#2020 ACS
 variables_2020 <- load_variables(year = 2020, dataset = "acs5", cache = TRUE)
 
 year <- 2020  # data availability
@@ -598,9 +590,8 @@ edu_data_2020 <- edu_data_2020 %>%
          prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
          wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
   )
-```
 
-```{r 2021 ACS}
+# 2021 ACS
 variables_2021 <- load_variables(year = 2021, dataset = "acs5", cache = TRUE)
 
 year <- 2021  # data availability
@@ -791,9 +782,9 @@ edu_data_2021 <- edu_data_2021 %>%
          prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
          wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
   )
-```
 
-```{r 2022 ACS}
+
+
 variables_2022 <- load_variables(year = 2022, dataset = "acs5", cache = TRUE)
 
 year <- 2022  # data availability
@@ -984,19 +975,16 @@ edu_data_2022 <- edu_data_2022 %>%
          prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
          wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
   )
-```
 
 
-```{r merge}
+
 #merge all acs years into one data frame
 appalachia_acs_2015_2022 = rbind(edu_data_1518, edu_data_2019, edu_data_2020, edu_data_2021, edu_data_2022)
 View(appalachia_acs_2015_2022)
-```
 
-```{r data export,eval=FALSE}
+
+
 write.csv(appalachia_acs_2015_2022, 
           file = here("Data/merged_data", "appalachia_acs_2015_2022.csv"),
           row.names = FALSE) 
-```
-
 
