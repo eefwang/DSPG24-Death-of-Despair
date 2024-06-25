@@ -92,7 +92,24 @@ virginia_2018_2022 <-virginia_acs_2018_2022 %>% #ACS VA data
 
 #665 observations, all counties in VA is preserved
 
-#Appalachian data sets
+
+#get acs data in VA from 2015-2019
+virginia_acs_2015_2022 <- appalachia_acs_2015_2022 %>%
+  filter(State_fip == 51) 
+
+#merged VA data
+virginia_2015_2019 <-virginia_acs_2015_2022 %>% #ACS VA data
+  inner_join(mcod_total_deaths_1519, by = c("FIPS", "Year"), multiple = "all") %>% #MCOD all death data
+  inner_join(mcod_total_DOD_1519, by = c("FIPS", "Year"), multiple = "all") %>% #MCOD DOD death data
+  inner_join(va_health_rank, by = c("FIPS", "Year"), multiple = "all") %>% # merge to va health rank
+  inner_join(ruc_codes, by = c("FIPS"), multiple = "all") # merge to ruc codes
+
+#665 observations, all counties in VA is preserved
+
+
+
+
+####Appalachian data sets######
 
 #merge death rates
 appalachia_2018_2022 <- appalachia_acs_2018_2022 %>% #Appalachian States ACS data
@@ -103,9 +120,20 @@ appalachia_2018_2022 <- appalachia_acs_2018_2022 %>% #Appalachian States ACS dat
 
 #2115 observations, all counties in Appalachian is preserved
 
+#merge death rates
+appalachia_2015_2019 <- appalachia_acs_2015_2022 %>% #Appalachian States ACS data
+  inner_join(appalachia_regions, by = c("FIPS"), multiple = "all") %>% #filter all counties in Appalachian
+  inner_join(mcod_total_deaths_1519, by = c("FIPS", "Year"), multiple = "all") %>% #MCOD all death data
+  inner_join(mcod_total_DOD_1519, by = c("FIPS", "Year"), multiple = "all") %>% #MCOD DOD death data
+  inner_join(ruc_codes, by = c("FIPS"), multiple = "all") 
+
+#2115 observations, all counties in Appalachian is preserved
+
+
 #Export data sets
 
 #write.csv(appalachia_2018_2022, file = here("Data/merged_data", "appalachia_2018_2022.csv"),row.names = FALSE) 
-
+#write.csv(appalachia_2015_2019, file = here("Data/merged_data", "appalachia_2015_2019.csv"),row.names = FALSE) 
 #write.csv(virginia_2018_2022,file = here("Data/merged_data", "virginia_2018_2022.csv"), row.names = FALSE) 
+#write.csv(virginia_2015_2019,file = here("Data/merged_data", "virginia_2015_2019.csv"), row.names = FALSE) 
 
