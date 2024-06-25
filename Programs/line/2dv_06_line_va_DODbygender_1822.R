@@ -1,17 +1,15 @@
 # Load necessary libraries
 library(ggplot2)
 library(dplyr)
+library(here)
 
+#Data Import
+VA_DOD_SEX_1822 <- read.csv(here("Data/raw_data/MCOD VA 1822", "VA.DOD.SEX.1822.txt"), sep = "\t", header = TRUE)
 
-# Data inspection
-head(VA_DOD_SEX_1822)
-str(VA_DOD_SEX_1822)
-
-# Rename columns to remove spaces
-colnames(VA_DOD_SEX_1822) <- make.names(colnames(VA_DOD_SEX_1822))
-
-# Check the column names
-colnames(VA_DOD_SEX_1822)
+#Prepare data
+VA_DOD_SEX_1822 <- VA_DOD_SEX_1822 %>%
+  select(Year,Gender,Crude.Rate) %>%
+  na.omit()
 
 # Create the line plot
 ggplot(data = VA_DOD_SEX_1822, aes(x = Year, y = Crude.Rate, color = Gender, group = Gender)) +
