@@ -9,6 +9,7 @@ vdh_opioid_deaths = read.csv(here("Data/raw_data","vdh-pud-overdose_deaths_by-fi
 #virginia and appalachia
 ruc_codes = read.csv(here("Data/raw_data", "Ruralurbancontinuumcodes2023.csv"))
 
+#per 100,000
 mcod_total_DOD = read.delim(here("Data/raw_data/MOCD 0922", "DOD.txt"), sep = ",", header = TRUE)
 
 mcod_total_deaths = read.delim(here("Data/raw_data/MOCD 0922", "all_death.txt"), sep = ",", header = TRUE)
