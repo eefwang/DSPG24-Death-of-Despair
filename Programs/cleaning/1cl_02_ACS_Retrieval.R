@@ -983,7 +983,7 @@ appalachia_acs_2015_2022 = rbind(edu_data_1518, edu_data_2019, edu_data_2020, ed
 View(appalachia_acs_2015_2022)
 
 
-
+#export csv
 write.csv(appalachia_acs_2015_2022, 
           file = here("Data/merged_data", "appalachia_acs_2015_2022.csv"),
           row.names = FALSE) 

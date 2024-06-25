@@ -35,7 +35,7 @@ mcod_total_DOD <- mcod_total_DOD %>%
 mcod_total_deaths <- mcod_total_deaths %>%
   rename(FIPS = County.Code,
          total_death_rate = Death.Rate) %>%
-  mutate(DOD_death_rate = DOD_death_rate * 100000)
+  mutate(total_death_rate = total_death_rate * 100000)
 
 #select relevent variables and restrict sample from 2018-2022
 mcod_total_DOD_1822 <- mcod_total_DOD %>%
