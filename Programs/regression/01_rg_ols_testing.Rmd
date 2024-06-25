@@ -70,3 +70,12 @@ resultsMat = cbind(output$outmat, round(criterionMat,3))
 resultsMat
 ```
 
+```{r}
+virginia_ols_dod_1822 <- lm(DOD_death_rate ~ below_poverty_ratio + BA_higher_ratio + unemployed_pop_pe+ ruc_group + as.factor(Year), data = virginia_2018_2022)
+
+summary(virginia_ols_dod_1822)
+
+library(stargazer)
+stargazer(virginia_ols_dod_1822, type = "text")
+```
+
