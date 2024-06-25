@@ -27,16 +27,6 @@ vdh_opioid_deaths <- vdh_opioid_deaths %>%
          FIPS = VA.FIPS,
          VDH_death_rate = Death.Rate)
 
-mcod_total_DOD <- mcod_total_DOD %>%
-  rename(FIPS = County.Code,
-         DOD_death_rate = Death.Rate) %>%
-  mutate(DOD_death_rate = DOD_death_rate * 100000)
-
-mcod_total_deaths <- mcod_total_deaths %>%
-  rename(FIPS = County.Code,
-         total_death_rate = Death.Rate) %>%
-  mutate(total_death_rate = total_death_rate * 100000)
-
 #select relevent variables and restrict sample from 2018-2022
 mcod_total_DOD_1822 <- mcod_total_DOD %>%
   select(Year, FIPS, DOD_death_rate)%>%
@@ -136,4 +126,5 @@ appalachia_2015_2019 <- appalachia_acs_2015_2022 %>% #Appalachian States ACS dat
 #write.csv(appalachia_2015_2019, file = here("Data/merged_data", "appalachia_2015_2019.csv"),row.names = FALSE) 
 #write.csv(virginia_2018_2022,file = here("Data/merged_data", "virginia_2018_2022.csv"), row.names = FALSE) 
 #write.csv(virginia_2015_2019,file = here("Data/merged_data", "virginia_2015_2019.csv"), row.names = FALSE) 
-
+#write.csv(mcod_total_DOD,file = here("Data/raw_data", "mcod_total_DOD.txt"), row.names = FALSE) 
+#write.csv(mcod_total_deaths,file = here("Data/raw_data", "mcod_total_deaths.txt"), row.names = FALSE) 
