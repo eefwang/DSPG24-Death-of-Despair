@@ -48,6 +48,7 @@ summary(virginia_ols_dod_1822_test3)
 
 #virginia_ols_edvisits_1519 <- lm(Annual.Overdose.Visits ~ BA_higher_ratio + unemployed_pop_pe + Median_household_income, data = virginia_2015_2019)
 ```
+
 ```{r}
 library(plm)
 panel_data <- pdata.frame(virginia_2018_2022, index = c("FIPS", "Year"))
