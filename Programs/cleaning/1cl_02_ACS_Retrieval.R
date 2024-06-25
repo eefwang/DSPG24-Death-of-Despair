@@ -984,7 +984,5 @@ View(appalachia_acs_2015_2022)
 
 
 #export csv
-write.csv(appalachia_acs_2015_2022, 
-          file = here("Data/merged_data", "appalachia_acs_2015_2022.csv"),
-          row.names = FALSE) 
+#write.csv(appalachia_acs_2015_2022, file = here("Data/merged_data", "appalachia_acs_2015_2022.csv"),row.names = FALSE) 
 

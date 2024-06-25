@@ -105,11 +105,7 @@ appalachia_2018_2022 <- appalachia_acs_2018_2022 %>% #Appalachian States ACS dat
 
 #Export data sets
 
-write.csv(appalachia_2018_2022, 
-          file = here("Data/merged_data", "appalachia_2018_2022.csv"),
-          row.names = FALSE) 
+#write.csv(appalachia_2018_2022, file = here("Data/merged_data", "appalachia_2018_2022.csv"),row.names = FALSE) 
 
-write.csv(virginia_2018_2022, 
-          file = here("Data/merged_data", "virginia_2018_2022.csv"),
-          row.names = FALSE) 
+#write.csv(virginia_2018_2022,file = here("Data/merged_data", "virginia_2018_2022.csv"), row.names = FALSE) 
 
