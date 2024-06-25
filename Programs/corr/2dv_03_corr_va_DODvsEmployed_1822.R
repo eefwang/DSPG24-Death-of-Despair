@@ -2,12 +2,14 @@
 library(dplyr)
 library(ggplot2)
 library(viridis)
+library(here)
+
+virginia_2018_2022 = read.csv(here("Data/merged_data", "virginia_2018_2022.csv"), sep = ",", header = TRUE)
 
 # Ensure the dataset is clean and filter the necessary columns
 corr_data <- virginia_2018_2022 %>%
   mutate(
     employed_pop_pe = as.numeric(as.character(employed_pop_pe)),
-    DOD_death_rate = (as.numeric(as.character(DOD_death_rate))*100)
   ) %>%
   select(employed_pop_pe, DOD_death_rate)
 
@@ -20,7 +22,7 @@ ggplot(corr_data, aes(x = employed_pop_pe, y = DOD_death_rate)) +
   geom_smooth(method = "lm", color = viridis(256)[200], size = 1.5, se = FALSE) +  # Add a prominent regression line
   labs(title = "Virginia Employed population vs. DOD Rate (2018-2022)",
        x = "Employed population",
-       y = "DOD Rate (%)",
+       y = "DOD Rate (per 100,000)",
        caption = "Data obtained from the American Community Survey and National Center for Health Statistics (CDC)") +
   theme_minimal(base_size = 15) +
   theme(

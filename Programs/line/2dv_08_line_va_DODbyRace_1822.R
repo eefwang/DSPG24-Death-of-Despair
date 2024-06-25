@@ -4,6 +4,7 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(viridis)
+library(here)
 
 #Data Import
 VA_DOD_RACE_1822<- read.csv(here("Data/raw_data/MCOD VA 1822", "VA.DOD.RACE.1822.txt"), sep = "\t", header = TRUE)

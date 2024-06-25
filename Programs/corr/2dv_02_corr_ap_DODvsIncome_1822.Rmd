@@ -5,6 +5,18 @@ date: "2024-06-17"
 output: html_document
 ---
 
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(corrplot)
+library(viridis)
+library(here)
+```
+
+```{r import}
+appalachia_2018_2022 = read.csv(here("Data/merged_data", "appalachia_2018_2022.csv"), sep = ",", header = TRUE)
+```
+
 ```{R}
 # Ensure the dataset is clean and filter the necessary columns
 corr_data <- appalachia_2018_2022 %>%
