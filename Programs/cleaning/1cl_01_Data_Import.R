@@ -1,12 +1,5 @@
----
-title: "Data Import"
-author: "Yifan Wang"
-date: "2024-06-13"
-output: html_document
----
-
-```{r data sets}
 library(here)
+
 #load in all data sets
 #virginia specific datasets
 va_health_rank = read.csv(here("Data/raw_data", "health_rank_data.csv"), sep = ",", header = TRUE)
@@ -22,5 +15,3 @@ mcod_total_deaths = read.delim(here("Data/raw_data/MOCD 0922", "all_death.txt"),
 
 #appalachia specific datasets
 appalachia_regions = read.csv(here("Data/raw_data","Subregions-in-Appalachia_2021_Data.csv"))
-
-```
