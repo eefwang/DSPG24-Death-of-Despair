@@ -1,27 +1,24 @@
-```{r import}
-DOD = read.delim(here("Data/raw_data/MOCD 0922", "DOD.txt"), sep = ",", header = TRUE)
-```
 
 ```{r}
-library(dplyr)
-sum(is.na(APDOD$Death.Rate))
-sum(is.na(APDOD$Death.Rate.Indian))
-DOD <- DOD%>%
-  rename(FIPS = County.Code)
-DOD$FIPS = as.integer(DOD$FIPS)
-Subregions_in_Appalachia_2021_Data$FIPS = as.integer(Subregions_in_Appalachia_2021_Data$FIPS)
-APDOD <- Subregions_in_Appalachia_2021_Data %>%
-  left_join(DOD, by = c("FIPS"))
-APDOD <- APDOD %>%
-  filter(Year >= 2018 & Year <= 2022)
-```
-
-```{r}
-# Load necessary libraries
 # Load necessary libraries
 library(tidyverse)
 library(viridis)
+library(dplyr)
+library(here)
+library(ggplot2)
+```
+```{r import}
+DOD = read.delim(here("Data/raw_data/MOCD 0922", "DOD.txt"), sep = ",", header = TRUE)
+appalachia_regions = read.csv(here("Data/raw_data","Subregions-in-Appalachia_2021_Data.csv"))
+```
 
+```{r}
+APDOD <- DOD %>% 
+  filter(Year >= 2018 & Year <= 2022) %>%
+  inner_join(appalachia_regions, by = c("FIPS"), multiple = "all")
+```
+
+```{r}
 # Assuming your data frame is called APDOD
 # Calculate the total number of NA values for each specified column
 na_counts <- APDOD %>%
