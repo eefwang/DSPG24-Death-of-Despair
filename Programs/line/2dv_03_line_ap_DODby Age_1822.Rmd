@@ -1,3 +1,7 @@
+```{r import}
+DOD = read.delim(here("Data/raw_data/MOCD 0922", "DOD.txt"), sep = ",", header = TRUE)
+```
+
 ```{r}
 library(dplyr)
 sum(is.na(APDOD$Death.Rate))
