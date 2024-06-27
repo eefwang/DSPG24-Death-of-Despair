@@ -5,25 +5,26 @@ library(ggplot2)
 library(readxl)
 library(here)
 
-#import dataset
-merged_state_death <- read_excel(here("Data/raw_data/MCOD 18-22 BY STATE","merged_state_death.xlsx"))
+# Import dataset
+merged_state_death <- read_excel(here("Data/raw_data/MCOD 18-22 BY STATE", "merged_state_death.xlsx"))
 
 # Create summary data frame
 merged_state_death_1822 <- merged_state_death %>%
-  filter(State == "Virginia")%>%
+  filter(State == "Virginia") %>%
   mutate(
     alcohol_deaths = as.numeric(alcohol_deaths),
     drugs_deaths = as.numeric(drugs_deaths),
     suicide_deaths = as.numeric(suicide_deaths),
-    Population = as.numeric(Population))%>%
-  mutate(alcohol_death_rate = alcohol_deaths/Population*100000,
-         drugs_death_rate = drugs_deaths/Population *100000,
-         suicide_death_rate = suicide_deaths/Population*100000)
+    Population = as.numeric(Population)
+  ) %>%
+  mutate(alcohol_death_rate = alcohol_deaths / Population * 100000,
+         drugs_death_rate = drugs_deaths / Population * 100000,
+         suicide_death_rate = suicide_deaths / Population * 100000)
 
-ggplot(merged_state_death_1822, aes(x = Year, y = alcohol_death_rate, color = "Alcohol")) +
-  geom_line() +
-  geom_line(aes(y = drugs_death_rate, color = "Drugs")) +
-  geom_line(aes(y = suicide_death_rate, color = "Suicide")) +
+ggplot(merged_state_death_1822, aes(x = Year)) +
+  geom_line(aes(y = alcohol_death_rate, color = "Alcohol"), size = 1.5) +
+  geom_line(aes(y = drugs_death_rate, color = "Drugs"), size = 1.5) +
+  geom_line(aes(y = suicide_death_rate, color = "Suicide"), size = 1.5) +
   scale_color_viridis_d() +  # Use discrete colors from viridis
   labs(
     title = "Virginia Deaths of Despair by Components 2018-2022",
