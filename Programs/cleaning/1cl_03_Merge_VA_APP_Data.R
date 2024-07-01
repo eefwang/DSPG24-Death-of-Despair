@@ -126,5 +126,4 @@ appalachia_2015_2019 <- appalachia_acs_2015_2022 %>% #Appalachian States ACS dat
 #write.csv(appalachia_2015_2019, file = here("Data/merged_data", "appalachia_2015_2019.csv"),row.names = FALSE) 
 #write.csv(virginia_2018_2022,file = here("Data/merged_data", "virginia_2018_2022.csv"), row.names = FALSE) 
 #write.csv(virginia_2015_2019,file = here("Data/merged_data", "virginia_2015_2019.csv"), row.names = FALSE) 
-#write.csv(mcod_total_DOD,file = here("Data/raw_data", "mcod_total_DOD.txt"), row.names = FALSE) 
-#write.csv(mcod_total_deaths,file = here("Data/raw_data", "mcod_total_deaths.txt"), row.names = FALSE) 
+
