@@ -1,23 +1,24 @@
-```{r}
-library(dplyr)
-sum(is.na(APDOD$Death.Rate))
-sum(is.na(APDOD$Death.Rate.Indian))
-DOD <- DOD%>%
-  rename(FIPS = County.Code)
-DOD$FIPS = as.integer(DOD$FIPS)
-Subregions_in_Appalachia_2021_Data$FIPS = as.integer(Subregions_in_Appalachia_2021_Data$FIPS)
-APDOD <- Subregions_in_Appalachia_2021_Data %>%
-  left_join(DOD, by = c("FIPS"))
-APDOD <- APDOD %>%
-  filter(Year >= 2018 & Year <= 2022)
-```
 
 ```{r}
-# Load necessary libraries
 # Load necessary libraries
 library(tidyverse)
 library(viridis)
+library(dplyr)
+library(here)
+library(ggplot2)
+```
+```{r import}
+DOD = read.delim(here("Data/raw_data/MOCD 0922", "DOD.txt"), sep = ",", header = TRUE)
+appalachia_regions = read.csv(here("Data/raw_data","Subregions-in-Appalachia_2021_Data.csv"))
+```
 
+```{r}
+APDOD <- DOD %>% 
+  filter(Year >= 2018 & Year <= 2022) %>%
+  inner_join(appalachia_regions, by = c("FIPS"), multiple = "all")
+```
+
+```{r}
 # Assuming your data frame is called APDOD
 # Calculate the total number of NA values for each specified column
 na_counts <- APDOD %>%
@@ -40,7 +41,7 @@ APDOD_long <- APDOD %>%
 # Calculate the average death rate for each age group by year
 APDOD_avg <- APDOD_long %>%
   group_by(Year, Age_Group) %>%
-  summarize(Average_Death_Rate = mean(Death_Rate))
+  summarize(Average_Death_Rate = mean(Death_Rate)*100000)
 
 # Create the line graph using ggplot2 with viridis color palette
 ggplot(APDOD_avg, aes(x = Year, y = Average_Death_Rate, color = Age_Group)) +
@@ -51,7 +52,7 @@ ggplot(APDOD_avg, aes(x = Year, y = Average_Death_Rate, color = Age_Group)) +
   labs(title = "Average Death Rate by Age Group",) +
   labs(title = "Appalachia DOD Rates by Age Group (2018-2022)",
        x = "Year",
-       y = "Average Death Rate",
+       y = "Average Death Rate (per 100,000)",
        color = "Age Group",
        caption = "Data obtained from the National Center for Health Statistics (CDC)\n40% of the dataset from age group 25-44 is suppressed") +
   theme_minimal() +

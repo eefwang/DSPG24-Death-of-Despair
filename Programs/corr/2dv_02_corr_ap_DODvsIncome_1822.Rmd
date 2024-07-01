@@ -5,6 +5,18 @@ date: "2024-06-17"
 output: html_document
 ---
 
+```{r}
+# Load necessary libraries
+library(dplyr)
+library(corrplot)
+library(viridis)
+library(here)
+```
+
+```{r import}
+appalachia_2018_2022 = read.csv(here("Data/merged_data", "appalachia_2018_2022.csv"), sep = ",", header = TRUE)
+```
+
 ```{R}
 # Ensure the dataset is clean and filter the necessary columns
 corr_data <- appalachia_2018_2022 %>%
@@ -12,8 +24,7 @@ corr_data <- appalachia_2018_2022 %>%
     Mean_household_income = as.numeric(as.character(mean_household_income)),
     DOD_death_rate = as.numeric(as.character(DOD_death_rate))
   ) %>%
-  select(mean_household_income, DOD_death_rate) %>%
-  mutate(DOD_percent = DOD_death_rate * 100)
+  select(mean_household_income, DOD_death_rate) 
  
 # Remove rows with NA values
 corr_data <- na.omit(corr_data)
@@ -21,13 +32,13 @@ corr_data <- na.omit(corr_data)
 
 ```{R}
 # Create a scatterplot with a regression line using viridis color palette
-ggplot(corr_data, aes(x = mean_household_income, y = DOD_percent)) +
+ggplot(corr_data, aes(x = mean_household_income, y = DOD_death_rate)) +
   geom_point(color = viridis(256)[50], size = 2, alpha = 0.7) +  # Use a consistent viridis color for points with transparency
   geom_smooth(method = "lm", color = viridis(256)[200], size = 1.5, se = FALSE) +  # Add a prominent regression line
   labs(title = "Appalachian Mean Household Income and DOD Death Rate (2018-2022)",
        caption = "Data obtained from the American Commmunity Survey and National Center for Health Statistics (CDC)",
        x = "Mean Household Income",
-       y = "DOD Rate (%)") +
+       y = "DOD Rate (per 100,000)") +
   theme_minimal(base_size = 15) +
   theme(
     plot.title = element_text(hjust = 0.5, size = 14),

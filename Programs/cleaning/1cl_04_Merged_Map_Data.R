@@ -38,10 +38,6 @@ map_appalachia_2018_2022 <- us_counties %>%
 
 
 #Data export
-#write.csv(map_appalachia_2018_2022, 
-#file = here("Data/merged_data", "map_virginia_2018_2022.csv"),
-#row.names = FALSE) 
+#write.csv(map_appalachia_2018_2022, file = here("Data/merged_data", "map_virginia_2018_2022.csv"),row.names = FALSE) 
 
-#write.csv(map_virginia_2018_2022, 
-#file = here("Data/merged_data", "map_appalachia_2018_2022.csv"),
-#row.names = FALSE) 
+#write.csv(map_virginia_2018_2022, file = here("Data/merged_data", "map_appalachia_2018_2022.csv"),row.names = FALSE) 

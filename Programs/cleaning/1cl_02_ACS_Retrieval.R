@@ -124,7 +124,12 @@ list_data <- lapply(year, function(year) {
       information="DP03_0039E", transportation="DP03_0038E",
       retail_trade="DP03_0037E", wholesale_trade="DP03_0036E",
       manufacturing="DP03_0035E", construction= "DP03_0034E",
-      agriculture_mining="DP03_0033E"),
+      agriculture_mining="DP03_0033E",
+      
+      #Transportation
+      drive_alone="DP03_0019PE", carpool="DP03_0020PE", 
+      public_transportation="DP03_0021PE", walk="DP03_0022PE"
+      ),
     
     year = year,
     state = state_code,
@@ -201,7 +206,8 @@ edu_data_1518 <- edu_data_1518 %>%
          natural_resources_pe, sales_pe, service_pe, management_pe, armed_forces_pe, unemployed_pop_pe, not_in_labor_force_pe,
          employed_pop_pe, veterans_pe, public_admin_pe, other_services_pe, arts_ent_rec_pe, edu_health_social_pe,
          prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
-         wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
+         wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe,
+         drive_alone, carpool, public_transportation, walk
   )
 
 
@@ -319,7 +325,12 @@ data <- get_acs(
     information="DP03_0039E", transportation="DP03_0038E",
     retail_trade="DP03_0037E", wholesale_trade="DP03_0036E",
     manufacturing="DP03_0035E", construction= "DP03_0034E",
-    agriculture_mining="DP03_0033E"),
+    agriculture_mining="DP03_0033E",
+    
+    #Transportation
+    drive_alone="DP03_0019PE", carpool="DP03_0020PE", 
+    public_transportation="DP03_0021PE", walk="DP03_0022PE"
+  ),
   
   year = year,
   state = state_code,
@@ -395,7 +406,8 @@ edu_data_2019 <- edu_data_2019 %>%
          natural_resources_pe, sales_pe, service_pe, management_pe, armed_forces_pe, unemployed_pop_pe, not_in_labor_force_pe,
          employed_pop_pe, veterans_pe, public_admin_pe, other_services_pe, arts_ent_rec_pe, edu_health_social_pe,
          prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
-         wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
+         wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe,
+         drive_alone, carpool, public_transportation, walk
   )
 
 
@@ -512,7 +524,12 @@ data <- get_acs(
     information="DP03_0039E", transportation="DP03_0038E",
     retail_trade="DP03_0037E", wholesale_trade="DP03_0036E",
     manufacturing="DP03_0035E", construction= "DP03_0034E",
-    agriculture_mining="DP03_0033E"),
+    agriculture_mining="DP03_0033E",
+    
+    #Transportation
+    drive_alone="DP03_0019PE", carpool="DP03_0020PE", 
+    public_transportation="DP03_0021PE", walk="DP03_0022PE"
+  ),
   
   year = year,
   state = state_code,
@@ -588,7 +605,8 @@ edu_data_2020 <- edu_data_2020 %>%
          natural_resources_pe, sales_pe, service_pe, management_pe, armed_forces_pe, unemployed_pop_pe, not_in_labor_force_pe,
          employed_pop_pe, veterans_pe, public_admin_pe, other_services_pe, arts_ent_rec_pe, edu_health_social_pe,
          prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
-         wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
+         wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe,
+         drive_alone, carpool, public_transportation, walk
   )
 
 # 2021 ACS
@@ -704,7 +722,12 @@ data <- get_acs(
     information="DP03_0039E", transportation="DP03_0038E",
     retail_trade="DP03_0037E", wholesale_trade="DP03_0036E",
     manufacturing="DP03_0035E", construction= "DP03_0034E",
-    agriculture_mining="DP03_0033E"),
+    agriculture_mining="DP03_0033E",
+    
+    #Transportation
+    drive_alone="DP03_0019PE", carpool="DP03_0020PE", 
+    public_transportation="DP03_0021PE", walk="DP03_0022PE"
+  ),
   
   year = year,
   state = state_code,
@@ -780,7 +803,8 @@ edu_data_2021 <- edu_data_2021 %>%
          natural_resources_pe, sales_pe, service_pe, management_pe, armed_forces_pe, unemployed_pop_pe, not_in_labor_force_pe,
          employed_pop_pe, veterans_pe, public_admin_pe, other_services_pe, arts_ent_rec_pe, edu_health_social_pe,
          prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
-         wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
+         wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe,
+         drive_alone, carpool, public_transportation, walk
   )
 
 
@@ -897,7 +921,12 @@ data <- get_acs(
     information="DP03_0039E", transportation="DP03_0038E",
     retail_trade="DP03_0037E", wholesale_trade="DP03_0036E",
     manufacturing="DP03_0035E", construction= "DP03_0034E",
-    agriculture_mining="DP03_0033E"),
+    agriculture_mining="DP03_0033E",
+    
+    #Transportation
+    drive_alone="DP03_0019PE", carpool="DP03_0020PE", 
+    public_transportation="DP03_0021PE", walk="DP03_0022PE"
+  ),
   
   year = year,
   state = state_code,
@@ -973,7 +1002,8 @@ edu_data_2022 <- edu_data_2022 %>%
          natural_resources_pe, sales_pe, service_pe, management_pe, armed_forces_pe, unemployed_pop_pe, not_in_labor_force_pe,
          employed_pop_pe, veterans_pe, public_admin_pe, other_services_pe, arts_ent_rec_pe, edu_health_social_pe,
          prof_scientific_pe, finance_insurance_pe, information_pe, transportation_pe, retail_trade_pe,
-         wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe
+         wholesale_trade_pe, manufacturing_pe, construction_pe, agriculture_mining_pe,
+         drive_alone, carpool, public_transportation, walk
   )
 
 
@@ -984,5 +1014,5 @@ View(appalachia_acs_2015_2022)
 
 
 #export csv
-#write.csv(appalachia_acs_2015_2022, file = here("Data/merged_data", "appalachia_acs_2015_2022.csv"),row.names = FALSE) 
+write.csv(appalachia_acs_2015_2022, file = here("Data/merged_data", "appalachia_acs_2015_2022.csv"),row.names = FALSE) 
 

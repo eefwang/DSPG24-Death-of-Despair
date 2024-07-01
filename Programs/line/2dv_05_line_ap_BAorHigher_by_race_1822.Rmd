@@ -13,8 +13,11 @@ library(ggplot2)
 library(viridis)
 ```
 
+```{r import}
+appalachia_2018_2022 = read.csv(here("Data/merged_data", "appalachia_2018_2022.csv"), sep = ",", header = TRUE)
+```
+
 ```{r}
- 
 # Select and filter the relevant columns and rows
 BA_higher_race <- appalachia_2018_2022 %>%
   select(Year, BA_higher_ratio_white, BA_higher_ratio_black, BA_higher_ratio_asian_pacific, BA_higher_ratio_native)

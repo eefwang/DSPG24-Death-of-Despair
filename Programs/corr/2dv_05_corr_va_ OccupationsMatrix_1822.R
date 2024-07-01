@@ -2,6 +2,9 @@
 library(dplyr)
 library(corrplot)
 library(viridis)
+library(here)
+
+virginia_2018_2022 = read.csv(here("Data/merged_data", "virginia_2018_2022.csv"), sep = ",", header = TRUE)
 
 # Assuming your data frame is called appalachia_2018_2022
 # Ensure the dataset is clean and filter the necessary columns

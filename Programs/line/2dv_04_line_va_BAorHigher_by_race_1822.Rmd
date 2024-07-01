@@ -13,6 +13,10 @@ library(ggplot2)
 library(viridis)
 ```
 
+```{r import}
+virginia_2018_2022 = read.csv(here("Data/merged_data", "virginia_2018_2022.csv"), sep = ",", header = TRUE)
+```
+
 ```{r}
  
 # Select and filter the relevant columns and rows

@@ -2,6 +2,10 @@
 library(dplyr)
 library(ggplot2)
 library(viridis)
+library(here)
+
+appalachia_2018_2022 = read.csv(here("Data/merged_data", "appalachia_2018_2022.csv"), sep = ",", header = TRUE)
+
 
 # Ensure the dataset is clean and filter the necessary columns
 corr_data <- appalachia_2018_2022 %>%
@@ -20,7 +24,7 @@ ggplot(corr_data, aes(x = unemployed_pop_pe, y = DOD_death_rate)) +
   geom_smooth(method = "lm", color = viridis(256)[200], size = 1.5, se = FALSE) +  # Add a prominent regression line
   labs(title = "Appalachian Unemployed Population and DOD Rate (2018-2022)",
        x = "Unemployed Population",
-       y = "DOD Rate (%)",
+       y = "DOD Rate (per 100,000)",
        caption = "Data obtained from the American Community Survey and Center for Disease Control and Prevention") +
   theme_minimal(base_size = 15) +
   theme(
