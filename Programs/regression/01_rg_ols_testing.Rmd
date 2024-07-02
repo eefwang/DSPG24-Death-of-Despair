@@ -27,7 +27,7 @@ virginia_2018_2022 <- virginia_2018_2022 %>%
 virginia_2018_2022$ruc_group = as.factor(virginia_2018_2022$ruc_group)
 ```
 
-```{r}
+```{r try}
 virginia_ols_dod_1822 <- lm(DOD_death_rate ~ MHP_ratio + PCP_ratio + Median_household_income + Avg_mentally_unhealthy_days + Excessive_drinking + Teen_birth_rate + Poor_fair_health + Adult_smoking + Children_in_poverty + Severe_housing_problems + total_DSW + BA_higher_ratio + below_poverty_ratio + unemployed_pop_pe, data = virginia_2018_2022)
 
 summary(virginia_ols_dod_1822)
@@ -49,13 +49,6 @@ summary(virginia_ols_dod_1822_test3)
 #virginia_ols_edvisits_1519 <- lm(Annual.Overdose.Visits ~ BA_higher_ratio + unemployed_pop_pe + Median_household_income, data = virginia_2015_2019)
 ```
 
-```{r}
-library(plm)
-panel_data <- pdata.frame(virginia_2018_2022, index = c("FIPS", "Year"))
-model_fe <- plm(DOD_death_rate ~ below_poverty_ratio + BA_higher_ratio + unemployed_pop_pe + total_DSW + Teen_birth_rate, data = panel_data, model = "within")
-summary(model_fe)
-```
-
 
 ```{r}
 library(leaps)
@@ -72,19 +65,53 @@ resultsMat
 
 
 ```{r}
-virginia_ols_dod_1822 <- lm(DOD_death_rate ~ below_poverty_ratio + BA_higher_ratio + unemployed_pop_pe+as.factor(ruc_group)+as.factor(Year), data = virginia_2018_2022)
+virginia_ols_1 <- lm(DOD_death_rate ~ below_poverty_ratio + BA_higher_ratio + unemployed_pop_pe+as.factor(RUCC_2023)+as.factor(Year), data = virginia_2018_2022)
 
-summary(virginia_ols_dod_1822)
+summary(virginia_ols_1)
 
 library(stargazer)
-stargazer(virginia_ols_dod_1822, type = "text")
+stargazer(virginia_ols_1 , type = "text")
 ```
 ```{r}
-virginia_ols_2 <- lm(DOD_death_rate ~ below_poverty_ratio + BA_higher_ratio + unemployed_pop_pe + total_male_pop + total_white+ +total_black+as.factor(RUCC_2023)+as.factor(Year), data = virginia_2018_2022)
+virginia_ols_2 <- lm(DOD_death_rate ~ below_poverty_ratio + BA_higher_ratio + unemployed_pop_pe + total_male_pop+ as.factor(RUCC_2023)+as.factor(Year), data = virginia_2018_2022)
 
 summary(virginia_ols_2)
 
 library(stargazer)
 stargazer(virginia_ols_2, type = "text")
+```
+
+```{r}
+virginia_ols_3 <- lm(DOD_death_rate ~ below_poverty_ratio + BA_higher_ratio + unemployed_pop_pe + total_male_pop + total_white+ +total_black+as.factor(RUCC_2023)+as.factor(Year), data = virginia_2018_2022)
+
+summary(virginia_ols_3)
+
+library(stargazer)
+stargazer(virginia_ols_3, type = "text")
+```
+```{r}
+appalachia_ols_1 <- lm(DOD_death_rate ~ below_poverty_ratio + BA_higher_ratio + unemployed_pop_pe+as.factor(RUCC_2023)+as.factor(Year), data = appalachia_2018_2022)
+
+summary(appalachia_ols_1)
+
+library(stargazer)
+stargazer(appalachia_ols_1 , type = "text")
+```
+
+```{r}
+appalachia_ols_2 <- lm(DOD_death_rate ~ below_poverty_ratio + BA_higher_ratio + unemployed_pop_pe + total_male_pop+ as.factor(RUCC_2023)+as.factor(Year), data = appalachia_2018_2022)
+
+summary(appalachia_ols_2)
+
+library(stargazer)
+stargazer(appalachia_ols_2, type = "text")
+```
+
+```{r}
+suppressd_va <- virginia_2018_2022 %>% #186 out of 665 is suppressed
+  filter(is.na(DOD_death_rate))
+
+suppressd_appa <- appalachia_2018_2022 %>%  #382 out of 2115 is suppressed
+  filter(is.na(DOD_death_rate))
 ```
 
