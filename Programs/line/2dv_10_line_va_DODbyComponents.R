@@ -19,12 +19,14 @@ merged_state_death_1822 <- merged_state_death %>%
   ) %>%
   mutate(alcohol_death_rate = alcohol_deaths / Population * 100000,
          drugs_death_rate = drugs_deaths / Population * 100000,
-         suicide_death_rate = suicide_deaths / Population * 100000)
+         suicide_death_rate = suicide_deaths / Population * 100000,
+         dod_death_rate = DOD_deaths / Population * 100000)
 
 ggplot(merged_state_death_1822, aes(x = Year)) +
   geom_line(aes(y = alcohol_death_rate, color = "Alcohol"), size = 1.5) +
   geom_line(aes(y = drugs_death_rate, color = "Drugs"), size = 1.5) +
   geom_line(aes(y = suicide_death_rate, color = "Suicide"), size = 1.5) +
+  geom_line(aes(y = dod_death_rate, color = "DOD"), linetype = "dashed", size = 1.5) +
   scale_color_viridis_d() +  # Use discrete colors from viridis
   labs(
     title = "Virginia Deaths of Despair by Components 2018-2022",
