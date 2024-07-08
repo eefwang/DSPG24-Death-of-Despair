@@ -98,7 +98,6 @@ virginia_2015_2019 <-virginia_acs_2015_2022 %>% #ACS VA data
 
 
 
-
 ####Appalachian data sets######
 
 #merge death rates
@@ -118,6 +117,34 @@ appalachia_2015_2019 <- appalachia_acs_2015_2022 %>% #Appalachian States ACS dat
   inner_join(ruc_codes, by = c("FIPS"), multiple = "all") 
 
 #2115 observations, all counties in Appalachian is preserved
+
+
+
+############################HPSA DATA###############################
+#Import HPSA DATA
+HPSA = read.csv(here("Data/raw_data", "Health Professional Shortage Areas.csv"), sep = ",", header = TRUE)
+
+# Step 1: Replace string pattern in geoId to convert into FIPS code format
+HPSA$geoId <- gsub("us-va-", "51", HPSA$geoId)
+
+# Step 2: Rename columns, select specific columns, and transform data
+HPSA <- HPSA %>%
+  rename(FIPS = geoId,          # Rename 'geoId' to 'FIPS'
+         HPSA = value)  %>%        # Rename 'value' to 'HPSA'
+  select(FIPS, HPSA, metro_nonmetro) %>%  # Select only these three columns for further analysis
+  mutate(
+    HPSAcode = case_when(
+      HPSA == "None of county is shortage area" ~ 1,    # Assign 1 if no part of the county is a shortage area
+      HPSA == "Part of county is shortage area" ~ 2,    # Assign 2 if part of the county is a shortage area
+      HPSA == "Whole county is shortage area" ~ 3,      # Assign 3 if the whole county is a shortage area
+      TRUE ~ NA_integer_   # Assign NA for any other or unrecognized descriptions
+    )
+  )
+
+virginia_2018_2022$FIPS = as.character(virginia_2018_2022$FIPS)
+
+virginia_2018_2022 <- virginia_2018_2022 %>%
+  left_join(HPSA, by = "FIPS")
 
 
 #Export data sets
