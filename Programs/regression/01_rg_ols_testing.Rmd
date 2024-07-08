@@ -88,6 +88,7 @@ summary(virginia_ols_3)
 
 library(stargazer)
 stargazer(virginia_ols_3, type = "text")
+stargazer(virginia_ols_1, virginia_ols_2, virginia_ols_3, type = "text")
 ```
 ```{r}
 appalachia_ols_1 <- lm(DOD_death_rate ~ below_poverty_ratio + BA_higher_ratio + unemployed_pop_pe+as.factor(RUCC_2023)+as.factor(Year), data = appalachia_2018_2022)
