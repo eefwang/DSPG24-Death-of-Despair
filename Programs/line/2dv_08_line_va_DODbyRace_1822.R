@@ -23,19 +23,20 @@ VA_DOD_RACE_1822_clean <- VA_DOD_RACE_1822 %>%
 
 # Plotting the line graph
 ggplot(VA_DOD_RACE_1822_clean, aes(x = Year, y = Crude.Rate, color = `Single.Race.6`)) +
-  geom_line(size = 1.2) +
-  geom_point(size = 3, show.legend = FALSE) +
+  geom_line(size = 1.5) +
+  geom_point(size = 2, show.legend = FALSE) +
   labs(title = "Virginia DOD Rate by Race (2018-2022)",
        x = "Year",
        y = "DOD Rate (per 100,000)",
        color = "Race",
-       caption = "Data obtained by National Center for Health Statistics (CDC).\nNote: The data for Pacific Islanders
-and American Natives is suppressed.") +
+       caption = "Data obtained by National Center for Health Statistics (CDC).\nNote: The data for Pacific Islanders and American Natives is suppressed.") +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5),
-        legend.position = "right",
+        axis.title.x = element_text(size = 14, face = "bold"),
+        axis.title.y = element_text(size = 14, face = "bold"),
         legend.title = element_text(size = 12),
         legend.text = element_text(size = 10),
+        legend.position = "bottom",
         plot.caption = element_text(hjust = 0.5, size = 9),
         guides(color = guide_legend(override.aes = list(shape = NA))))+
   scale_color_viridis(discrete = TRUE) 
