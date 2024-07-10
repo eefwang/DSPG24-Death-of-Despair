@@ -29,8 +29,8 @@ ggplot(VA_DOD_RACE_1822_clean, aes(x = Year, y = Crude.Rate, color = `Single.Rac
        x = "Year",
        y = "DOD Rate (per 100,000)",
        color = "Race",
-       caption = "Data obtained by National Center for Health Statistics (CDC)\nNote: The data for Pacific Islanders
-and American Natives is suppressed") +
+       caption = "Data obtained by National Center for Health Statistics (CDC).\nNote: The data for Pacific Islanders
+and American Natives is suppressed.") +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5),
         legend.position = "right",
