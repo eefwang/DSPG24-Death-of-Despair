@@ -15,14 +15,14 @@ VA_DOD_SEX_1822 <- VA_DOD_SEX_1822 %>%
 
 # Create the line plot
 ggplot(data = VA_DOD_SEX_1822, aes(x = Year, y = Crude.Rate, color = Gender, group = Gender)) +
-  geom_line(size = 1) +
-  geom_point(size = 2) +
-  labs(title = "Virginia DOD Rates by Gender (2018-2022)",
-       x = "Year",
+  geom_line(size = 1) +  # Line thickness
+  geom_point(size = 2) +  # Point size
+  labs(x = "Year",
        y = "Death Rate (per 100,000)",
        color = "Gender",
        caption = "Data obtained by National Center for Health Statistics (CDC)") +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5),
-        plot.caption = element_text(hjust = 0.5, size = 9))+
-  scale_color_viridis(discrete = TRUE) 
+        plot.caption = element_text(hjust = 0.5, size = 9),
+        legend.position = "bottom") +  # Position legend at the bottom
+  scale_color_viridis(discrete = TRUE)  # Use viridis color scale for discrete variables
