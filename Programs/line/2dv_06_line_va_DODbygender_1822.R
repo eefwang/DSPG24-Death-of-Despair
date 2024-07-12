@@ -19,7 +19,7 @@ ggplot(data = VA_DOD_SEX_1822, aes(x = Year, y = Crude.Rate, color = Gender, gro
   geom_point(size = 2) +  # Point size
   labs(x = "Year",
        y = "Death Rate (per 100,000)",
-       color = "Gender",
+       color = "Sex",
        caption = "Data obtained by National Center for Health Statistics (CDC)") +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5),
