@@ -83,6 +83,10 @@ summary(virginia_ols_4)
 virginia_ols_5 <- lm(DOD_death_rate ~ below_poverty_ratio + BA_higher_ratio + unemployed_pop_pe + total_male_pop + total_black_pop + total_native_pop + total_asian_pacific_pop+ as.factor(HPSAcode)+as.factor(ruc_group)+as.factor(Year), data = virginia_2018_2022)
 
 summary(virginia_ols_5)
+
+virginia_ols_6 <- lm(DOD_death_rate ~ below_poverty_ratio + BA_higher_ratio + unemployed_pop_pe + total_male_pop + total_black_pop + total_native_pop + total_asian_pacific_pop+ as.factor(HPSAcode)+as.factor(FIPS)+as.factor(Year), data = virginia_2018_2022)
+
+summary(virginia_ols_6)
 ```
 
 ```{r}
