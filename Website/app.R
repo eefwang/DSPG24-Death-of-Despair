@@ -221,7 +221,7 @@ ui <- navbarPage("Deaths of Despair",
                                      ),
                                      fluidRow(
                                        style = "font-family: 'Times New Roman', Times, serif;",
-                                       align = "justify",
+                                       align = "center",
                                        column(width = 7,
                                               selectInput("death_type", "Select Death Type:",
                                                           choices = list("Overall DOD" = "DOD_deaths_per",
@@ -1069,38 +1069,49 @@ ui <- navbarPage("Deaths of Despair",
                                    )
                           ),
                           fluidRow(style = "margin: 12px; font-size: 16px; font-family: 'Times New Roman', Times, serif;", align = "center",
-                                   column(4,
+                                   column(3,
                                           div(
                                             style = "display: flex; justify-content: center;",
-                                            img(src = "MichaelCary.jpg", width = "400px"), 
+                                            img(src = "MichaelCary.jpg", height = "220px"), 
                                           ),
                                           div(style = "margin-top: 20px;"),
                                           p(strong("Dr. Michael Cary")),
                                           p(em("Virginia Tech")),
                                           p("Research Assistant Professor"),
                                           p("Department of Agricultural and Applied Economics")),
-                                   column(4,
+                                   column(3,
                                           div(
                                             style = "display: flex; justify-content: center;",
-                                            img(src = "Bradburn.jpg", width = "205px"), 
+                                            img(src = "Bradburn.jpg", height = "220px"), 
                                           ),
                                           div(style = "margin-top: 20px;"),
                                           p(strong("Dr. Isabel Bradburn")),
                                           p(em("Virginia Tech")),
                                           p("Research Director, Child Development Center"),
                                           p("Department of Human Development")),
-                                   column(4,
+                                   column(3,
                                           div(
                                             style = "display: flex; justify-content: center;",
-                                            img(src = "KathyHosig1.jpg", width = "400px"), 
+                                            img(src = "KathyHosig1.jpg", height = "220px"), 
                                           ),
                                           div(style = "margin-top: 20px;"),
                                           p(strong("Dr. Kathy Hosig")),
                                           p(em("Virginia Tech")),
                                           p("Associate Professor"),
                                           p("Department of Population Health Sciences")
-                                   )
+                                   ),
+                                   column(3,
+                                          div(
+                                            style = "display: flex; justify-content: center;",
+                                            img(src = "SusanChen.jpg", height = "220px"), 
+                                          ),
+                                          div(style = "margin-top: 20px;"),
+                                          p(strong("Dr. Susan Chen")),
+                                          p(em("Virginia Tech")),
+                                          p("Associate Professor"),
+                                          p("Department of Agricultural and Applied Economics"))
                           ),
+                          
                           fluidRow(
                             style = "margin-top: 20px; margin-bottom: 30px; font-weight: bold; font-size: 28px; color: maroon; font-family: 'Times New Roman', Times, serif;",
                             align = "center",
@@ -1462,7 +1473,7 @@ server <- function(input, output, session) {
   mybins <- reactive({
     switch(input$death_type,
            "DOD_deaths_per" = c(50, 65, 80, 95, 110, 125, 140, 165),
-           "drugs_deaths_per" = c(12, 24, 36, 48, 60, 72, 84, 96),
+           "drugs_deaths_per" = c(10, 22, 34, 46, 58, 70, 82, 94),
            "alcohol_deaths_per" = c(12, 24, 36, 48, 60, 72, 84, 96),
            "suicide_deaths_per" = c(5, 10, 15, 20, 25, 30, 35, 40))
   })
