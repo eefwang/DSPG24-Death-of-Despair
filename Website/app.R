@@ -61,6 +61,8 @@ VA_DOD_RACE_1822 <- VA_DOD_RACE_1822 %>%
   filter(!Single.Race.6 %in% c("American Indian or Alaska Native", "Native Hawaiian or Other Pacific Islander")) %>%
   na.omit()
 
+VA_DOD_RACE_1822$Crude.Rate = as.numeric(VA_DOD_RACE_1822$Crude.Rate)
+
 # Tigris library to get county shapefiles
 options(tigris_use_cache = TRUE)
 appalachian_states <- c("AL", "GA", "KY", "MD", "MS", "NY", "NC", "OH", "PA", "SC", "TN", "VA", "WV")
