@@ -921,30 +921,45 @@ ui <- navbarPage("Deaths of Despair",
                                      fluidRow(style = "margin-left: 50px; margin-right: 50px; font-family: 'Times New Roman', Times, serif;",
                                               align = "center",
                                               h1("Analysis and Data Limitations"),
-                                              div(style = "margin-top: 20px;"),
+                                              div(style = "margin-top: 30px;"),
                                               h4(align = "left", strong("Social Limitations")),
+                                              p(style = "font-size: 16px; text-align: left;", 
+                                              "Social factors play a crucial role in the accuracy and comprehensiveness of DOD data. 
+                                                The stigma surrounding drug overdoses and suicides often leads to significant underreporting or 
+                                                misclassification of these deaths. Families and communities, influenced by societal judgment, may 
+                                                avoid reporting the true nature of these deaths, resulting in data that does not accurately reflect 
+                                                the reality of the situation. This underreporting can distort the perceived prevalence of DOD, 
+                                                leading to an underestimation of the problem and subsequently insufficient resource allocation 
+                                                and intervention efforts."),
                                               p(style = "font-size: 16px; text-align: left;",
-                                                "Social factors significantly impact the accuracy and comprehensiveness of DOD data. 
-                                                Stigma associated with drug overdoses and suicides can lead to underreporting or 
-                                                misclassification of these deaths, as families and communities may be reluctant to 
-                                                report them accurately. This underreporting can result in a significant underestimation 
-                                                of the true prevalence of DOD."),
-                                              p(style = "font-size: 16px; text-align: left;",
-                                                "Additionally, marginalized populations, including 
-                                                racial and ethnic minorities, are often underrepresented in data collection efforts 
-                                                due to historical and ongoing disparities. This lack of representation can skew the results, 
-                                                masking the true extent of DOD among these vulnerable groups."),
-                                              div(style = "margin-top: 20px;"),
+                                                "Moreover, the underrepresentation of marginalized populations in data collection efforts exacerbates 
+                                                this issue. Historical and ongoing disparities mean that racial and ethnic minorities, among other 
+                                                vulnerable groups, are often left out of comprehensive data collection. This lack of representation 
+                                                can skew results, giving a false sense of security regarding the impact of DOD on these groups. It masks 
+                                                the true extent of the problem, leading to policies and interventions that may not address the specific 
+                                                needs of these underrepresented populations."),
+                                              div(style = "margin-top: 30px;"),
                                               h4(align = "left", strong("Data Suppression")),
                                               p(style = "font-size: 16px; text-align: left;",
-                                                "Due to confidentiality constraints aimed at protecting personal privacy, vital statistics data, 
-                                                including death counts and death rates, are labeled as 'Suppressed' when they represent one to 
-                                                nine persons for deaths. This suppression policy is crucial for individual privacy but creates 
-                                                challenges by often omitting detailed information on DOD rates in small communities or specific 
-                                                demographic groups to prevent identification. Consequently, these data gaps complicate analysis 
-                                                and hinder comprehensive understanding of the geographic and demographic distribution of DOD, 
-                                                challenging efforts to effectively target interventions. Balancing privacy needs with the demand 
-                                                for detailed data poses a significant challenge in this field of research.")
+                                                "Data suppression, implemented to protect individual privacy, further complicates the analysis of DOD data. 
+                                                While this suppression is necessary to maintain confidentiality, it also results in significant data gaps. 
+                                                These gaps hinder our ability to fully understand the geographic and demographic distribution of DOD, 
+                                                particularly in small or specific demographic groups where the data is most crucial."),
+                                              p(style = "font-size: 16px; text-align: left;",
+                                                "Suppressed data can lead to skewed results. For example, if data from small rural communities with high 
+                                                DOD rates is suppressed, it may appear that these areas are less affected by DOD than they are. This 
+                                                lack of detailed information complicates efforts to create awareness and targeted interventions, as 
+                                                policymakers and health professionals rely on accurate data to allocate resources and design programs. 
+                                                Balancing the need for privacy with the demand for comprehensive data is a significant challenge that must be addressed."),
+                                              p(style = "font-size: 16px; text-align: left;",
+                                                "From a sociological perspective, the suppression of data creates a phenomenon known as “invisibility bias.” This is where 
+                                                the absence of detailed data on distribution of DOD leads to certain demographics being overlooked or underestimated. For 
+                                                instance, if high DOD rates in small rural communities are masked by data suppression, policymakers may not recognize the 
+                                                need for targeted support and resources in these areas. This lack of visibility undermines the validity and representativeness 
+                                                of the data, leading to less effective and equitable policy decisions. Understanding these limitations is critical for 
+                                                interpreting DOD data accurately. Recognizing the impact of underreporting, misclassification, underrepresentation, and 
+                                                data suppression helps to contextualize the findings and underscores the importance of developing more inclusive and transparent 
+                                                data collection practices.")
                                      )
                             )
                  ),
