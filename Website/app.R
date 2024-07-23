@@ -961,8 +961,26 @@ ui <- navbarPage("Deaths of Despair",
                                                 of the data, leading to less effective and equitable policy decisions. Understanding these limitations is critical for 
                                                 interpreting DOD data accurately. Recognizing the impact of underreporting, misclassification, underrepresentation, and 
                                                 data suppression helps to contextualize the findings and underscores the importance of developing more inclusive and transparent 
-                                                data collection practices.")
-                                     )
+                                                data collection practices."),
+                                     ),
+                                     div(style = "margin-top: 30px;"),
+                                     fluidRow(style = "margin-left: 50px; margin-right: 50px; font-family: 'Times New Roman', Times, serif;",
+                                              column(6,
+                                                     img(src = "limitationsCount.jpg", style = "display: block; margin-left: auto; margin-right: auto;", height = "400px")),
+                                              column(6,
+                                                     img(src = "limitationsRate.jpg", style = "display: block; margin-left: auto; margin-right: auto;", height = "400px"))
+                                     ),
+                                     div(style = "margin-top: 30px;"),
+                                     fluidRow(style = "margin-left: 50px; margin-right: 50px; font-family: 'Times New Roman', Times, serif;",
+                                              p(style = "font-size: 16px; text-align: left;",
+                                              "Understanding data limitations and consistency is crucial in research, as illustrated by the two graphs depicting Virginia's 
+                                                deaths of despair (DOD) by race from 2018 to 2022. The first graph shows the total count of DOD, while the second graph presents 
+                                                the DOD Rate per 100,000 population. The count data provides an absolute measure of deaths, which can be useful for understanding 
+                                                the sheer volume of DOD in different racial groups. However, it does not account for population size, potentially misleading 
+                                                conclusions about the relative impact on different communities. The rate data, adjusted for population size, offers a more accurate 
+                                                comparison by contextualizing the deaths within the population at risk. This adjustment is essential for identifying true disparities 
+                                                and targeting interventions appropriately.")),
+                                     div(style = "margin-top: 30px;")
                             )
                  ),
                  
