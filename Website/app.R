@@ -437,7 +437,7 @@ ui <- navbarPage("Deaths of Despair",
                                                                    White individuals in 2021. All 3 populations spiked in 2020, likely due to COVID-19 pandemic."),
                                                            tags$li(style = "font-size: 16px; text-align: justify;",
                                                                    strong("Sex: "), "Males have significantly higher rates than females consistently. 
-                                                                   DOD rate for males was 90 in 2018 and 123 in 2022. Rate for females was 33 in 2018 and 45 in 2022.")
+                                                                   DOD rate for males was 90 in 2018 and 123 per 100,000 in 2022. Rate for females was 33 in 2018 and 45 per 100,000 in 2022.")
                                                          )
                                                        ),
                                                        p(style = "font-size: 16px; text-align: justify;",
