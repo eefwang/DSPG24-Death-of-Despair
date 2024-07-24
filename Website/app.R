@@ -171,6 +171,10 @@ ui <- navbarPage("Deaths of Despair",
                                                   contribute to a more holistic and nuanced understanding of the crisis, ultimately guiding public 
                                                   health and policy efforts to mitigate the factors leading to deaths of despair."
                                                        ),
+                                                       div(style = "margin-top: 20px;"),
+                                                       h4(strong("Research Questions")),
+                                                       p(style = "font-size: 16px;", "What demographics and socioeconomic factors are associated with the rise in deaths of despair in Virginia from 2018 to 2022?"),
+                                                       p(style = "font-size: 16px;", "What policy interventions and harm reduction programs exist in Virginia that could assist in mitigating deaths of despair?"),
                                                        div(style = "margin-top: 30px;"),
                                                      )
                                               ),
